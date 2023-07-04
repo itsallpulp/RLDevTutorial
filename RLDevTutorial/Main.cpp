@@ -8,18 +8,29 @@
 #include "boost/lexical_cast.hpp" 
 #include "Globals.h"
 
+#include "Entity.h"
+#include "PhysicsComponent.h"
+
+#include "MovementListener.h"
+
+#include "MovementCommand.h"
+
 boost::uuids::random_generator uuidGenerator;
 
 bool quit = false;
 
 int seed = 0;
 
-int pX, pY;
+
+MovementListener lMovement;
+
+Entity player;
 
 int main(int argc, char* argv[])
 {
-	pX = 0;
-	pY = 0;
+	player.cPhysics = new PhysicsComponent(1, 1);
+
+
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
@@ -31,6 +42,8 @@ int main(int argc, char* argv[])
 	{
 		SDL_Event input;
 
+		Command *command = nullptr;
+
 		while (SDL_PollEvent(&input))
 		{
 			if (input.type == SDL_KEYDOWN)
@@ -38,22 +51,29 @@ int main(int argc, char* argv[])
 				switch (input.key.keysym.sym)
 				{
 					case SDLK_UP:
-						--pY;
+						command = new MovementCommand(&player, 0, -1);
 						break;
 					case SDLK_DOWN:
-						++pY;
+						command = new MovementCommand(&player, 0, 1);
 						break;
 					case SDLK_RIGHT:
-						++pX;
+						command = new MovementCommand(&player, 1, 0);
 						break;
 					case SDLK_LEFT:
-						--pX;
+						command = new MovementCommand(&player, -1, 0);
 						break;
 					default:
 						break;
 				}
 			}
 		}
+
+		if (command != nullptr)
+		{
+			command->Execute();
+			delete command;
+		}
+
 		RenderAll();
 	}
 	return 0;
@@ -66,6 +86,16 @@ std::string GenerateUUID()
 
 void RenderAll()
 {
-	Render::Put(64, pX, pY, 255, 255, 255);
+	Render::Put(64, player.cPhysics->x, player.cPhysics->y, 255, 255, 255);
 	Render::Update();
+}
+
+int FireEvent(Event *e)
+{
+	int r = 0;
+
+	r += lMovement.FireEvent(e);
+
+
+	return r;
 }

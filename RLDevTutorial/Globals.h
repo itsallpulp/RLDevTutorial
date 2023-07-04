@@ -10,10 +10,12 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+class Event;
 
 extern boost::uuids::random_generator uuidGenerator;
 extern std::string GenerateUUID();
 extern void RenderAll();
+extern int FireEvent(Event *e);
 
 static const int
 MAP_WIDTH = 130,
@@ -24,9 +26,12 @@ WINDOW_WIDTH = (MAP_WIDTH) * SPRITE_WIDTH,
 WINDOW_HEIGHT = (MAP_HEIGHT) * SPRITE_HEIGHT;
 static SDL_Rect backgroundTile = { 219 % 16 * SPRITE_WIDTH, 219 / 16 * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
 
-
 static const int
 AC_STANDARD = 100;
+
+typedef struct Point {
+	int x, y;
+};
 
 extern bool quit;
 
