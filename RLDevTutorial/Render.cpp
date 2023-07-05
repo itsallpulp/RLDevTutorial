@@ -102,3 +102,35 @@ void Render::Puts(std::string text, int x, int y, int r, int g, int b, int bgRed
 		++i;
 	}
 }
+
+void Render::PutBorder(int x, int y, int width, int height, char color, char bgColor, bool thick)
+{
+	int glyphs[6] = { 218, 192, 191, 217, 196, 179 };
+
+	if (thick)
+	{
+		glyphs[0] = 201; // Top Left
+		glyphs[1] = 200; // Bottom Left
+		glyphs[2] = 187; // Top Right
+		glyphs[3] = 188; // Bottom Right
+		glyphs[4] = 205; // Horizontal
+		glyphs[5] = 186; // Vertical
+	}
+
+	for (int i = 0; i < width; ++i)
+	{
+		Put(glyphs[4], x + i, y, color, bgColor);
+		Put(glyphs[4], x + i, y+height-1, color, bgColor);
+	}
+
+	for (int i = 0; i < height; ++i)
+	{
+		Put(glyphs[5], 0, y + i, color, bgColor);
+		Put(glyphs[5], width-1, y + i, color, bgColor);
+	}
+
+	Put(glyphs[0], x, y, color, bgColor);
+	Put(glyphs[1], x, y+height-1, color, bgColor);
+	Put(glyphs[2], x+width-1, y, color, bgColor);
+	Put(glyphs[3], x+width-1, y+height-1, color, bgColor);
+}

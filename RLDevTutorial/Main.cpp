@@ -102,6 +102,8 @@ void RenderAll()
 	RenderEvent e(&player);
 	FireEvent(&e);
 	
+	Render::PutBorder(0, 0, MAP_WIDTH, MAP_HEIGHT, 'w', 'b', false);
+
 	Render::Update();
 }
 

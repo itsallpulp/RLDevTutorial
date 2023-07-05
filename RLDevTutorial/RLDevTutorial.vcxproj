@@ -163,6 +163,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="Glyphs.h" />
     <ClInclude Include="Listener.h" />
     <ClInclude Include="MovementCommand.h" />
     <ClInclude Include="MovementListener.h" />
