@@ -19,17 +19,17 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{3c03fee3-0d1d-46bd-9d4a-688467b920d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Systems">
-      <UniqueIdentifier>{13aef7f1-883a-45a7-875e-8e894d27d6ed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Commands">
       <UniqueIdentifier>{6ad28fed-044e-438b-b2c1-5a93ca954b71}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Commands">
       <UniqueIdentifier>{576b3bc6-ee99-4665-851f-dc853cd9e04f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Systems">
+    <Filter Include="Header Files\Listeners">
       <UniqueIdentifier>{44a2af11-2fbe-4fe7-a588-af0401cc795a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Listeners">
+      <UniqueIdentifier>{13aef7f1-883a-45a7-875e-8e894d27d6ed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,23 +42,29 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Listener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MovementListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Listener.cpp">
+      <Filter>Source Files\Listeners</Filter>
     </ClCompile>
     <ClCompile Include="MovementCommand.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementListener.cpp">
+      <Filter>Source Files\Listeners</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingListener.cpp">
+      <Filter>Source Files\Listeners</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,21 +78,33 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Listener.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="MovementListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Listeners</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="MovementCommand.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementListener.h">
+      <Filter>Header Files\Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

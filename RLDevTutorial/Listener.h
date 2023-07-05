@@ -9,9 +9,9 @@ class Listener
 	long long mListenFor;
 	bool ListensFor(int flag);
 	void RegisterListenFor(int flag);
-	int Fire(Event *e);
 
 	virtual int FireMovementEvent(MovementEvent *e);
+	virtual int FireRenderEvent(RenderEvent *e);
 
 	public:
 	Listener();

@@ -6,11 +6,13 @@ Entity::Entity()
     mUUID = GenerateUUID();
 
     cPhysics = nullptr;
+    cRender = nullptr;
 }
 
 Entity::~Entity()
 {
     delete cPhysics;
+    delete cRender;
 }
 
 std::string Entity::GetName()

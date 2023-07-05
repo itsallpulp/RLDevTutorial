@@ -15,6 +15,11 @@ int Listener::FireMovementEvent(MovementEvent *e)
     return 0;
 }
 
+int Listener::FireRenderEvent(RenderEvent *e)
+{
+    return 0;
+}
+
 Listener::Listener()
 {
     mListenFor = 0;
@@ -27,6 +32,8 @@ int Listener::FireEvent(Event *e)
     {
         case evMove:
             return FireMovementEvent((MovementEvent *)e);
+        case evRender:
+            return FireRenderEvent((RenderEvent *)e);
         default:
             return 0;
     }

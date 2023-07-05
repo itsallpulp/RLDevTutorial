@@ -153,8 +153,11 @@
     <ClCompile Include="MovementListener.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="Render.cpp" />
+    <ClCompile Include="RenderComponent.cpp" />
+    <ClCompile Include="RenderingListener.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
@@ -164,6 +167,9 @@
     <ClInclude Include="MovementCommand.h" />
     <ClInclude Include="MovementListener.h" />
     <ClInclude Include="PhysicsComponent.h" />
+    <ClInclude Include="RenderComponent.h" />
+    <ClInclude Include="RenderingListener.h" />
+    <ClInclude Include="Types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

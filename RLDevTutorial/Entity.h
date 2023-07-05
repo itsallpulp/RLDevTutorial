@@ -5,6 +5,7 @@
 #include "Globals.h"
 
 #include "PhysicsComponent.h"
+#include "RenderComponent.h"
 
 class Entity
 {
@@ -19,4 +20,5 @@ class Entity
 	std::string GetUUID();
 
 	PhysicsComponent *cPhysics;
+	RenderComponent *cRender;
 };

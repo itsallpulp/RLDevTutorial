@@ -5,13 +5,19 @@
 
 #include <SDL.h>
 
-#include "boost/lexical_cast.hpp" 
+#include "boost/lexical_cast.hpp"
+
+#include "Types.h"
+
 #include "Globals.h"
+#include "Color.h"
 
 #include "Entity.h"
 #include "PhysicsComponent.h"
+#include "RenderComponent.h"
 
 #include "MovementListener.h"
+#include "RenderingListener.h"
 
 #include "MovementCommand.h"
 
@@ -23,12 +29,17 @@ int seed = 0;
 
 
 MovementListener lMovement;
+RenderingListener lRendering;
 
 Entity player;
+std::map<char, Color> colors;
 
 int main(int argc, char* argv[])
 {
+	LoadColors("data/color_default.json");
+
 	player.cPhysics = new PhysicsComponent(1, 1);
+	player.cRender = new RenderComponent(64, 'y');
 
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -86,16 +97,18 @@ std::string GenerateUUID()
 
 void RenderAll()
 {
-	Render::Put(64, player.cPhysics->x, player.cPhysics->y, 255, 255, 255);
+	//Render::Puts("@", player.cPhysics->x, player.cPhysics->y, 255, 255, 255);
+	
+	RenderEvent e(&player);
+	FireEvent(&e);
+	
 	Render::Update();
 }
 
 int FireEvent(Event *e)
 {
 	int r = 0;
-
+	r += lRendering.FireEvent(e);
 	r += lMovement.FireEvent(e);
-
-
 	return r;
 }

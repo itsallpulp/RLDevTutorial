@@ -1,4 +1,5 @@
 #include "Globals.h"
+#include "Color.h"
 
 void Render::Init()
 {
@@ -29,6 +30,21 @@ void Render::Put(int c, int x, int y, int r, int g, int b, int bgRed, int bgGree
 	SDL_RenderCopyEx(renderer, spriteSheet, &backgroundTile, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
 
 	SDL_SetTextureColorMod(spriteSheet, r, g, b);
+	SDL_RenderCopyEx(renderer, spriteSheet, &clip, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
+}
+
+void Render::Put(int c, int x, int y, char color, char bgColor)
+{
+	int cx = c % 16;
+	int cy = floor(c / 16);
+
+	SDL_Rect renderQuad = { x * SPRITE_WIDTH, y * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
+	SDL_Rect clip = { cx * SPRITE_WIDTH, cy * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
+
+	SDL_SetTextureColorMod(spriteSheet, colors[bgColor].r, colors[bgColor].g, colors[bgColor].b);
+	SDL_RenderCopyEx(renderer, spriteSheet, &backgroundTile, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
+
+	SDL_SetTextureColorMod(spriteSheet, colors[color].r, colors[color].g, colors[color].b );
 	SDL_RenderCopyEx(renderer, spriteSheet, &clip, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
 }
 

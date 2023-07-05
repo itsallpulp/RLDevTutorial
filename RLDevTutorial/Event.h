@@ -4,6 +4,7 @@ class Entity;
 
 static enum EventID {
 	evMove = 1,
+	evRender = 2,
 	NUM_EVENTS
 };
 
@@ -34,4 +35,14 @@ class MovementEvent : public Event {
 
 	Entity *target;
 	int dx, dy;
+};
+
+class RenderEvent : public Event {
+	public:
+	RenderEvent(Entity *t) : Event(evRender)
+	{
+		target = t;
+	}
+	Entity *target;
+
 };
