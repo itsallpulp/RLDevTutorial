@@ -46,7 +46,9 @@ namespace Render {
 	void Put(int c, int x, int y, int r, int g, int b, int bgRed = 0, int bgGreen = 0, int bgBlue = 0); // Draw a character to the screen
 	void Put(int c, int x, int y, char color, char bgColor = 'x'); // Draw a character to the screen
 	void Puts(std::string text, int x, int y, int r, int g, int b, int bgRed = 0, int bgGreen = 0, int bgBlue = 0); // Draw a string to the screen
-	void PutBorder(int x, int y, int width, int height, char color, char bgColor = 'x', bool thick=false);
+	void Puts(std::string text, int x, int y, char color, char bgColor = 'x'); // Draw a string to the screen
+	void PutBorder(int x, int y, int width, int height, char color, char bgColor = 'x', bool thick=false); // Display a border
+	void PutTitledBorder(std::string title, int x, int y, int width, int height, char color, char bgColor = 'x', bool thick=false); // Display a border with a centered title
 
 	SDL_Texture *LoadTexture(std::string filePath, int aR, int aG, int aB); // Load an SDL_Texture from a string filepath. aR,aG,aB are the alpha colors
 	void Update(); // Refresh what is on the screen

@@ -97,13 +97,11 @@ std::string GenerateUUID()
 
 void RenderAll()
 {
-	//Render::Puts("@", player.cPhysics->x, player.cPhysics->y, 255, 255, 255);
-	
 	RenderEvent e(&player);
 	FireEvent(&e);
 	
-	Render::PutBorder(0, 0, MAP_WIDTH, MAP_HEIGHT, 'w', 'b', false);
-
+//	Render::PutBorder(0, 0, MAP_WIDTH, MAP_HEIGHT, 'w', 'b', false);
+//	Render::PutTitledBorder("Rogue--------------like1", 0, 0, MAP_WIDTH, MAP_HEIGHT, 'w', 'b', false);
 	Render::Update();
 }
 

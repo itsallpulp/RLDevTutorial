@@ -103,6 +103,16 @@ void Render::Puts(std::string text, int x, int y, int r, int g, int b, int bgRed
 	}
 }
 
+void Render::Puts(std::string text, int x, int y, char color, char bgColor)
+{
+	int i = 0;
+	for (char c : text)
+	{
+		Put((int)c, x + i, y, color, bgColor);
+		++i;
+	}
+}
+
 void Render::PutBorder(int x, int y, int width, int height, char color, char bgColor, bool thick)
 {
 	int glyphs[6] = { 218, 192, 191, 217, 196, 179 };
@@ -133,4 +143,18 @@ void Render::PutBorder(int x, int y, int width, int height, char color, char bgC
 	Put(glyphs[1], x, y+height-1, color, bgColor);
 	Put(glyphs[2], x+width-1, y, color, bgColor);
 	Put(glyphs[3], x+width-1, y+height-1, color, bgColor);
+}
+
+void Render::PutTitledBorder(std::string title, int x, int y, int width, int height, char color, char bgColor, bool thick)
+{
+	PutBorder(x, y, width, height, color, bgColor, thick);
+	int offset = (width / 2) - (title.size() / 2);
+
+	int left = thick ? 181 : 180,
+		right = thick ? 198 : 195;
+
+	Put(left, x + offset - 1, y, color, bgColor);
+	Put(right, x + title.size() + offset, y, color, bgColor);
+	Puts(title, x + offset, y, color, bgColor);
+
 }
