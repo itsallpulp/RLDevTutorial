@@ -147,6 +147,7 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="Listener.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MovementCommand.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Glyphs.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="Listener.h" />
     <ClInclude Include="MovementCommand.h" />
     <ClInclude Include="MovementListener.h" />

@@ -21,6 +21,8 @@
 
 #include "MovementCommand.h"
 
+#include "Level.h"
+
 boost::uuids::random_generator uuidGenerator;
 
 bool quit = false;
@@ -32,15 +34,16 @@ MovementListener lMovement;
 RenderingListener lRendering;
 
 Entity player;
+Level *level;
 std::map<char, Color> colors;
 
 int main(int argc, char* argv[])
 {
 	LoadColors("data/color_default.json");
+	level = new Level();
 
-	player.cPhysics = new PhysicsComponent(1, 1);
-	player.cRender = new RenderComponent(64, 'y');
 
+	player.LoadJson(GetJson("base_actor"));
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -97,6 +100,8 @@ std::string GenerateUUID()
 
 void RenderAll()
 {
+	level->Render();
+
 	RenderEvent e(&player);
 	FireEvent(&e);
 	
@@ -111,4 +116,25 @@ int FireEvent(Event *e)
 	r += lRendering.FireEvent(e);
 	r += lMovement.FireEvent(e);
 	return r;
+}
+
+json::object GetJson(std::string filename)
+{
+	
+	json::value data;
+	std::ifstream inf("data/" + filename + ".json");
+	std::string s = "";
+	json::stream_parser p;
+	json::error_code ec;
+	while (std::getline(inf, s))
+	{
+		p.write(s, ec);
+		if (ec)
+		{
+			return json::object();
+		}
+	}
+
+	data = p.release();
+	return data.as_object();	
 }

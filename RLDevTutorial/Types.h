@@ -24,6 +24,7 @@
 #include "noise/noise.h"
 #include "noise/noiseutils.h"
 
+
 namespace json = boost::json;
 
 typedef std::pair<int, int> point;

@@ -66,6 +66,9 @@
     <ClCompile Include="RenderingListener.cpp">
       <Filter>Source Files\Listeners</Filter>
     </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="RenderingListener.h">
       <Filter>Header Files\Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

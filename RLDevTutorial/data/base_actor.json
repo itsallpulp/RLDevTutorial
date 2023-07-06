@@ -1,0 +1,12 @@
+{
+	"name": "actor",
+	"components": {
+		"render": {
+			"glyph": 64,
+			"color": "y"
+		},
+		"physics": {
+			
+		}
+	}
+}

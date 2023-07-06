@@ -1,0 +1,12 @@
+{
+	"name": "floor",
+	"components": {
+		"render": {
+			"glyph": 249,
+			"color": "w"		
+		},
+		"physics": {
+			
+		}
+	}
+}

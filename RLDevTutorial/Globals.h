@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Types.h"
 
 #include <string>
 
@@ -11,11 +12,15 @@
 #include <boost/uuid/uuid_io.hpp>
 
 class Event;
+class Level;
 
 extern boost::uuids::random_generator uuidGenerator;
 extern std::string GenerateUUID();
 extern void RenderAll();
 extern int FireEvent(Event *e);
+extern json::object GetJson(std::string filename);
+
+extern Level *level;
 
 static const int
 MAP_WIDTH = 130,
