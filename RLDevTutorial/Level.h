@@ -42,4 +42,5 @@ class Level
 	void ConnectRegion();
 
 	void RoomsAndMazes();
+	void PlaceEntity(Entity *e);
 };

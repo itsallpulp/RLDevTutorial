@@ -395,3 +395,12 @@ void Level::RoomsAndMazes()
     delete hall;
     delete wall;
 }
+
+void Level::PlaceEntity(Entity *e)
+{
+    while (mCells[e->cPhysics->x][e->cPhysics->y]->cPhysics->blocksMovement)
+    {
+        e->cPhysics->x = rand() % MAP_WIDTH;
+        e->cPhysics->y = rand() % MAP_HEIGHT;
+    }
+}
