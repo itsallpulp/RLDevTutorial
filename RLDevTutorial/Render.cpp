@@ -7,10 +7,11 @@ void Render::Init()
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 	window = SDL_CreateWindow("RoguelikeDev Tutorial Week 1", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	SDL_RenderSetScale(renderer, 0.1, 0.1);
 	SDL_RenderSetLogicalSize(renderer, WINDOW_WIDTH, WINDOW_HEIGHT);
 	SDL_SetWindowResizable(window, SDL_TRUE);
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-	spriteSheet = LoadTexture("Markvii12x12.png", 255, 0, 255);
+	spriteSheet = LoadTexture("Markvii120x120.png", 255, 0, 255);
 	Update();
 }
 
@@ -24,7 +25,7 @@ void Render::Put(int c, int x, int y, int r, int g, int b, int bgRed, int bgGree
 	int cx = c % 16;
 	int cy = floor(c / 16);
 
-	SDL_Rect renderQuad = { x * SPRITE_WIDTH, y * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
+	SDL_Rect renderQuad = { x * SPRITE_WIDTH / SCALE, y * SPRITE_HEIGHT / SCALE, SPRITE_WIDTH / SCALE, SPRITE_HEIGHT / SCALE };
 	SDL_Rect clip = { cx * SPRITE_WIDTH, cy * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
 	SDL_SetTextureColorMod(spriteSheet, bgRed, bgGreen, bgBlue);
 	SDL_RenderCopyEx(renderer, spriteSheet, &backgroundTile, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
@@ -38,7 +39,7 @@ void Render::Put(int c, int x, int y, char color, char bgColor)
 	int cx = c % 16;
 	int cy = floor(c / 16);
 
-	SDL_Rect renderQuad = { x * SPRITE_WIDTH, y * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
+	SDL_Rect renderQuad = { x * SPRITE_WIDTH / SCALE, y * SPRITE_HEIGHT / SCALE, SPRITE_WIDTH / SCALE, SPRITE_HEIGHT / SCALE};
 	SDL_Rect clip = { cx * SPRITE_WIDTH, cy * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
 
 	SDL_SetTextureColorMod(spriteSheet, colors[bgColor].r, colors[bgColor].g, colors[bgColor].b);
