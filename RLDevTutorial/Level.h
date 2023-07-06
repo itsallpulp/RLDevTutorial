@@ -14,7 +14,10 @@ class Level
 
 	bool AddRandomRoom();
 	void AddRoom(point topLeft, point bottomRight);
-	void StartMaze(int x, int y, Entity *tile);
+	void CarveMaze(int x, int y, Entity *tile);
+	int CountSurroundingFloors(int x, int y);
+
+	bool MazeCanGo(int x, int y, int dx, int dy);
 
 	void Fill(Entity *t);
 

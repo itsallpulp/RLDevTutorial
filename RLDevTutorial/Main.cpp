@@ -39,6 +39,10 @@ std::map<char, Color> colors;
 
 int main(int argc, char* argv[])
 {
+
+	seed = time(NULL);
+	srand(seed);
+
 	LoadColors("data/color_default.json");
 	level = new Level();
 
@@ -52,7 +56,6 @@ int main(int argc, char* argv[])
 		std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
 		return 1;
 	}
-	seed = time(NULL);
 	Render::Init();
 	while (!quit)
 	{
