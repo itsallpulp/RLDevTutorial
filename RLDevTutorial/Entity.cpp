@@ -9,6 +9,11 @@ Entity::Entity()
     cRender = nullptr;
 }
 
+Entity::Entity(std::string fileToLoad) : Entity()
+{
+    LoadJson(GetJson(fileToLoad));
+}
+
 Entity::~Entity()
 {
     delete cPhysics;

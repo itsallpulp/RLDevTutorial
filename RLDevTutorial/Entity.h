@@ -25,6 +25,7 @@ class Entity
 
 	public:
 	Entity();
+	Entity(std::string fileToLoad);
 	~Entity();
 
 	Entity *Clone();

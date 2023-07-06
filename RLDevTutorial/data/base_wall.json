@@ -1,0 +1,13 @@
+{
+	"name": "wall",
+	"components": {
+		"render": {
+			"glyph": 219,
+			"color": "e",
+			"bgColor": "E"
+		},
+		"physics": {
+			"blocksMovement": true
+		}
+	}
+}

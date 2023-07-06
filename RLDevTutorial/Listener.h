@@ -2,6 +2,7 @@
 
 #include "Entity.h"
 #include "Event.h"
+#include "Globals.h"
 
 class Listener
 {

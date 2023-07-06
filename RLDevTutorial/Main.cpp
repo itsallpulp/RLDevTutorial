@@ -44,6 +44,8 @@ int main(int argc, char* argv[])
 
 
 	player.LoadJson(GetJson("player"));
+	player.cPhysics->x = 1;
+	player.cPhysics->y = 1;
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{

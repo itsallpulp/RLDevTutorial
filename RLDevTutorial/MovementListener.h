@@ -1,5 +1,8 @@
 #pragma once
 #include "Listener.h"
+
+#include "Level.h"
+
 class MovementListener : public Listener
 {
 	private:
@@ -8,4 +11,3 @@ class MovementListener : public Listener
 	public:
 	MovementListener();
 };
-

@@ -7,7 +7,7 @@
 			"bgColor": "x"
 		},
 		"physics": {
-			
+			"blocksMovement": false
 		}
 	}
 }
