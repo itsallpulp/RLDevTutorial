@@ -81,6 +81,9 @@ int main(int argc, char* argv[])
 					case SDLK_LEFT:
 						command = new MovementCommand(&player, -1, 0);
 						break;
+					case SDLK_c:
+						level->ConnectRegion();
+						break;
 					default:
 						break;
 				}

@@ -1,5 +1,85 @@
 #include "Level.h"
 
+std::vector<point> Level::GetPossibleDoors(int regionNumber)
+{
+    std::vector<point> doors;
+    for (int x = 1; x < MAP_WIDTH - 1; ++x)
+    {
+        for (int y = 1; y < MAP_HEIGHT - 1; ++y)
+        {
+            if (mRegions[x][y] != regionNumber) { continue; }
+
+            if (IsPossibleDoor(x, y, 1, 0)) { doors.push_back({ x + 1, y }); }
+            if (IsPossibleDoor(x, y, -1, 0)) { doors.push_back({ x - 1, y }); }
+            if (IsPossibleDoor(x, y, 0, 1)) { doors.push_back({ x, y + 1}); }
+            if (IsPossibleDoor(x, y, 0, -1)) { doors.push_back({ x, y - 1}); }
+        }
+    }
+
+    return doors;
+}
+
+bool Level::IsPossibleDoor(int x, int y, int dx, int dy)
+{
+    if (x + dx * 2 <= 0 || x + dx * 2 >= MAP_WIDTH - 1) { return false; }
+    if (y + dy * 2 <= 0 || y + dy * 2 >= MAP_HEIGHT - 1) { return false; }
+
+    return(
+            (mCells[x + dx][y + dy]->cPhysics->blocksMovement &&  !mCells[x + dx * 2][y + dy * 2]->cPhysics->blocksMovement) && 
+            (mRegions[x][y] != mRegions[x + dx * 2][y + dy * 2])
+        );
+}
+
+void Level::RemoveDeadEnd(int x, int y, Entity *t)
+{
+    if (mCells[x][y]->cPhysics->blocksMovement) { return; }
+    SetCell(t, x, y);
+    if (!mCells[x+1][y]->cPhysics->blocksMovement && DiamondCountFloors(x+1, y) == 1) { RemoveDeadEnd(x+1, y, t); }
+    if (!mCells[x-1][y]->cPhysics->blocksMovement && DiamondCountFloors(x-1, y) == 1) { RemoveDeadEnd(x-1, y, t); }
+    if (!mCells[x][y+1]->cPhysics->blocksMovement && DiamondCountFloors(x, y+1) == 1) { RemoveDeadEnd(x, y+1, t); }
+    if (!mCells[x][y-1]->cPhysics->blocksMovement && DiamondCountFloors(x, y-1) == 1) { RemoveDeadEnd(x, y-1, t); }
+
+}
+
+int Level::DiamondCountFloors(int x, int y)
+{
+    int n = 0;
+    if (!mCells[x + 1][y]->cPhysics->blocksMovement) { ++n; }
+    if (!mCells[x - 1][y]->cPhysics->blocksMovement) { ++n; }
+    if (!mCells[x][y + 1]->cPhysics->blocksMovement) { ++n; }
+    if (!mCells[x][y - 1]->cPhysics->blocksMovement) { ++n; }
+
+    return n;
+}
+
+bool Level::RegionsAssimilated()
+{
+    for (int x = 0; x < MAP_WIDTH; ++x)
+    {
+        for (int y = 0; y < MAP_HEIGHT; ++y)
+        {
+            if (mRegions[x][y] > 1)
+            {
+                std::cout << mRegions[x][y] << " @ " << x << ", " << y << std::endl;
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+void Level::FloodfillRegion(int x, int y)
+{
+    if (mRegions[x][y] <= 1) { return; }
+    mRegions[x][y] = 1;
+
+    FloodfillRegion(x + 1, y);
+    FloodfillRegion(x - 1, y);
+    FloodfillRegion(x, y + 1);
+    FloodfillRegion(x, y - 1);
+}
+
 void Level::SetCell(Entity *t, int x, int y)
 {
     delete mCells[x][y];
@@ -37,12 +117,14 @@ bool Level::AddRandomRoom()
 
 void Level::AddRoom(point topLeft, point bottomRight)
 {
+    ++nRegions;
     Entity *floor = new Entity("base_floor");
     for (int x = topLeft.first +1 ; x < bottomRight.first -1; ++x)
     {
         for (int y = topLeft.second +1 ; y < bottomRight.second -1; ++y)
         {
             SetCell(floor, x, y);
+            mRegions[x][y] = nRegions;
         }
     }
 
@@ -52,6 +134,7 @@ void Level::AddRoom(point topLeft, point bottomRight)
 void Level::CarveMaze(int x, int y, Entity *tile)
 {
     SetCell(tile, x, y);
+    mRegions[x][y] = nRegions;
  
     std::vector<point> directions = {
         {1,0},
@@ -67,6 +150,7 @@ void Level::CarveMaze(int x, int y, Entity *tile)
         if (MazeCanGo(x, y, (*it).first, (*it).second))
         {
             SetCell(tile, x + (*it).first, y + (*it).second);
+            mRegions[x + (*it).first][y + (*it).second] = nRegions;
             CarveMaze(x + (*it).first*2, y + (*it).second*2, tile);
         }
         directions.erase(it);
@@ -109,16 +193,19 @@ void Level::CarveMaze(int x, int y, Entity *tile)
 int Level::CountSurroundingFloors(int x, int y)
 {
     int n = 0;
+    
     for (int i = -1; i < 2; ++i)
     {
         for (int j = -1; j < 2; ++j)
         {
+            if (i == 0 && j == 0) { continue; }
             if (!mCells[x + i][y + j]->cPhysics->blocksMovement)
             {
                 ++n;
             }
         }
     }
+
     return n;
 }
 
@@ -150,6 +237,7 @@ Level::Level()
         for (int y = 0; y < MAP_HEIGHT; ++y)
         {
             mCells[x][y] = nullptr;
+            mRegions[x][y] = 0;
         }
     }
 
@@ -158,6 +246,7 @@ Level::Level()
     Fill(wall);
 
     delete wall;
+    nRegions = 0;
 
     RoomsAndMazes();
 }
@@ -183,6 +272,9 @@ void Level::Render(int xOff, int yOff)
         {
             RenderEvent e(mCells[x][y]);
             FireEvent(&e);
+
+            //Render::Put(mRegions[x][y], x, y, 'w', 'x');
+
         }
     }
 }
@@ -190,6 +282,48 @@ void Level::Render(int xOff, int yOff)
 Entity *Level::GetCell(int x, int y)
 {
     return mCells[x][y];
+}
+
+void Level::ConnectRegion()
+{
+    if (RegionsAssimilated())
+    {
+        std::cout << "All Connected!" << std::endl;
+        return;
+    }
+
+    Entity *hall = new Entity("base_floor");
+
+    std::vector<point> doors = GetPossibleDoors(1);
+
+    auto it = doors.begin();
+    std::advance(it, rand() % doors.size());
+    SetCell(hall, (*it).first, (*it).second);
+
+    mCells[(*it).first][(*it).second]->cRender->glyph = 19;
+    mCells[(*it).first][(*it).second]->cRender->color = 'd';
+    mCells[(*it).first][(*it).second]->cRender->bgColor = 'x';
+
+    mRegions[(*it).first][(*it).second] = 2;
+    FloodfillRegion((*it).first, (*it).second);
+
+    if (rand() % 50 == 1)
+    {
+        it = doors.begin();
+        std::advance(it, rand() % doors.size());
+        SetCell(hall, (*it).first, (*it).second);
+
+        mCells[(*it).first][(*it).second]->cRender->glyph = 19;
+        mCells[(*it).first][(*it).second]->cRender->color = 'd';
+        mCells[(*it).first][(*it).second]->cRender->bgColor = 'x';
+
+        mRegions[(*it).first][(*it).second] = 2;
+        FloodfillRegion((*it).first, (*it).second);
+    }
+
+    doors.clear();
+
+    delete hall;
 }
 
 void Level::RoomsAndMazes()
@@ -208,10 +342,56 @@ void Level::RoomsAndMazes()
         {
             if (mCells[x][y]->cPhysics->blocksMovement && CountSurroundingFloors(x,y) == 0)
             {
+                ++nRegions;
                 CarveMaze(x, y, hall);
             }
         }
     }
+    
+    while (!RegionsAssimilated())
+    {
+        ConnectRegion();
+        /*
+        std::vector<point> doors = GetPossibleDoors(1);
+
+        auto it = doors.begin();
+        std::advance(it, rand() % doors.size());
+        SetCell(hall, (*it).first, (*it).second);
+
+        std::cout << "Placed a door @ " << (*it).first << ", " << (*it).second << std::endl;
+
+        mCells[(*it).first][(*it).second]->cRender->glyph = 43;
+        mCells[(*it).first][(*it).second]->cRender->color = 'w';
+        mCells[(*it).first][(*it).second]->cRender->bgColor = 'd';
+        
+        mRegions[(*it).first][(*it).second] = 2;
+        FloodfillRegion((*it).first, (*it).second);
+
+        doors.clear();*/
+    }
+
+    Entity *wall = new Entity("base_wall");
+
+    for (int x = 1; x < MAP_WIDTH - 1; ++x)
+    {
+        for (int y = 1; y < MAP_HEIGHT - 1; ++y)
+        {
+            if ((!mCells[x][y]->cPhysics->blocksMovement) && CountSurroundingFloors(x, y) == 1)
+            {
+                RemoveDeadEnd(x, y, wall);
+            }
+        }
+    }
+    
+
+    /*
+    for (point p : doors)
+    {
+        mCells[p.first][p.second]->cRender->glyph = 249;
+        mCells[p.first][p.second]->cRender->color = 'r';
+    }*/
+    
 
     delete hall;
+    delete wall;
 }
