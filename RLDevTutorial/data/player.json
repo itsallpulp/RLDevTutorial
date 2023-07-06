@@ -1,0 +1,9 @@
+{
+	"inherits": "base_actor",
+	"name": "player",
+	"components": {
+		"render": {
+			"color": "y",
+		}
+	}
+}

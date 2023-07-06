@@ -16,4 +16,5 @@ class Level
 	json::object ToJson();
 	void LoadJson(json::object data);
 	void Render(int xOff = 0, int yOff = 0);
+	Entity* GetCell(int x, int y);
 };

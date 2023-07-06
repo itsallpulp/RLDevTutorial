@@ -1,0 +1,9 @@
+{
+	"name": "humanoid",
+	"inherits": "base_actor",
+	"components": {
+		"render": {
+			"glyph": 64
+		}
+	}
+}

@@ -40,3 +40,8 @@ void Level::Render(int xOff, int yOff)
         }
     }
 }
+
+Entity *Level::GetCell(int x, int y)
+{
+    return mCells[x][y];
+}

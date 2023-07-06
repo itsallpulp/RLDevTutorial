@@ -2,8 +2,9 @@
 	"name": "actor",
 	"components": {
 		"render": {
-			"glyph": 64,
-			"color": "y"
+			"glyph": 65,
+			"color": "d",
+			"bgColor": "~"
 		},
 		"physics": {
 			

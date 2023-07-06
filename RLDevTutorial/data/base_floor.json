@@ -3,7 +3,8 @@
 	"components": {
 		"render": {
 			"glyph": 249,
-			"color": "w"		
+			"color": "w",
+			"bgColor": "x"
 		},
 		"physics": {
 			

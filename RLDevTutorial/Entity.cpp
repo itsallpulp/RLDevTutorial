@@ -39,8 +39,11 @@ void Entity::LoadJson(json::object data)
 {
     if (data.contains("inherits"))
     {
+        std::cout << "Inheriting " << json::value_to<std::string>(data["inherits"]) << std::endl;
         LoadJson(GetJson(json::value_to<std::string>(data["inherits"])));
     }
+
+    std::cout << "Loading data " << data << std::endl;
 
     mName = data.contains("name") ? json::value_to<std::string>(data["name"]) : mName;
 
