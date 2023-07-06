@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 	level = new Level();
 
 
-	player.LoadJson(GetJson("base_humanoid"));
+	player.LoadJson(GetJson("player"));
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{

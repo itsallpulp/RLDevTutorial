@@ -1,9 +1,9 @@
 {
-	"inherits": "base_actor",
 	"name": "player",
+	"inherits": "base_humanoid",
 	"components": {
 		"render": {
-			"color": "y",
+			"color": "y"
 		}
 	}
 }
