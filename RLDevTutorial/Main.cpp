@@ -45,6 +45,7 @@ int main(int argc, char* argv[])
 
 	LoadColors("data/color_default.json");
 	level = new Level();
+	level->RoomsAndMazes();
 
 
 	player.LoadJson(GetJson("player"));
@@ -84,7 +85,8 @@ int main(int argc, char* argv[])
 						command = new MovementCommand(&player, -1, 0);
 						break;
 					case SDLK_c:
-						level->ConnectRegion();
+						level->RoomsAndMazes();
+						level->PlaceEntity(&player);
 						break;
 					default:
 						break;

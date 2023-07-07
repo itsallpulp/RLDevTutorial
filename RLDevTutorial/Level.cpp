@@ -60,7 +60,6 @@ bool Level::RegionsAssimilated()
         {
             if (mRegions[x][y] > 1)
             {
-                std::cout << mRegions[x][y] << " @ " << x << ", " << y << std::endl;
                 return false;
             }
         }
@@ -248,7 +247,7 @@ Level::Level()
     delete wall;
     nRegions = 0;
 
-    RoomsAndMazes();
+    //RoomsAndMazes();
 }
 
 Level::Level(json::object toLoad)
@@ -307,18 +306,25 @@ void Level::ConnectRegion()
     mRegions[(*it).first][(*it).second] = 2;
     FloodfillRegion((*it).first, (*it).second);
 
-    if (rand() % 50 == 1)
+    doors.erase(it);
+
+    while (!doors.empty())
     {
-        it = doors.begin();
-        std::advance(it, rand() % doors.size());
-        SetCell(hall, (*it).first, (*it).second);
+        if (rand() % 55 == 1)
+        {
+            it = doors.begin();
+            std::advance(it, rand() % doors.size());
+            SetCell(hall, (*it).first, (*it).second);
 
-        mCells[(*it).first][(*it).second]->cRender->glyph = 19;
-        mCells[(*it).first][(*it).second]->cRender->color = 'd';
-        mCells[(*it).first][(*it).second]->cRender->bgColor = 'x';
+            mCells[(*it).first][(*it).second]->cRender->glyph = 19;
+            mCells[(*it).first][(*it).second]->cRender->color = 'd';
+            mCells[(*it).first][(*it).second]->cRender->bgColor = 'x';
 
-        mRegions[(*it).first][(*it).second] = 2;
-        FloodfillRegion((*it).first, (*it).second);
+            mRegions[(*it).first][(*it).second] = 2;
+            FloodfillRegion((*it).first, (*it).second);
+        }
+
+        doors.pop_back();
     }
 
     doors.clear();
@@ -326,15 +332,28 @@ void Level::ConnectRegion()
     delete hall;
 }
 
-void Level::RoomsAndMazes()
+void Level::RoomsAndMazes(int roomPlacementAttempts)
 {
     /* https://journal.stuffwithstuff.com/2014/12/21/rooms-and-mazes/ */
-    for (int i = 0; i < 1000; ++i)
+
+    for (int x = 0; x < MAP_WIDTH; ++x)
+    {
+        for (int y = 0; y < MAP_HEIGHT; ++y)
+        {
+            mRegions[x][y] = 0;
+        }
+    }
+
+    Entity *hall = new Entity("base_floor");
+    Entity *wall = new Entity("base_wall");
+    Fill(wall);
+    nRegions = 0;
+
+    for (int i = 0; i < roomPlacementAttempts; ++i)
     {
         AddRandomRoom();
     }
 
-    Entity *hall = new Entity("base_floor");
 
     for (int x = 1; x < MAP_WIDTH - 1; ++x)
     {
@@ -370,7 +389,6 @@ void Level::RoomsAndMazes()
         doors.clear();*/
     }
 
-    Entity *wall = new Entity("base_wall");
 
     for (int x = 1; x < MAP_WIDTH - 1; ++x)
     {

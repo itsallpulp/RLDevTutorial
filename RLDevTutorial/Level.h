@@ -41,6 +41,6 @@ class Level
 
 	void ConnectRegion();
 
-	void RoomsAndMazes();
+	void RoomsAndMazes(int roomPlacementAttempts = 1000);
 	void PlaceEntity(Entity *e);
 };
