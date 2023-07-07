@@ -1,0 +1,13 @@
+{
+	"name": "wooden door",
+	"components": {
+		"render": {
+			"glyph": 19,
+			"color": "d",
+			"bgColor": "x"
+		},
+		"physics": {
+			"blocksMovement": false
+		}
+	}
+}

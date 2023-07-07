@@ -81,10 +81,7 @@ void Level::FloodfillRegion(int x, int y)
 
 void Level::SetCell(Entity *t, int x, int y)
 {
-    delete mCells[x][y];
-    mCells[x][y] = t->Clone();
-    mCells[x][y]->cPhysics->x = x;
-    mCells[x][y]->cPhysics->y = y;
+    mCells[x][y] = t;
 }
 
 bool Level::AddRandomRoom()
@@ -231,6 +228,15 @@ void Level::Fill(Entity *t)
 
 Level::Level()
 {
+    for (int i = 0; i < 255; ++i)
+    {
+        mTiles[i] = nullptr;
+    }
+
+    mTiles[0] = new Entity("base_floor");
+    mTiles[1] = new Entity("base_wall");
+    mTiles[2] = new Entity("base_door");
+
     for (int x = 0; x < MAP_WIDTH; ++x)
     {
         for (int y = 0; y < MAP_HEIGHT; ++y)
@@ -269,7 +275,7 @@ void Level::Render(int xOff, int yOff)
     {
         for (int y = 0; y < MAP_HEIGHT; ++y)
         {
-            RenderEvent e(mCells[x][y]);
+            RenderEvent e(mCells[x][y], x, y);
             FireEvent(&e);
 
             //Render::Put(mRegions[x][y], x, y, 'w', 'x');
@@ -287,7 +293,6 @@ void Level::ConnectRegion()
 {
     if (RegionsAssimilated())
     {
-        std::cout << "All Connected!" << std::endl;
         return;
     }
 

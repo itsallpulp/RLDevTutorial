@@ -9,6 +9,7 @@
 class Level
 {
 	private:
+	Entity *mTiles[255];
 	Entity *mCells[MAP_WIDTH][MAP_HEIGHT];
 	int mRegions[MAP_WIDTH][MAP_HEIGHT];
 	int nRegions;
