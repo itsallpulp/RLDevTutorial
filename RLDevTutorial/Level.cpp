@@ -114,17 +114,15 @@ bool Level::AddRandomRoom()
 void Level::AddRoom(point topLeft, point bottomRight)
 {
     ++nRegions;
-    Entity *floor = new Entity("base_floor");
     for (int x = topLeft.first +1 ; x < bottomRight.first -1; ++x)
     {
         for (int y = topLeft.second +1 ; y < bottomRight.second -1; ++y)
         {
-            SetCell(floor, x, y);
+            SetCell(mTiles[0], x, y);
             mRegions[x][y] = nRegions;
         }
     }
 
-    delete floor;
 }
 
 void Level::CarveMaze(int x, int y, Entity *tile)
@@ -246,11 +244,9 @@ Level::Level()
         }
     }
 
-    Entity *wall = new Entity("base_wall");
 
-    Fill(wall);
+    Fill(mTiles[1]);
 
-    delete wall;
     nRegions = 0;
 
     //RoomsAndMazes();
@@ -296,17 +292,13 @@ void Level::ConnectRegion()
         return;
     }
 
-    Entity *hall = new Entity("base_floor");
 
     std::vector<point> doors = GetPossibleDoors(1);
 
     auto it = doors.begin();
     std::advance(it, rand() % doors.size());
-    SetCell(hall, (*it).first, (*it).second);
+    SetCell(mTiles[2], (*it).first, (*it).second);
 
-    mCells[(*it).first][(*it).second]->cRender->glyph = 19;
-    mCells[(*it).first][(*it).second]->cRender->color = 'd';
-    mCells[(*it).first][(*it).second]->cRender->bgColor = 'x';
 
     mRegions[(*it).first][(*it).second] = 2;
     FloodfillRegion((*it).first, (*it).second);
@@ -319,11 +311,8 @@ void Level::ConnectRegion()
         {
             it = doors.begin();
             std::advance(it, rand() % doors.size());
-            SetCell(hall, (*it).first, (*it).second);
+            SetCell(mTiles[2], (*it).first, (*it).second);
 
-            mCells[(*it).first][(*it).second]->cRender->glyph = 19;
-            mCells[(*it).first][(*it).second]->cRender->color = 'd';
-            mCells[(*it).first][(*it).second]->cRender->bgColor = 'x';
 
             mRegions[(*it).first][(*it).second] = 2;
             FloodfillRegion((*it).first, (*it).second);
@@ -334,7 +323,6 @@ void Level::ConnectRegion()
 
     doors.clear();
 
-    delete hall;
 }
 
 void Level::RoomsAndMazes(int roomPlacementAttempts)
@@ -349,9 +337,7 @@ void Level::RoomsAndMazes(int roomPlacementAttempts)
         }
     }
 
-    Entity *hall = new Entity("base_floor");
-    Entity *wall = new Entity("base_wall");
-    Fill(wall);
+    Fill(mTiles[1]);
     nRegions = 0;
 
     for (int i = 0; i < roomPlacementAttempts; ++i)
@@ -367,7 +353,7 @@ void Level::RoomsAndMazes(int roomPlacementAttempts)
             if (mCells[x][y]->cPhysics->blocksMovement && CountSurroundingFloors(x,y) == 0)
             {
                 ++nRegions;
-                CarveMaze(x, y, hall);
+                CarveMaze(x, y, mTiles[0]);
             }
         }
     }
@@ -401,7 +387,7 @@ void Level::RoomsAndMazes(int roomPlacementAttempts)
         {
             if ((!mCells[x][y]->cPhysics->blocksMovement) && CountSurroundingFloors(x, y) == 1)
             {
-                RemoveDeadEnd(x, y, wall);
+                RemoveDeadEnd(x, y, mTiles[1]);
             }
         }
     }
@@ -413,10 +399,6 @@ void Level::RoomsAndMazes(int roomPlacementAttempts)
         mCells[p.first][p.second]->cRender->glyph = 249;
         mCells[p.first][p.second]->cRender->color = 'r';
     }*/
-    
-
-    delete hall;
-    delete wall;
 }
 
 void Level::PlaceEntity(Entity *e)

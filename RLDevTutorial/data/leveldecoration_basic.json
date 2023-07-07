@@ -1,0 +1,8 @@
+{
+	"name": "leveldecoration_basic",
+	"tiles": {
+		0: "base_floor",
+		1: "base_wall",
+		2: "base_door"
+	}
+}
