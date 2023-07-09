@@ -5,6 +5,7 @@ Entity::Entity()
     mName = "";
     mUUID = GenerateUUID();
 
+    cFOV = nullptr;
     cPhysics = nullptr;
     cRender = nullptr;
 }
@@ -16,6 +17,7 @@ Entity::Entity(std::string fileToLoad) : Entity()
 
 Entity::~Entity()
 {
+    delete cFOV;
     delete cPhysics;
     delete cRender;
 }
@@ -23,6 +25,7 @@ Entity::~Entity()
 Entity *Entity::Clone()
 {
     Entity *n = new Entity();
+    if (cFOV != nullptr) (n->cFOV = new FOVComponent((*cFOV)));
     if (cPhysics != nullptr) (n->cPhysics = new PhysicsComponent((*cPhysics)));
     if (cRender != nullptr) (n->cRender = new RenderComponent((*cRender)));
 

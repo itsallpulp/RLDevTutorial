@@ -147,7 +147,9 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="FOVComponent.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="Listener.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MovementCommand.cpp" />
@@ -163,9 +165,12 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="FOVComponent.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Glyphs.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelConfig.h" />
+    <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="Listener.h" />
     <ClInclude Include="MovementCommand.h" />
     <ClInclude Include="MovementListener.h" />

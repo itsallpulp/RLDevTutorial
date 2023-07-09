@@ -4,6 +4,9 @@
 	"components": {
 		"render": {
 			"color": "y"
+		},
+		"FOV": {
+			"distance": 50
 		}
 	}
 }

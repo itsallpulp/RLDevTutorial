@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "Types.h"
 
+#include "FOVComponent.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
 
@@ -35,6 +36,7 @@ class Entity
 
 	void LoadJson(json::object data);
 
+	FOVComponent *cFOV;
 	PhysicsComponent *cPhysics;
 	RenderComponent *cRender;
 };

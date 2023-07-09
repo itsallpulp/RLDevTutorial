@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Listeners">
       <UniqueIdentifier>{13aef7f1-883a-45a7-875e-8e894d27d6ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Level Generation">
+      <UniqueIdentifier>{96f57297-1c71-4e38-957f-51e30023be44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Level Generation">
+      <UniqueIdentifier>{e0ba0779-61a9-49ba-a04a-43cc6d7ec069}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -66,8 +72,14 @@
     <ClCompile Include="RenderingListener.cpp">
       <Filter>Source Files\Listeners</Filter>
     </ClCompile>
+    <ClCompile Include="LevelGenerator.cpp">
+      <Filter>Source Files\Level Generation</Filter>
+    </ClCompile>
     <ClCompile Include="Level.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Level Generation</Filter>
+    </ClCompile>
+    <ClCompile Include="FOVComponent.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,8 +125,17 @@
     <ClInclude Include="RenderingListener.h">
       <Filter>Header Files\Listeners</Filter>
     </ClInclude>
+    <ClInclude Include="LevelConfig.h">
+      <Filter>Header Files\Level Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelGenerator.h">
+      <Filter>Header Files\Level Generation</Filter>
+    </ClInclude>
     <ClInclude Include="Level.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Level Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="FOVComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
