@@ -64,6 +64,7 @@ void Entity::LoadJson(json::object data)
 
             if (componentName == "render") { AddComponent<RenderComponent>((Component **)(&(cRender)), data); }
             else if (componentName == "physics") { AddComponent<PhysicsComponent>((Component **)(&(cPhysics)), data); }
+            else if (componentName == "FOV") { AddComponent<FOVComponent>((Component **)(&(cFOV)), data); }
 
         }
     }

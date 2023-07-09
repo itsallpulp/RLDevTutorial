@@ -224,6 +224,17 @@ void Level::Fill(Entity *t)
     }
 }
 
+void Level::ResetFOV()
+{
+    for (int x = 0; x < MAP_WIDTH; ++x)
+    {
+        for (int y = 0; y < MAP_HEIGHT; ++y)
+        {
+            fovMap[x][y] = fovHidden;
+        }
+    }
+}
+
 Level::Level()
 {
     for (int i = 0; i < 255; ++i)
@@ -249,6 +260,7 @@ Level::Level()
 
     nRegions = 0;
 
+    ResetFOV();
     //RoomsAndMazes();
 }
 
@@ -271,11 +283,10 @@ void Level::Render(int xOff, int yOff)
     {
         for (int y = 0; y < MAP_HEIGHT; ++y)
         {
+            if (fovMap[x][y] == fovHidden) { continue; }
+
             RenderEvent e(mCells[x][y], x, y);
             FireEvent(&e);
-
-            //Render::Put(mRegions[x][y], x, y, 'w', 'x');
-
         }
     }
 }
@@ -328,6 +339,8 @@ void Level::ConnectRegion()
 void Level::RoomsAndMazes(int roomPlacementAttempts)
 {
     /* https://journal.stuffwithstuff.com/2014/12/21/rooms-and-mazes/ */
+
+    ResetFOV();
 
     for (int x = 0; x < MAP_WIDTH; ++x)
     {
@@ -408,4 +421,14 @@ void Level::PlaceEntity(Entity *e)
         e->cPhysics->x = rand() % MAP_WIDTH;
         e->cPhysics->y = rand() % MAP_HEIGHT;
     }
+}
+
+byte Level::GetFOV(int x, int y)
+{
+    return fovMap[x][y];
+}
+
+void Level::SetFOV(int value, int x, int y)
+{
+    fovMap[x][y] = (byte)(value);
 }

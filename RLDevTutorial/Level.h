@@ -4,6 +4,7 @@
 #include "Types.h"
 #include "Globals.h"
 #include "Event.h"
+#include "FOVData.h"
 
 
 class Level
@@ -12,6 +13,7 @@ class Level
 	Entity *mTiles[255];
 	Entity *mCells[MAP_WIDTH][MAP_HEIGHT];
 	int mRegions[MAP_WIDTH][MAP_HEIGHT];
+	byte fovMap[MAP_WIDTH][MAP_HEIGHT];
 	int nRegions;
 	std::vector<point> GetPossibleDoors(int region);
 	bool IsPossibleDoor(int x, int y, int dx, int dy);
@@ -32,6 +34,8 @@ class Level
 
 	void Fill(Entity *t);
 
+	void ResetFOV();
+
 	public:
 	Level();
 	Level(json::object toLoad);
@@ -44,4 +48,7 @@ class Level
 
 	void RoomsAndMazes(int roomPlacementAttempts = 1000);
 	void PlaceEntity(Entity *e);
+
+	byte GetFOV(int x, int y);
+	void SetFOV(int value, int x, int y);
 };

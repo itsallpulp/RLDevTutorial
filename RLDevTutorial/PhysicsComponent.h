@@ -5,7 +5,7 @@ class PhysicsComponent : public Component
 	public:
 	PhysicsComponent(int x = 0, int y = 0);
 	int x, y;
-	bool blocksMovement;
+	bool blocksMovement, blocksVision;
 
 	void LoadJson(json::object data);
 };

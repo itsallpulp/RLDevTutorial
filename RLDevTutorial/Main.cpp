@@ -16,6 +16,7 @@
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
 
+#include "FOVListener.h"
 #include "MovementListener.h"
 #include "RenderingListener.h"
 
@@ -30,6 +31,7 @@ bool quit = false;
 int seed = 0;
 
 
+FOVListener lFOV;
 MovementListener lMovement;
 RenderingListener lRendering;
 
@@ -127,6 +129,7 @@ int FireEvent(Event *e)
 	int r = 0;
 	r += lRendering.FireEvent(e);
 	r += lMovement.FireEvent(e);
+	r += lFOV.FireEvent(e);
 	return r;
 }
 
