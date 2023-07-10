@@ -24,6 +24,8 @@
 
 #include "Level.h"
 
+#include "Pathfinder.h"
+
 boost::uuids::random_generator uuidGenerator;
 
 bool quit = false;
@@ -39,9 +41,15 @@ Entity player;
 Level *level;
 std::map<char, Color> colors;
 
+bool autoExploring;
+Pathfinder *pathfinder = new Pathfinder();
+bool AutoExplore();
+point exploreDestination;
+std::stack<point> explorePath;
+
 int main(int argc, char* argv[])
 {
-
+	exploreDestination = { -1, -1 };
 	seed = time(NULL);
 	srand(seed);
 
@@ -68,39 +76,54 @@ int main(int argc, char* argv[])
 
 		Command *command = nullptr;
 
-		while (SDL_PollEvent(&input))
+		if (autoExploring)
 		{
-			if (input.type == SDL_KEYDOWN)
+			SDL_Delay(75);
+			autoExploring = AutoExplore();
+		}
+		else
+		{
+			while (SDL_PollEvent(&input))
 			{
-				switch (input.key.keysym.sym)
+				if (input.type == SDL_KEYDOWN)
 				{
-					case SDLK_UP:
-						command = new MovementCommand(&player, 0, -1);
-						break;
-					case SDLK_DOWN:
-						command = new MovementCommand(&player, 0, 1);
-						break;
-					case SDLK_RIGHT:
-						command = new MovementCommand(&player, 1, 0);
-						break;
-					case SDLK_LEFT:
-						command = new MovementCommand(&player, -1, 0);
-						break;
-					case SDLK_c:
-						level->RoomsAndMazes();
-						level->PlaceEntity(&player);
-						break;
-					default:
-						break;
+					switch (input.key.keysym.sym)
+					{
+						case SDLK_UP:
+							command = new MovementCommand(&player, 0, -1);
+							break;
+						case SDLK_DOWN:
+							command = new MovementCommand(&player, 0, 1);
+							break;
+						case SDLK_RIGHT:
+							command = new MovementCommand(&player, 1, 0);
+							break;
+						case SDLK_LEFT:
+							command = new MovementCommand(&player, -1, 0);
+							break;
+						case SDLK_z:
+							command = new MovementCommand(&player, 0, 0);
+							break;
+						case SDLK_c:
+							level->RoomsAndMazes();
+							level->PlaceEntity(&player);
+							break;
+						case SDLK_x:
+							autoExploring = AutoExplore();
+							break;
+						default:
+							break;
+					}
 				}
 			}
-		}
 
-		if (command != nullptr)
-		{
-			command->Execute();
-			delete command;
+			if (command != nullptr)
+			{
+				command->Execute();
+				delete command;
+			}
 		}
+		
 
 		RenderAll();
 	}
@@ -152,4 +175,56 @@ json::object GetJson(std::string filename)
 
 	data = p.release();
 	return data.as_object();	
+}
+
+double Distance(point start, point end)
+{
+	return std::sqrt( std::pow(end.second - start.second, 2) + std::pow(end.first - start.first, 2));
+}
+
+MovementCommand *FollowPath(Entity *target, std::stack<point> *path)
+{
+	point p = path->top(), t = target->GetXY();
+	path->pop();
+
+	return new MovementCommand(target, p.first - t.first, p.second - t.second);
+}
+
+bool AutoExplore()
+{
+	if (explorePath.size() == 0 || Distance(player.GetXY(), explorePath.top()) != 1 || level->GetFOV(exploreDestination.first, exploreDestination.second) != fovHidden)
+	{
+		//std::cout << "Generating new Explore Destination" << std::endl;
+		while (!explorePath.empty()) { explorePath.pop(); }
+		exploreDestination = { 0,0 };
+		double distance = MAP_WIDTH * (MAP_HEIGHT + 0.0);
+		/* Pick a random destination to explore to */
+		std::vector<point> unexplored;
+		for (int x = 0; x < MAP_WIDTH; ++x)
+		{
+			for (int y = 0; y < MAP_HEIGHT; ++y)
+			{
+				if (level->GetCell(x, y)->BlocksMovement() || level->GetFOV(x, y) != fovHidden) { continue; }
+
+				double d = Distance(player.GetXY(), { x,y });
+				if (d < distance)
+				{
+					distance = d;
+					exploreDestination = { x, y };
+				}
+			}
+		}
+		if (exploreDestination.first == 0 && exploreDestination.second == 0) { std::cout << "Whole level explored"; return true; }
+
+		//std::cout << "Explore to " << exploreDestination.first << ", " << exploreDestination.second << std::endl;
+		//std::cout << "Currently at " << player.GetXY().first << ", " << player.GetXY().second << std::endl;
+
+		explorePath = pathfinder->GeneratePath(player.GetXY(), exploreDestination);
+	}
+
+	MovementCommand *c = FollowPath(&player, &explorePath);
+	c->Execute();
+	delete c;
+	return true;
+	//return player.GetXY() != exploreDestination;
 }

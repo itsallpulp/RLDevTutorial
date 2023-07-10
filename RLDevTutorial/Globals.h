@@ -11,16 +11,22 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+class Entity;
 class Event;
 class Level;
+class Pathfinder;
+class MovementCommand;
 
 extern boost::uuids::random_generator uuidGenerator;
 extern std::string GenerateUUID();
 extern void RenderAll();
 extern int FireEvent(Event *e);
 extern json::object GetJson(std::string filename);
+extern double Distance(point start, point end);
 
 extern Level *level;
+extern Pathfinder *pathfinder;
+extern MovementCommand *FollowPath(Entity *target, std::stack<point> *path);
 
 static const int
 MAP_WIDTH = 130,

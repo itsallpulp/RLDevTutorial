@@ -69,3 +69,23 @@ void Entity::LoadJson(json::object data)
         }
     }
 }
+
+point Entity::GetXY()
+{
+    point p = { -1,-1 };
+    if (cPhysics != nullptr)
+    {
+        p = { cPhysics->x, cPhysics->y };
+    }
+    return p;
+}
+
+bool Entity::BlocksMovement()
+{
+    return cPhysics == nullptr ? false : cPhysics->blocksMovement;
+}
+
+bool Entity::BlocksVision()
+{
+    return cPhysics == nullptr ? false : cPhysics->blocksVision;
+}

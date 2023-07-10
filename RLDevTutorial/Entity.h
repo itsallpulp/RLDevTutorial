@@ -38,5 +38,9 @@ class Entity
 
 	FOVComponent *cFOV;
 	PhysicsComponent *cPhysics;
+	point GetXY();
+	bool BlocksMovement();
+	bool BlocksVision();
+
 	RenderComponent *cRender;
 };
