@@ -1,4 +1,5 @@
 #include "RenderingListener.h"
+#include "Color.h"
 
 int RenderingListener::FireRenderEvent(RenderEvent *e)
 {
@@ -11,7 +12,25 @@ int RenderingListener::FireRenderEvent(RenderEvent *e)
 		bgColor = level->GetCell(x, y)->cRender->bgColor;
 	}
 
-	Render::Put(e->target->cRender->glyph, x, y, e->target->cRender->color, bgColor);
+	if (e->darker)
+	{
+		int d = -35;
+		Color c = colors[e->target->cRender->color];
+		Color bgc = colors[bgColor];
+		int r = std::max(c.r + d, 1);
+		int g = std::max(c.g + d, 1);
+		int b = std::max(c.b + d, 1);
+		int br = std::max(bgc.r + d, 1);
+		int bg = std::max(bgc.g + d, 1);
+		int bb = std::max(bgc.b + d, 1);
+
+		Render::Put(e->target->cRender->glyph, x, y, r, g, b, br, bg, bb);
+	}
+	else
+	{
+		Render::Put(e->target->cRender->glyph, x, y, e->target->cRender->color, bgColor);
+	}
+
 	return 0;
 }
 

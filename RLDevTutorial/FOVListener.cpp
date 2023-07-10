@@ -11,8 +11,9 @@ int FOVListener::FireMovementEvent(MovementEvent *e)
 	{
 		for (int y = 0; y < MAP_HEIGHT; ++y)
 		{
-			if (level->GetFOV(x, y) == fovMemory)
+			if (level->GetFOV(x, y) == fovVisible)
 			{
+				//std::cout << "Set to memory" << std::endl;
 				level->SetFOV(fovMemory, x, y);
 			}
 		}

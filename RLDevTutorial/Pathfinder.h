@@ -12,5 +12,6 @@ class Pathfinder
 
 	public:
 	Pathfinder();
-	std::stack<point> GeneratePath(point start, point goal);
+	std::stack<point> GeneratePath(point start, point goal); // A* Path from start to goal
+	int** CreateDijkstraMap(std::vector<point> goals);
 };

@@ -192,6 +192,35 @@ MovementCommand *FollowPath(Entity *target, std::stack<point> *path)
 
 bool AutoExplore()
 {
+	std::vector<point> unvisited;
+
+	for (int x = 1; x < MAP_WIDTH - 1; ++x)
+	{
+		for (int y = 1; y < MAP_HEIGHT - 1; ++y)
+		{
+			if (level->GetFOV(x, y) != fovHidden || level->GetCell(x,y)->BlocksMovement() ) { continue; }
+			unvisited.push_back({ x,y });
+		}
+	}
+
+	if (unvisited.size() == 0) { return false; }
+
+	int **path = pathfinder->CreateDijkstraMap(unvisited);
+
+	int dx = 0, dy = 0;
+	point p = player.GetXY();
+	int value = path[p.first][p.second];
+
+	if (path[p.first + 1][p.second] < value) { dx = 1; dy = 0; value = path[p.first + dx][p.second + dy]; }
+	if (path[p.first - 1][p.second] < value) { dx = -1; dy = 0; value = path[p.first + dx][p.second + dy]; }
+	if (path[p.first][p.second + 1] < value) { dx = 0; dy = 1;  value = path[p.first + dx][p.second + dy];}
+	if (path[p.first][p.second - 1] < value) { dx = 0; dy = -1; value = path[p.first + dx][p.second + dy];}
+	
+	MovementCommand c(&player, dx, dy);
+	c.Execute();
+
+	return true;
+	/*
 	if (explorePath.size() == 0 || Distance(player.GetXY(), explorePath.top()) != 1 || level->GetFOV(exploreDestination.first, exploreDestination.second) != fovHidden)
 	{
 		//std::cout << "Generating new Explore Destination" << std::endl;
@@ -199,7 +228,7 @@ bool AutoExplore()
 		exploreDestination = { 0,0 };
 		double distance = MAP_WIDTH * (MAP_HEIGHT + 0.0);
 		/* Pick a random destination to explore to */
-		std::vector<point> unexplored;
+		/*std::vector<point> unexplored;
 		for (int x = 0; x < MAP_WIDTH; ++x)
 		{
 			for (int y = 0; y < MAP_HEIGHT; ++y)
@@ -225,6 +254,6 @@ bool AutoExplore()
 	MovementCommand *c = FollowPath(&player, &explorePath);
 	c->Execute();
 	delete c;
-	return true;
+	return true;*/
 	//return player.GetXY() != exploreDestination;
 }

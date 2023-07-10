@@ -39,13 +39,15 @@ class MovementEvent : public Event {
 
 class RenderEvent : public Event {
 	public:
-	RenderEvent(Entity *t, int x = -1, int y = -1) : Event(evRender)
+	RenderEvent(Entity *t, int x = -1, int y = -1, bool darker=false) : Event(evRender)
 	{
 		target = t;
 		this->x = x;
 		this->y = y;
+		this->darker = darker;
 	}
 	Entity *target;
 	int x, y;
+	bool darker;
 
 };

@@ -88,3 +88,50 @@ std::stack<point> Pathfinder::GeneratePath(point start, point goal)
 
 	return std::stack<point>();
 }
+
+int** Pathfinder::CreateDijkstraMap(std::vector<point> goals)
+{
+	int **m = 0;
+	m = new int*[MAP_WIDTH];
+
+	
+	for (int x = 0; x < MAP_WIDTH; ++x)
+	{
+		//m.push_back(std::vector<int>());
+		m[x] = new int[MAP_HEIGHT];
+		for (int y = 0; y < MAP_HEIGHT; ++y)
+		{
+			m[x][y] = MAP_WIDTH * MAP_HEIGHT;
+			//m[x].push_back(MAP_WIDTH * MAP_HEIGHT);
+		}
+	}
+
+	std::queue<point> unvisited;
+
+	for (point p : goals)
+	{
+		m[p.first][p.second] = 0;
+
+		unvisited.push(p);
+	}
+
+	while (!unvisited.empty())
+	{
+		point current = unvisited.front();
+		unvisited.pop();
+
+		int value = m[current.first][current.second];
+
+		for (point n : GetNeighbors(current))
+		{
+			if (m[n.first][n.second] > value + 1)
+			{
+				m[n.first][n.second] = value + 1;
+				unvisited.push(n);
+			}
+		}
+
+	}
+
+	return m;
+}

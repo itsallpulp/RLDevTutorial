@@ -285,7 +285,11 @@ void Level::Render(int xOff, int yOff)
         {
             if (fovMap[x][y] == fovHidden) { continue; }
 
-            RenderEvent e(mCells[x][y], x, y);
+            bool darker = (fovMap[x][y] == fovMemory);
+
+            //if (darker) { std::cout << "Darker!" << std::endl; }
+
+            RenderEvent e(mCells[x][y], x, y, darker);
             FireEvent(&e);
         }
     }
