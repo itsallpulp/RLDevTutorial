@@ -144,10 +144,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Autoplay.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="FOVComponent.cpp" />
     <ClCompile Include="FOVListener.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -163,11 +163,11 @@
     <ClCompile Include="RenderingListener.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Autoplay.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="FOVComponent.h" />
     <ClInclude Include="FOVData.h" />

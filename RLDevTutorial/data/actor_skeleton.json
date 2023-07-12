@@ -1,0 +1,10 @@
+{
+	"name": "skeleton",
+	"inherits": "base_humanoid",
+	"components": {
+		"render": {
+			"color": "w",
+			"glyph": 115
+		}
+	}
+}

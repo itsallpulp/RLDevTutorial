@@ -26,18 +26,21 @@
 
 #include "Pathfinder.h"
 
+#include "EntityManager.h"
+
 boost::uuids::random_generator uuidGenerator;
 
 bool quit = false;
 
 int seed = 0;
 
+EntityManager actorManager;
 
 FOVListener lFOV;
 MovementListener lMovement;
 RenderingListener lRendering;
 
-Entity player;
+Entity *player;
 Level *level;
 std::map<char, Color> colors;
 
@@ -57,12 +60,14 @@ int main(int argc, char* argv[])
 	level = new Level();
 	level->RoomsAndMazes();
 
+	int playerIndex = actorManager.AddEntity("player");
+	std::cout << playerIndex << std::endl;
+	player = actorManager.GetEntity(playerIndex);
 
-	player.LoadJson(GetJson("player"));
-	player.cPhysics->x = 1;
-	player.cPhysics->y = 1;
+	player->cPhysics->x = 1;
+	player->cPhysics->y = 1;
 
-	level->PlaceEntity(&player);
+	level->PlaceEntity(player);
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -84,23 +89,23 @@ int main(int argc, char* argv[])
 					switch (input.key.keysym.sym)
 					{
 						case SDLK_UP:
-							command = new MovementCommand(&player, 0, -1);
+							command = new MovementCommand(player, 0, -1);
 							break;
 						case SDLK_DOWN:
-							command = new MovementCommand(&player, 0, 1);
+							command = new MovementCommand(player, 0, 1);
 							break;
 						case SDLK_RIGHT:
-							command = new MovementCommand(&player, 1, 0);
+							command = new MovementCommand(player, 1, 0);
 							break;
 						case SDLK_LEFT:
-							command = new MovementCommand(&player, -1, 0);
+							command = new MovementCommand(player, -1, 0);
 							break;
 						case SDLK_z:
-							command = new MovementCommand(&player, 0, 0);
+							command = new MovementCommand(player, 0, 0);
 							break;
 						case SDLK_c:
 							level->RoomsAndMazes();
-							level->PlaceEntity(&player);
+							level->PlaceEntity(player);
 							break;
 						case SDLK_x:
 							autoExploring = true;
@@ -124,7 +129,6 @@ int main(int argc, char* argv[])
 			}
 		}
 		
-
 		RenderAll();
 	}
 	return 0;
@@ -139,9 +143,12 @@ void RenderAll()
 {
 	level->Render();
 
-	RenderEvent e(&player);
-	FireEvent(&e);
-	
+	for (Entity *ent : actorManager.GetEntities())
+	{
+		RenderEvent e(ent);
+		FireEvent(&e);
+	}
+
 //	Render::PutBorder(0, 0, MAP_WIDTH, MAP_HEIGHT, 'w', 'b', false);
 //	Render::PutTitledBorder("Rogue--------------like1", 0, 0, MAP_WIDTH, MAP_HEIGHT, 'w', 'b', false);
 	Render::Update();
@@ -158,7 +165,6 @@ int FireEvent(Event *e)
 
 json::object GetJson(std::string filename)
 {
-	
 	json::value data;
 	std::ifstream inf("data/" + filename + ".json");
 	std::string s = "";
@@ -208,7 +214,7 @@ bool AutoExplore()
 	int **path = pathfinder->CreateDijkstraMap(unvisited);
 
 	int dx = 0, dy = 0;
-	point p = player.GetXY();
+	point p = player->GetXY();
 	int value = path[p.first][p.second];
 
 	if (path[p.first + 1][p.second] < value) { dx = 1; dy = 0; value = path[p.first + dx][p.second + dy]; }
@@ -216,44 +222,8 @@ bool AutoExplore()
 	if (path[p.first][p.second + 1] < value) { dx = 0; dy = 1;  value = path[p.first + dx][p.second + dy];}
 	if (path[p.first][p.second - 1] < value) { dx = 0; dy = -1; value = path[p.first + dx][p.second + dy];}
 	
-	MovementCommand c(&player, dx, dy);
+	MovementCommand c(player, dx, dy);
 	c.Execute();
 
 	return true;
-	/*
-	if (explorePath.size() == 0 || Distance(player.GetXY(), explorePath.top()) != 1 || level->GetFOV(exploreDestination.first, exploreDestination.second) != fovHidden)
-	{
-		//std::cout << "Generating new Explore Destination" << std::endl;
-		while (!explorePath.empty()) { explorePath.pop(); }
-		exploreDestination = { 0,0 };
-		double distance = MAP_WIDTH * (MAP_HEIGHT + 0.0);
-		/* Pick a random destination to explore to */
-		/*std::vector<point> unexplored;
-		for (int x = 0; x < MAP_WIDTH; ++x)
-		{
-			for (int y = 0; y < MAP_HEIGHT; ++y)
-			{
-				if (level->GetCell(x, y)->BlocksMovement() || level->GetFOV(x, y) != fovHidden) { continue; }
-
-				double d = Distance(player.GetXY(), { x,y });
-				if (d < distance)
-				{
-					distance = d;
-					exploreDestination = { x, y };
-				}
-			}
-		}
-		if (exploreDestination.first == 0 && exploreDestination.second == 0) { std::cout << "Whole level explored"; return true; }
-
-		//std::cout << "Explore to " << exploreDestination.first << ", " << exploreDestination.second << std::endl;
-		//std::cout << "Currently at " << player.GetXY().first << ", " << player.GetXY().second << std::endl;
-
-		explorePath = pathfinder->GeneratePath(player.GetXY(), exploreDestination);
-	}
-
-	MovementCommand *c = FollowPath(&player, &explorePath);
-	c->Execute();
-	delete c;
-	return true;*/
-	//return player.GetXY() != exploreDestination;
 }

@@ -30,6 +30,8 @@ class Entity
 	~Entity();
 
 	Entity *Clone();
+	void Copy(Entity *other);
+	void Reset();
 
 	std::string GetName();
 	std::string GetUUID();
