@@ -76,12 +76,6 @@ int main(int argc, char* argv[])
 
 		Command *command = nullptr;
 
-		if (autoExploring)
-		{
-			SDL_Delay(75);
-			autoExploring = AutoExplore();
-		}
-		else
 		{
 			while (SDL_PollEvent(&input))
 			{
@@ -109,7 +103,7 @@ int main(int argc, char* argv[])
 							level->PlaceEntity(&player);
 							break;
 						case SDLK_x:
-							autoExploring = AutoExplore();
+							autoExploring = true;
 							break;
 						default:
 							break;
@@ -117,8 +111,14 @@ int main(int argc, char* argv[])
 				}
 			}
 
-			if (command != nullptr)
+			if(command == nullptr && autoExploring)
 			{
+				SDL_Delay(45);
+				autoExploring = AutoExplore();
+			}
+			else if (command != nullptr)
+			{
+				autoExploring = false;
 				command->Execute();
 				delete command;
 			}
@@ -198,7 +198,7 @@ bool AutoExplore()
 	{
 		for (int y = 1; y < MAP_HEIGHT - 1; ++y)
 		{
-			if (level->GetFOV(x, y) != fovHidden || level->GetCell(x,y)->BlocksMovement() ) { continue; }
+			if (level->GetFOV(x, y) != fovHidden /* || level->GetCell(x, y)->BlocksMovement()*/) { continue; }
 			unvisited.push_back({ x,y });
 		}
 	}

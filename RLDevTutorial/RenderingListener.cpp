@@ -14,7 +14,7 @@ int RenderingListener::FireRenderEvent(RenderEvent *e)
 
 	if (e->darker)
 	{
-		int d = -35;
+		int d = -45;
 		Color c = colors[e->target->cRender->color];
 		Color bgc = colors[bgColor];
 		int r = std::max(c.r + d, 1);
