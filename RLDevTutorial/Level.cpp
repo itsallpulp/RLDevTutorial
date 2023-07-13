@@ -1,4 +1,5 @@
 #include "Level.h"
+#include "Pathfinder.h"
 
 std::vector<point> Level::GetPossibleDoors(int regionNumber)
 {
@@ -235,6 +236,34 @@ void Level::ResetFOV()
     }
 }
 
+void Level::ConnectPoints()
+{
+    for (int x = 2; x < MAP_WIDTH - 2; ++x)//x+=(1 + rand()%5))
+    {
+        for (int y = 2; y < MAP_HEIGHT - 2; ++y)//y+=(1+rand()%5))
+        {
+            if (mCells[x][y]->BlocksMovement()) { continue; }
+
+            if (mCells[x+1][y]->BlocksMovement() && !mCells[x+2][y]->BlocksMovement() && pathfinder->GeneratePath({ x,y }, { x+2,y }).size() > 25)
+            {
+                mCells[x+1][y] = mTiles[0];
+            }
+            else if (mCells[x-1][y]->BlocksMovement() && !mCells[x-2][y]->BlocksMovement() && pathfinder->GeneratePath({ x,y }, { x-2,y }).size() > 25)
+            {
+                mCells[x-1][y] = mTiles[0];
+            }
+            else if (mCells[x][y+1]->BlocksMovement() && !mCells[x][y+2]->BlocksMovement() && pathfinder->GeneratePath({ x,y }, { x,y+2 }).size() > 25)
+            {
+                mCells[x][y+1] = mTiles[0];
+            }
+            else if (mCells[x][y - 1]->BlocksMovement() && !mCells[x][y - 2]->BlocksMovement() && pathfinder->GeneratePath({ x,y }, { x,y - 2 }).size() > 25)
+            {
+                mCells[x][y - 1] = mTiles[0];
+            }
+        }
+    }
+}
+
 Level::Level()
 {
     for (int i = 0; i < 255; ++i)
@@ -409,6 +438,7 @@ void Level::RoomsAndMazes(int roomPlacementAttempts)
         }
     }
     
+    //ConnectPoints();
 
     /*
     for (point p : doors)

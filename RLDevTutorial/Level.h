@@ -36,6 +36,8 @@ class Level
 
 	void ResetFOV();
 
+	void ConnectPoints();
+
 	public:
 	Level();
 	Level(json::object toLoad);
