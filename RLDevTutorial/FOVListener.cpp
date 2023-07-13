@@ -2,8 +2,9 @@
 
 int FOVListener::FireMovementEvent(MovementEvent *e)
 {
-    if (e->target->cFOV == nullptr) { return 0; }
-
+	DoFOV(e->target);
+	
+	/*
 	int tx = e->target->cPhysics->x,
 		ty = e->target->cPhysics->y;
 
@@ -25,7 +26,7 @@ int FOVListener::FireMovementEvent(MovementEvent *e)
 	{
 		CastLight(tx, ty, e->target->cFOV->viewDistance, 1, 1.0, 0.0, fovMultipliers[0][i], fovMultipliers[1][i], fovMultipliers[2][i], fovMultipliers[3][i]);
 	}
-
+	*/
     return 0;
 }
 
@@ -169,4 +170,31 @@ void FOVListener::CastLight(uint x, uint y, uint radius, uint row, float startSl
 FOVListener::FOVListener()
 {
     RegisterListenFor(evMove);
+}
+
+void FOVListener::DoFOV(Entity *target)
+{
+	if (target->cFOV == nullptr) { return; }
+
+	int tx = target->cPhysics->x,
+		ty = target->cPhysics->y;
+
+	for (int x = 0; x < MAP_WIDTH; ++x)
+	{
+		for (int y = 0; y < MAP_HEIGHT; ++y)
+		{
+			if (level->GetFOV(x, y) == fovVisible)
+			{
+				//std::cout << "Set to memory" << std::endl;
+				level->SetFOV(fovMemory, x, y);
+			}
+		}
+	}
+
+	level->SetFOV(fovVisible, tx, ty);
+
+	for (int i = 0; i < 8; ++i)
+	{
+		CastLight(tx, ty, target->cFOV->viewDistance, 1, 1.0, 0.0, fovMultipliers[0][i], fovMultipliers[1][i], fovMultipliers[2][i], fovMultipliers[3][i]);
+	}
 }

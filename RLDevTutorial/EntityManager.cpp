@@ -48,3 +48,27 @@ Entity *EntityManager::GetEntity(std::string uuid)
 {
     return GetEntity(idMap[uuid]);
 }
+
+void EntityManager::RunFunc(void(*func)(Entity *))
+{
+    for (int i = 0; i < MAX_ENTITIES; ++i)
+    {
+        if (inUse[i])
+        {
+            func(&(entities[i]));
+        }
+    }
+}
+
+Entity *EntityManager::At(int x, int y)
+{
+    for (int i = 0; i < MAX_ENTITIES; ++i)
+    {
+        point p = entities[i].GetXY();
+        if (p.first == x && p.second == y)
+        {
+            return &(entities[i]);
+        }
+    }
+    return nullptr;
+}

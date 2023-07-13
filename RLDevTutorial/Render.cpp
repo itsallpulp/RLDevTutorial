@@ -11,7 +11,7 @@ void Render::Init()
 	SDL_RenderSetLogicalSize(renderer, WINDOW_WIDTH, WINDOW_HEIGHT);
 	SDL_SetWindowResizable(window, SDL_TRUE);
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-	spriteSheet = LoadTexture("Markvii120x120.png", 255, 0, 255);
+	spriteSheet = LoadTexture("Markvii12x12big.png", 255, 0, 255);
 	Update();
 }
 

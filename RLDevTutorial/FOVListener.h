@@ -14,5 +14,6 @@ class FOVListener : public Listener
 
 	public:
 	FOVListener();
+	void DoFOV(Entity *target);
 };
 

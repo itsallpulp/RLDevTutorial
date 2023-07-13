@@ -17,4 +17,6 @@ class EntityManager
 	std::set<Entity *> GetEntities();
 	Entity *GetEntity(int index);
 	Entity *GetEntity(std::string uuid);
+	void RunFunc(void (*func)(Entity *));
+	Entity *At(int x, int y);
 };

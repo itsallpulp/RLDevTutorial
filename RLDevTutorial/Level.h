@@ -50,5 +50,6 @@ class Level
 	void PlaceEntity(Entity *e);
 
 	byte GetFOV(int x, int y);
+	byte GetFOV(point p);
 	void SetFOV(int value, int x, int y);
 };

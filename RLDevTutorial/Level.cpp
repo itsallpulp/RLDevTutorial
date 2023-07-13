@@ -432,6 +432,11 @@ byte Level::GetFOV(int x, int y)
     return fovMap[x][y];
 }
 
+byte Level::GetFOV(point p)
+{
+    return GetFOV(p.first, p.second);
+}
+
 void Level::SetFOV(int value, int x, int y)
 {
     fovMap[x][y] = (byte)(value);

@@ -34,7 +34,7 @@ bool quit = false;
 
 int seed = 0;
 
-EntityManager actorManager;
+EntityManager *actorManager;
 
 FOVListener lFOV;
 MovementListener lMovement;
@@ -50,24 +50,31 @@ bool AutoExplore();
 point exploreDestination;
 std::stack<point> explorePath;
 
+void RenderEntity(Entity *e);
+
 int main(int argc, char* argv[])
 {
+	actorManager = new EntityManager();
 	exploreDestination = { -1, -1 };
 	seed = time(NULL);
 	srand(seed);
 
 	LoadColors("data/color_default.json");
 	level = new Level();
-	level->RoomsAndMazes();
+	level->RoomsAndMazes(3);
 
-	int playerIndex = actorManager.AddEntity("player");
-	std::cout << playerIndex << std::endl;
-	player = actorManager.GetEntity(playerIndex);
+	int playerIndex = actorManager->AddEntity("player");
+	player = actorManager->GetEntity(playerIndex);
 
 	player->cPhysics->x = 1;
 	player->cPhysics->y = 1;
 
 	level->PlaceEntity(player);
+
+	int skelIndex = actorManager->AddEntity("actor_skeleton");
+	level->PlaceEntity(actorManager->GetEntity(skelIndex));
+
+	lFOV.DoFOV(player);
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -80,12 +87,12 @@ int main(int argc, char* argv[])
 		SDL_Event input;
 
 		Command *command = nullptr;
-
-		{
+		
 			while (SDL_PollEvent(&input))
 			{
 				if (input.type == SDL_KEYDOWN)
 				{
+					autoExploring = false;
 					switch (input.key.keysym.sym)
 					{
 						case SDLK_UP:
@@ -104,8 +111,9 @@ int main(int argc, char* argv[])
 							command = new MovementCommand(player, 0, 0);
 							break;
 						case SDLK_c:
-							level->RoomsAndMazes();
+							level->RoomsAndMazes(10);
 							level->PlaceEntity(player);
+							lFOV.DoFOV(player);
 							break;
 						case SDLK_x:
 							autoExploring = true;
@@ -118,16 +126,15 @@ int main(int argc, char* argv[])
 
 			if(command == nullptr && autoExploring)
 			{
-				SDL_Delay(45);
+				//SDL_Delay(25);
 				autoExploring = AutoExplore();
 			}
 			else if (command != nullptr)
 			{
-				autoExploring = false;
 				command->Execute();
 				delete command;
 			}
-		}
+		
 		
 		RenderAll();
 	}
@@ -142,12 +149,14 @@ std::string GenerateUUID()
 void RenderAll()
 {
 	level->Render();
-
+	actorManager->RunFunc(&RenderEntity);
+	
+	/*
 	for (Entity *ent : actorManager.GetEntities())
 	{
 		RenderEvent e(ent);
 		FireEvent(&e);
-	}
+	}*/
 
 //	Render::PutBorder(0, 0, MAP_WIDTH, MAP_HEIGHT, 'w', 'b', false);
 //	Render::PutTitledBorder("Rogue--------------like1", 0, 0, MAP_WIDTH, MAP_HEIGHT, 'w', 'b', false);
@@ -209,7 +218,13 @@ bool AutoExplore()
 		}
 	}
 
-	if (unvisited.size() == 0) { return false; }
+	if (unvisited.size() == 0) {
+		std::cout << "Nowhere to go!" << std::endl;
+		level->RoomsAndMazes(10);
+		level->PlaceEntity(player);
+		lFOV.DoFOV(player);
+		return true; 
+	}
 
 	int **path = pathfinder->CreateDijkstraMap(unvisited);
 
@@ -222,8 +237,25 @@ bool AutoExplore()
 	if (path[p.first][p.second + 1] < value) { dx = 0; dy = 1;  value = path[p.first + dx][p.second + dy];}
 	if (path[p.first][p.second - 1] < value) { dx = 0; dy = -1; value = path[p.first + dx][p.second + dy];}
 	
+	if (dx == 0 && dy == 0)
+	{
+		SDL_Delay(500);
+		level->RoomsAndMazes(3);
+		level->PlaceEntity(player);
+		lFOV.DoFOV(player);
+		return true;
+	}
+
 	MovementCommand c(player, dx, dy);
 	c.Execute();
-
+	SDL_Delay(25);
 	return true;
+}
+
+void RenderEntity(Entity *e)
+{
+	if (level->GetFOV(e->GetXY()) != fovVisible) { return; }
+
+	RenderEvent ev(e);
+	FireEvent(&ev);
 }

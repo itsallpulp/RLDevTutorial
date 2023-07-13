@@ -12,6 +12,7 @@
 #include <boost/uuid/uuid_io.hpp>
 
 class Entity;
+class EntityManager;
 class Event;
 class Level;
 class Pathfinder;
@@ -26,6 +27,7 @@ extern double Distance(point start, point end);
 
 extern Level *level;
 extern Pathfinder *pathfinder;
+extern EntityManager *actorManager;
 extern MovementCommand *FollowPath(Entity *target, std::stack<point> *path);
 
 static const int
