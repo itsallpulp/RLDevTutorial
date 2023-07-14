@@ -152,6 +152,7 @@
     <ClCompile Include="FOVListener.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelGenerator.cpp" />
+    <ClCompile Include="LGNystromRoomsAndMazes.cpp" />
     <ClCompile Include="Listener.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MovementCommand.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelConfig.h" />
     <ClInclude Include="LevelGenerator.h" />
+    <ClInclude Include="LGNystromRoomsAndMazes.h" />
     <ClInclude Include="Listener.h" />
     <ClInclude Include="MovementCommand.h" />
     <ClInclude Include="MovementListener.h" />

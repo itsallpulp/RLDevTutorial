@@ -100,6 +100,15 @@ point Entity::GetXY()
     return p;
 }
 
+void Entity::SetXY(int x, int y)
+{
+    if (cPhysics != nullptr)
+    {
+        cPhysics->x = x;
+        cPhysics->y = y;
+    }
+}
+
 bool Entity::BlocksMovement()
 {
     return cPhysics == nullptr ? false : cPhysics->blocksMovement;

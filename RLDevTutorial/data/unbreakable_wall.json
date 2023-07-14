@@ -1,0 +1,14 @@
+{
+	"name": "unbreakable wall",
+	"components": {
+		"render": {
+			"glyph": 219,
+			"color": "x",
+			"bgColor": "x"
+		},
+		"physics": {
+			"blocksMovement": true,
+			"blocksVision": true
+		}
+	}
+}

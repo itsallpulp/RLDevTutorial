@@ -29,6 +29,8 @@
 
 #include "EntityManager.h"
 
+#include "LGNystromRoomsAndMazes.h"
+
 boost::uuids::random_generator uuidGenerator;
 
 bool quit = false;
@@ -55,6 +57,9 @@ void RenderEntity(Entity *e);
 
 void PrintRuntime(void (*func)(void));
 
+std::map<std::string, json::object> jsonCache;
+std::vector<std::string> jsonCacheKey;
+
 int main(int argc, char* argv[])
 {
 	actorManager = new EntityManager();
@@ -64,24 +69,7 @@ int main(int argc, char* argv[])
 
 	LoadColors("data/color_default.json");
 	level = new Level();
-
-	/*
-	Random dist between door checks Avg: 1120598ms
-	Every square door check Avg: 2956157ms
-	No door check Avg: 13058ms
-	*/
-
-	long long avg = 0;
-	for (int i = 0; i < 100; ++i)
-	{
-		auto start = std::chrono::high_resolution_clock::now();
-		level->RoomsAndMazes(250);
-		auto stop = std::chrono::high_resolution_clock::now();
-		long long total = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
-		std::cout << total << " ms" << std::endl;
-		avg += total;
-	}
-	std::cout << "Avg: " << (avg / 100) << "ms" << std::endl;
+	level->RoomsAndMazes();
 
 	int playerIndex = actorManager->AddEntity("player");
 	player = actorManager->GetEntity(playerIndex);
@@ -131,12 +119,16 @@ int main(int argc, char* argv[])
 							command = new MovementCommand(player, 0, 0);
 							break;
 						case SDLK_c:
-							level->RoomsAndMazes(250);
+							//level->FromLevelConfig(LGNystromRoomsAndMazes(MAP_WIDTH, MAP_HEIGHT).GenerateLevel());
+							level->RoomsAndMazes();
 							level->PlaceEntity(player);
 							lFOV.DoFOV(player);
 							break;
 						case SDLK_x:
 							autoExploring = true;
+							break;
+						case SDLK_r:
+							level->RevealAll();
 							break;
 						default:
 							break;
@@ -194,6 +186,11 @@ int FireEvent(Event *e)
 
 json::object GetJson(std::string filename)
 {
+	if (jsonCache.find(filename) != jsonCache.end())
+	{
+		return jsonCache[filename];
+	}
+
 	json::value data;
 	std::ifstream inf("data/" + filename + ".json");
 	std::string s = "";
@@ -209,6 +206,7 @@ json::object GetJson(std::string filename)
 	}
 
 	data = p.release();
+	jsonCache[filename] = data.as_object();
 	return data.as_object();	
 }
 
@@ -240,9 +238,9 @@ bool AutoExplore()
 
 	if (unvisited.size() == 0) {
 		std::cout << "Nowhere to go!" << std::endl;
-		level->RoomsAndMazes(10);
+		/*level->RoomsAndMazes(10);
 		level->PlaceEntity(player);
-		lFOV.DoFOV(player);
+		lFOV.DoFOV(player);*/
 		return true; 
 	}
 
@@ -260,10 +258,10 @@ bool AutoExplore()
 	if (dx == 0 && dy == 0)
 	{
 		SDL_Delay(500);
-		level->RoomsAndMazes(250);
+		/*level->RoomsAndMazes(250);
 		level->PlaceEntity(player);
-		lFOV.DoFOV(player);
-		return true;
+		lFOV.DoFOV(player);*/
+		return false;
 	}
 
 	MovementCommand c(player, dx, dy);

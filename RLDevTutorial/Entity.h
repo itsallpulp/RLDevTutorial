@@ -41,6 +41,7 @@ class Entity
 	FOVComponent *cFOV;
 	PhysicsComponent *cPhysics;
 	point GetXY();
+	void SetXY(int x, int y);
 	bool BlocksMovement();
 	bool BlocksVision();
 

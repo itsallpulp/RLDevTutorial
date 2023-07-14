@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "Event.h"
 #include "FOVData.h"
+#include "LevelConfig.h"
 
 
 class Level
@@ -41,6 +42,8 @@ class Level
 	public:
 	Level();
 	Level(json::object toLoad);
+	~Level();
+	void ClearCells();
 	json::object ToJson();
 	void LoadJson(json::object data);
 	void Render(int xOff = 0, int yOff = 0);
@@ -51,7 +54,10 @@ class Level
 	void RoomsAndMazes(int roomPlacementAttempts = 1000);
 	void PlaceEntity(Entity *e);
 
+	void FromLevelConfig(LevelConfig config);
+
 	byte GetFOV(int x, int y);
 	byte GetFOV(point p);
 	void SetFOV(int value, int x, int y);
+	void RevealAll();
 };

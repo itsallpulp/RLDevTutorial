@@ -93,6 +93,9 @@
     <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LGNystromRoomsAndMazes.cpp">
+      <Filter>Source Files\Level Generation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -152,14 +155,17 @@
     <ClInclude Include="FOVData.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
-    <ClInclude Include="FOVListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Pathfinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FOVListener.h">
+      <Filter>Header Files\Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="LGNystromRoomsAndMazes.h">
+      <Filter>Header Files\Level Generation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

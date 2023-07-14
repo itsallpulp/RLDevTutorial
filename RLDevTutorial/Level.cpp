@@ -3,6 +3,9 @@
 
 std::vector<point> Level::GetPossibleDoors(int regionNumber)
 {
+    //auto start = std::chrono::high_resolution_clock::now();
+    //std::cout << "Searching for possible doors...\t";
+
     std::vector<point> doors;
     for (int x = 1; x < MAP_WIDTH - 1; ++x)
     {
@@ -10,12 +13,20 @@ std::vector<point> Level::GetPossibleDoors(int regionNumber)
         {
             if (mRegions[x][y] != regionNumber) { continue; }
 
+           // auto s1 = std::chrono::high_resolution_clock::now();
             if (IsPossibleDoor(x, y, 1, 0)) { doors.push_back({ x + 1, y }); }
             if (IsPossibleDoor(x, y, -1, 0)) { doors.push_back({ x - 1, y }); }
             if (IsPossibleDoor(x, y, 0, 1)) { doors.push_back({ x, y + 1}); }
             if (IsPossibleDoor(x, y, 0, -1)) { doors.push_back({ x, y - 1}); }
+           /* auto s2 = std::chrono::high_resolution_clock::now();
+
+            std::cout << "Checked " << x << ", " << y << " to be a door in " << std::chrono::duration_cast<std::chrono::microseconds>(s2 - s1).count() << "ms" << std::endl;*/
         }
     }
+   /* auto stop = std::chrono::high_resolution_clock::now();
+    long long total = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
+
+    std::cout << "Found " << doors.size() << " doors in " << total << "ms" << std::endl;*/
 
     return doors;
 }
@@ -103,6 +114,7 @@ bool Level::AddRandomRoom()
             if (!(mCells[i][j]->cPhysics->blocksMovement))
             {
                 return false;
+                return false;
             }
         }
     }
@@ -111,6 +123,7 @@ bool Level::AddRandomRoom()
 
     return true;
 }
+
 
 void Level::AddRoom(point topLeft, point bottomRight)
 {
@@ -150,39 +163,6 @@ void Level::CarveMaze(int x, int y, Entity *tile)
         }
         directions.erase(it);
     }
-
-    /*
-    if (MazeCanGo(x, y, 1, 0)) 
-    {
-        SetCell(tile, x + 1, y);
-        CarveMaze(x + 2, y, tile);
-    }
-    if (MazeCanGo(x, y, 0, 1))
-    {
-        SetCell(tile, x, y + 1);
-        CarveMaze(x, y + 2, tile);
-    }
-    */
-    /*
-    std::queue<point> unchecked;
-    unchecked.push({ x,y });
-
-    while (!unchecked.empty())
-    {
-        std::cout << unchecked.size() << std::endl;
-        point p = unchecked.front();
-        unchecked.pop();
-
-        if (!mCells[p.first][p.second]->cPhysics->blocksMovement) { continue; }
-
-        SetCell(tile, p.first, p.second);
-
-        //if (MazeCanGo(p.first, p.second, 1, 0)) { unchecked.push({ p.first + 1, p.second }); }
-        //if (MazeCanGo(p.first, p.second, -1, 0)) { unchecked.push({ p.first - 1, p.second }); }
-        if (MazeCanGo(p.first, p.second, 0, 1)) { unchecked.push({ p.first, p.second + 1}); }
-
-    }
-    */
 }
 
 int Level::CountSurroundingFloors(int x, int y)
@@ -266,6 +246,7 @@ void Level::ConnectPoints()
 
 Level::Level()
 {
+    
     for (int i = 0; i < 255; ++i)
     {
         mTiles[i] = nullptr;
@@ -274,7 +255,7 @@ Level::Level()
     mTiles[0] = new Entity("base_floor");
     mTiles[1] = new Entity("base_wall");
     mTiles[2] = new Entity("base_door");
-
+    
     for (int x = 0; x < MAP_WIDTH; ++x)
     {
         for (int y = 0; y < MAP_HEIGHT; ++y)
@@ -286,7 +267,7 @@ Level::Level()
 
 
     Fill(mTiles[1]);
-
+    
     nRegions = 0;
 
     ResetFOV();
@@ -295,6 +276,26 @@ Level::Level()
 
 Level::Level(json::object toLoad)
 {
+}
+
+Level::~Level()
+{
+    ClearCells();
+}
+
+void Level::ClearCells()
+{
+    for (int x = 0; x < MAP_WIDTH; ++x)
+    {
+        for (int y = 0; y < MAP_HEIGHT; ++y)
+        {
+            if (mCells[x][y] != nullptr)
+            {
+                delete mCells[x][y];
+            }
+            mCells[x][y] = nullptr;
+        }
+    }
 }
 
 json::object Level::ToJson()
@@ -407,23 +408,6 @@ void Level::RoomsAndMazes(int roomPlacementAttempts)
     while (!RegionsAssimilated())
     {
         ConnectRegion();
-        /*
-        std::vector<point> doors = GetPossibleDoors(1);
-
-        auto it = doors.begin();
-        std::advance(it, rand() % doors.size());
-        SetCell(hall, (*it).first, (*it).second);
-
-        std::cout << "Placed a door @ " << (*it).first << ", " << (*it).second << std::endl;
-
-        mCells[(*it).first][(*it).second]->cRender->glyph = 43;
-        mCells[(*it).first][(*it).second]->cRender->color = 'w';
-        mCells[(*it).first][(*it).second]->cRender->bgColor = 'd';
-        
-        mRegions[(*it).first][(*it).second] = 2;
-        FloodfillRegion((*it).first, (*it).second);
-
-        doors.clear();*/
     }
 
 
@@ -440,20 +424,65 @@ void Level::RoomsAndMazes(int roomPlacementAttempts)
     
     //ConnectPoints();
 
-    /*
-    for (point p : doors)
-    {
-        mCells[p.first][p.second]->cRender->glyph = 249;
-        mCells[p.first][p.second]->cRender->color = 'r';
-    }*/
 }
 
 void Level::PlaceEntity(Entity *e)
 {
-    while (mCells[e->cPhysics->x][e->cPhysics->y]->cPhysics->blocksMovement)
+    while (mCells[e->cPhysics->x][e->cPhysics->y] == nullptr || mCells[e->cPhysics->x][e->cPhysics->y]->BlocksMovement())
     {
         e->cPhysics->x = rand() % MAP_WIDTH;
         e->cPhysics->y = rand() % MAP_HEIGHT;
+    }
+}
+
+void Level::FromLevelConfig(LevelConfig config)
+{
+    ResetFOV();
+    Entity *tileObjects[255];
+
+    Entity *w = new Entity("unbreakable_wall");
+    for (int x = 0; x < MAP_WIDTH; ++x)
+    {
+        for (int y = 0; y < MAP_HEIGHT; ++y)
+        {
+            mCells[x][y] = w;
+        }
+    }
+
+    for (int i = 0; i < 255; ++i)
+    {
+        if (config.tileTypes[i] != "\0")
+        {
+            tileObjects[i] = new Entity(config.tileTypes[i]);
+        }
+        else
+        {
+            tileObjects[i] = nullptr;
+        }
+    }
+
+    for (int x = 0; x < config.width; ++x)
+    {
+        for (int y = 0; y < config.height; ++y)
+        {
+            //delete mCells[x][y];
+            if (tileObjects[config.tiles[x][y]] == nullptr)
+            {
+                mCells[x][y] = (tileObjects[1])->Clone();
+                mCells[x][y]->cRender->glyph = config.tiles[x][y];
+            }
+            else
+            {
+                mCells[x][y] = (tileObjects[config.tiles[x][y]])->Clone();
+            }
+            
+            mCells[x][y]->SetXY(x, y);
+        }
+    }
+
+    for (int i = 0; i < 255; ++i)
+    {
+        delete tileObjects[i];
     }
 }
 
@@ -470,4 +499,15 @@ byte Level::GetFOV(point p)
 void Level::SetFOV(int value, int x, int y)
 {
     fovMap[x][y] = (byte)(value);
+}
+
+void Level::RevealAll()
+{
+    for (int x = 0; x < MAP_WIDTH; ++x)
+    {
+        for (int y = 0; y < MAP_HEIGHT; ++y)
+        {
+            fovMap[x][y] = fovVisible;
+        }
+    }
 }
