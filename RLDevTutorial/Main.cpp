@@ -29,7 +29,6 @@
 
 #include "EntityManager.h"
 
-#include "LGNystromRoomsAndMazes.h"
 
 boost::uuids::random_generator uuidGenerator;
 
@@ -54,6 +53,7 @@ point exploreDestination;
 std::stack<point> explorePath;
 
 void RenderEntity(Entity *e);
+void RenderHUD(Entity *e);
 
 void PrintRuntime(void (*func)(void));
 
@@ -162,7 +162,7 @@ void RenderAll()
 {
 	level->Render();
 	actorManager->RunFunc(&RenderEntity);
-	
+	RenderHUD(player);
 	/*
 	for (Entity *ent : actorManager.GetEntities())
 	{
@@ -284,4 +284,9 @@ void PrintRuntime(void(*func)(void))
 	func();
 	auto stop = std::chrono::high_resolution_clock::now();
 	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count() << " ms" << std::endl;
+}
+
+void RenderHUD(Entity *e)
+{
+	Render::PutTitledBorder("Player", 0, MAP_HEIGHT, MAP_WIDTH, GUI_HEIGHT, 'w', 'x', BORDER_TITLE_LEFT | FILL_BACKGROUND);
 }

@@ -34,12 +34,21 @@ static const int
 MAP_WIDTH = 130,
 MAP_HEIGHT = 65,
 SCALE = 10,
+GUI_HEIGHT = 9,
 SPRITE_WIDTH = 12 * SCALE,
 SPRITE_HEIGHT = 12 * SCALE,
 WINDOW_WIDTH = (MAP_WIDTH) * SPRITE_WIDTH / SCALE,
-WINDOW_HEIGHT = (MAP_HEIGHT) * SPRITE_HEIGHT / SCALE,
+WINDOW_HEIGHT = (MAP_HEIGHT + GUI_HEIGHT) * SPRITE_HEIGHT / SCALE,
 MAX_ENTITIES = 500;
 static SDL_Rect backgroundTile = { 219 % 16 * SPRITE_WIDTH, 219 / 16 * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
+
+static enum RenderBorder {
+	BORDER_TITLE_LEFT = 1,
+	BORDER_TITLE_CENTER = 2,
+	BORDER_TITLE_RIGHT = 4,
+	BORDER_THICK = 8,
+	FILL_BACKGROUND = 16
+};
 
 static const int
 AC_STANDARD = 100;
@@ -63,7 +72,7 @@ namespace Render {
 	void Puts(std::string text, int x, int y, int r, int g, int b, int bgRed = 0, int bgGreen = 0, int bgBlue = 0); // Draw a string to the screen
 	void Puts(std::string text, int x, int y, char color, char bgColor = 'x'); // Draw a string to the screen
 	void PutBorder(int x, int y, int width, int height, char color, char bgColor = 'x', bool thick=false); // Display a border
-	void PutTitledBorder(std::string title, int x, int y, int width, int height, char color, char bgColor = 'x', bool thick=false); // Display a border with a centered title
+	void PutTitledBorder(std::string title, int x, int y, int width, int height, char color, char bgColor = 'x', int opts=BORDER_TITLE_CENTER); // Display a border with a centered title
 
 	SDL_Texture *LoadTexture(std::string filePath, int aR, int aG, int aB); // Load an SDL_Texture from a string filepath. aR,aG,aB are the alpha colors
 	void Update(); // Refresh what is on the screen

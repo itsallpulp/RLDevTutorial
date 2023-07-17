@@ -146,16 +146,38 @@ void Render::PutBorder(int x, int y, int width, int height, char color, char bgC
 	Put(glyphs[3], x+width-1, y+height-1, color, bgColor);
 }
 
-void Render::PutTitledBorder(std::string title, int x, int y, int width, int height, char color, char bgColor, bool thick)
+void Render::PutTitledBorder(std::string title, int x, int y, int width, int height, char color, char bgColor, int opts)
 {
-	PutBorder(x, y, width, height, color, bgColor, thick);
-	int offset = (width / 2) - (title.size() / 2);
 
-	int left = thick ? 181 : 180,
-		right = thick ? 198 : 195;
+	PutBorder(x, y, width, height, color, bgColor, opts & BORDER_THICK);
+
+	int offset = 2; 
+
+	if (opts & BORDER_TITLE_CENTER)
+	{
+		offset = (width / 2) - (title.size() / 2);
+	}
+	else if (opts & BORDER_TITLE_RIGHT)
+	{
+		offset = width - 2 - title.size();
+	}
+
+	int left = opts & BORDER_THICK ? 181 : 180,
+		right = opts & BORDER_THICK ? 198 : 195;
 
 	Put(left, x + offset - 1, y, color, bgColor);
 	Put(right, x + title.size() + offset, y, color, bgColor);
 	Puts(title, x + offset, y, color, bgColor);
+
+	if (opts & FILL_BACKGROUND)
+	{
+		for (int i = x + 1; i < x + width + -1; ++i)
+		{
+			for (int j = y + 1; j < y + height - 1; ++j)
+			{
+				Render::Put(219, i, j, bgColor, bgColor);
+			}
+		}
+	}
 
 }
