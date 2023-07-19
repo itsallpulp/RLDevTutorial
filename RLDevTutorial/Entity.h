@@ -6,6 +6,7 @@
 #include "Types.h"
 
 #include "FOVComponent.h"
+#include "LogComponent.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
 
@@ -39,6 +40,7 @@ class Entity
 	void LoadJson(json::object data);
 
 	FOVComponent *cFOV;
+
 	PhysicsComponent *cPhysics;
 	point GetXY();
 	void SetXY(int x, int y);
@@ -46,4 +48,7 @@ class Entity
 	bool BlocksVision();
 
 	RenderComponent *cRender;
+
+	LogComponent *cLog;
+	void SendLog(std::string message);
 };

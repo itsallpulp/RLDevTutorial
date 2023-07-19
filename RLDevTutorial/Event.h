@@ -5,6 +5,7 @@ class Entity;
 static enum EventID {
 	evMove = 1,
 	evRender = 2,
+	evLog = 4,
 	NUM_EVENTS
 };
 
@@ -50,4 +51,15 @@ class RenderEvent : public Event {
 	int x, y;
 	bool darker;
 
+};
+
+class LogEvent : public Event {
+	public:
+	LogEvent(Entity *t, std::string message) : Event(evLog)
+	{
+		target = t;
+		msg = message;
+	}
+	Entity *target;
+	std::string msg;
 };

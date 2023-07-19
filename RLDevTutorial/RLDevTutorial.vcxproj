@@ -154,6 +154,8 @@
     <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="LGNystromRoomsAndMazes.cpp" />
     <ClCompile Include="Listener.cpp" />
+    <ClCompile Include="LogComponent.cpp" />
+    <ClCompile Include="LogListener.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MovementCommand.cpp" />
     <ClCompile Include="MovementListener.cpp" />
@@ -180,6 +182,8 @@
     <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="LGNystromRoomsAndMazes.h" />
     <ClInclude Include="Listener.h" />
+    <ClInclude Include="LogComponent.h" />
+    <ClInclude Include="LogListener.h" />
     <ClInclude Include="MovementCommand.h" />
     <ClInclude Include="MovementListener.h" />
     <ClInclude Include="Pathfinder.h" />
@@ -187,6 +191,7 @@
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderingListener.h" />
     <ClInclude Include="Types.h" />
+    <ClInclude Include="WeightedBag.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

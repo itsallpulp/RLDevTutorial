@@ -13,6 +13,7 @@ class Listener
 
 	virtual int FireMovementEvent(MovementEvent *e);
 	virtual int FireRenderEvent(RenderEvent *e);
+	virtual int FireLogEvent(LogEvent *e) { return 0; }
 
 	public:
 	Listener();

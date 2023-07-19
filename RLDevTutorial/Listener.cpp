@@ -34,6 +34,8 @@ int Listener::FireEvent(Event *e)
             return FireMovementEvent((MovementEvent *)e);
         case evRender:
             return FireRenderEvent((RenderEvent *)e);
+        case evLog:
+            return FireLogEvent((LogEvent *)e);
         default:
             return 0;
     }

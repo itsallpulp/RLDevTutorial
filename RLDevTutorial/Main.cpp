@@ -18,6 +18,7 @@
 #include "RenderComponent.h"
 
 #include "FOVListener.h"
+#include "LogListener.h"
 #include "MovementListener.h"
 #include "RenderingListener.h"
 
@@ -39,6 +40,7 @@ int seed = 0;
 EntityManager *actorManager;
 
 FOVListener lFOV;
+LogListener lLog;
 MovementListener lMovement;
 RenderingListener lRendering;
 
@@ -62,6 +64,8 @@ std::vector<std::string> jsonCacheKey;
 
 int main(int argc, char* argv[])
 {
+	WeightedBag<std::string> wb = WeightedBagFromJSON(GetJson("table_monsters"));
+
 	actorManager = new EntityManager();
 	exploreDestination = { -1, -1 };
 	seed = time(NULL);
@@ -79,8 +83,13 @@ int main(int argc, char* argv[])
 
 	level->PlaceEntity(player);
 
-	int skelIndex = actorManager->AddEntity("actor_skeleton");
-	level->PlaceEntity(actorManager->GetEntity(skelIndex));
+	for (int i = 0; i < 20; ++i)
+	{
+		int monsterIndex = actorManager->AddEntity(wb.GetRandomValue());
+		Entity *monster = actorManager->GetEntity(monsterIndex);
+		std::cout << monster->GetName() << std::endl;
+		level->PlaceEntity(monster);
+	}
 
 	lFOV.DoFOV(player);
 
@@ -181,6 +190,7 @@ int FireEvent(Event *e)
 	r += lRendering.FireEvent(e);
 	r += lMovement.FireEvent(e);
 	r += lFOV.FireEvent(e);
+	r += lLog.FireEvent(e);
 	return r;
 }
 
@@ -223,10 +233,45 @@ MovementCommand *FollowPath(Entity *target, std::stack<point> *path)
 	return new MovementCommand(target, p.first - t.first, p.second - t.second);
 }
 
+WeightedBag<std::string> WeightedBagFromJSON(json::object data)
+{
+	/* Data should be written as a table 
+	IE
+	{
+		"actor_orc" : 3,
+		"actor_troll": 1,
+		"table_vermin": 1
+	}
+	
+	*/
+
+	WeightedBag<std::string> bag;
+
+	for (auto item : data)
+	{
+		bag.AddValue(item.key(), json::value_to<int>(item.value()));
+	}
+
+	return bag;
+}
+
 bool AutoExplore()
 {
-	std::vector<point> unvisited;
+	for (Entity *ent : actorManager->GetEntities())
+	{
+		if (ent == player) { continue; }
+		point p = ent->GetXY();
 
+		if (level->GetFOV(p.first, p.second) == fovVisible)
+		{
+			LogEvent logEvent(player, "You stop exploring because you see a " + ent->GetName() +".");
+			FireEvent(&logEvent);
+			return false;
+		}
+
+	}
+
+	std::vector<point> unvisited;
 	for (int x = 1; x < MAP_WIDTH - 1; ++x)
 	{
 		for (int y = 1; y < MAP_HEIGHT - 1; ++y)
@@ -289,4 +334,15 @@ void PrintRuntime(void(*func)(void))
 void RenderHUD(Entity *e)
 {
 	Render::PutTitledBorder("Player", 0, MAP_HEIGHT, MAP_WIDTH, GUI_HEIGHT, 'w', 'x', BORDER_TITLE_LEFT | FILL_BACKGROUND);
+	/* Draw player logs */
+	if (e->cLog != nullptr)
+	{
+		int y = MAP_HEIGHT + 1,
+			x = 15;
+		for (std::string log : e->cLog->logs)
+		{
+			Render::Puts(log, x, y++, 'w');
+		}
+	}
+	Render::PutTitledBorder("Player", 0, MAP_HEIGHT, MAP_WIDTH, GUI_HEIGHT, 'w', 'x', BORDER_TITLE_LEFT);
 }

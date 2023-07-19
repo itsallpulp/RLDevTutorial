@@ -8,6 +8,7 @@ Entity::Entity()
     cFOV = nullptr;
     cPhysics = nullptr;
     cRender = nullptr;
+    cLog = nullptr;
 }
 
 Entity::Entity(std::string fileToLoad) : Entity()
@@ -49,8 +50,13 @@ void Entity::Reset()
     mName = "";
     mUUID = GenerateUUID();
     delete cFOV;
+    cFOV = nullptr;
     delete cPhysics;
+    cFOV = nullptr;
     delete cRender;
+    cRender = nullptr;
+    delete cLog;
+    cLog = nullptr;
 }
 
 std::string Entity::GetName()
@@ -85,6 +91,7 @@ void Entity::LoadJson(json::object data)
             if (componentName == "render") { AddComponent<RenderComponent>((Component **)(&(cRender)), data); }
             else if (componentName == "physics") { AddComponent<PhysicsComponent>((Component **)(&(cPhysics)), data); }
             else if (componentName == "FOV") { AddComponent<FOVComponent>((Component **)(&(cFOV)), data); }
+            else if (componentName == "log") { AddComponent<LogComponent>((Component **)(&(cLog)), data); }
 
         }
     }
@@ -117,4 +124,15 @@ bool Entity::BlocksMovement()
 bool Entity::BlocksVision()
 {
     return cPhysics == nullptr ? false : cPhysics->blocksVision;
+}
+
+void Entity::SendLog(std::string message)
+{
+    if (cLog == nullptr) { return; }
+    cLog->logs.emplace(cLog->logs.begin(), message);
+
+    while (cLog->logs.size() > GUI_HEIGHT)
+    {
+        cLog->logs.pop_back();
+    }
 }

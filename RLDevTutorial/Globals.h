@@ -11,6 +11,8 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+#include "WeightedBag.h"
+
 class Entity;
 class EntityManager;
 class Event;
@@ -29,6 +31,8 @@ extern Level *level;
 extern Pathfinder *pathfinder;
 extern EntityManager *actorManager;
 extern MovementCommand *FollowPath(Entity *target, std::stack<point> *path);
+
+extern WeightedBag<std::string> WeightedBagFromJSON(json::object data);
 
 static const int
 MAP_WIDTH = 130,

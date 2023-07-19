@@ -1,0 +1,10 @@
+{
+	"name": "orc",
+	"inherits": "base_humanoid",
+	"components": {
+		"render": {
+			"color": "G",
+			"glyph": 79
+		}
+	}
+}
