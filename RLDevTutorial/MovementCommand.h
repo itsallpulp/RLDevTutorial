@@ -1,5 +1,7 @@
 #pragma once
 #include "Command.h"
+#include "Globals.h"
+
 class MovementCommand : public Command
 {
 	private:

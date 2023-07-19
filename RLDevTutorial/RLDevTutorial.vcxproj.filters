@@ -102,6 +102,9 @@
     <ClCompile Include="LogListener.cpp">
       <Filter>Source Files\Listeners</Filter>
     </ClCompile>
+    <ClCompile Include="BumpAttackCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="WeightedBag.h">
       <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpAttackCommand.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

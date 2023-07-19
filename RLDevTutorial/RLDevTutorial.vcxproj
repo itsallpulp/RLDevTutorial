@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BumpAttackCommand.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="RenderingListener.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BumpAttackCommand.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
