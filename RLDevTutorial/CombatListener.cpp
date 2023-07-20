@@ -1,6 +1,6 @@
 #include "CombatListener.h"
 
-int CombatListener::FireAttackEvent(AttackEvent *e)
+int CombatListener::FireDamageEvent(DamageEvent *e)
 {
     LogEvent attackerLog(e->attacker, "You hit the " + e->defender->GetName() + " for 1.");
     LogEvent defenderLog(e->defender, "The " + e->attacker->GetName() + " hits you for 1.");
@@ -15,5 +15,5 @@ int CombatListener::FireAttackEvent(AttackEvent *e)
 
 CombatListener::CombatListener()
 {
-    RegisterListenFor(evAttack);
+    RegisterListenFor(evDamage);
 }

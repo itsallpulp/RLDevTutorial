@@ -19,4 +19,5 @@ class EntityManager
 	Entity *GetEntity(std::string uuid);
 	void RunFunc(void (*func)(Entity *));
 	Entity *At(int x, int y);
+	void RemoveEntity(Entity *e);
 };

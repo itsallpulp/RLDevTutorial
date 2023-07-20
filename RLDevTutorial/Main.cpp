@@ -18,6 +18,7 @@
 #include "RenderComponent.h"
 
 #include "CombatListener.h"
+#include "DeathListener.h"
 #include "FOVListener.h"
 #include "LogListener.h"
 #include "MovementListener.h"
@@ -40,7 +41,8 @@ int seed = 0;
 
 EntityManager *actorManager;
 
-CombatListener cCombat;
+CombatListener lCombat;
+DeathListener lDeath;
 FOVListener lFOV;
 LogListener lLog;
 MovementListener lMovement;
@@ -182,7 +184,8 @@ int WorldFireEvent(Event *e)
 	r += lMovement.FireEvent(e);
 	r += lFOV.FireEvent(e);
 	r += lLog.FireEvent(e);
-	r += cCombat.FireEvent(e);
+	r += lCombat.FireEvent(e);
+	r += lDeath.FireEvent(e);
 	return r;
 }
 
@@ -291,9 +294,6 @@ bool AutoExplore()
 
 	if (unvisited.size() == 0) {
 		std::cout << "Nowhere to go!" << std::endl;
-		/*level->RoomsAndMazes(10);
-		level->PlaceEntity(player);
-		lFOV.DoFOV(player);*/
 		return true; 
 	}
 

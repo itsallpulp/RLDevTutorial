@@ -6,7 +6,7 @@ static enum EventID {
 	evMove = 1,
 	evRender = 2,
 	evLog = 4,
-	evAttack = 8
+	evDamage = 8
 };
 
 class Event {
@@ -64,9 +64,9 @@ class LogEvent : public Event {
 	std::string msg;
 };
 
-class AttackEvent : public Event {
+class DamageEvent : public Event {
 	public:
-	AttackEvent(Entity *attacker, Entity *defender) : Event(evAttack)
+	DamageEvent(Entity *attacker, Entity *defender) : Event(evDamage)
 	{
 		this->attacker = attacker;
 		this->defender = defender;

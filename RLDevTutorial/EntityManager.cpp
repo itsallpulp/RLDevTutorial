@@ -72,3 +72,16 @@ Entity *EntityManager::At(int x, int y)
     }
     return nullptr;
 }
+
+void EntityManager::RemoveEntity(Entity *e)
+{
+    for (int i = 0; i < MAX_ENTITIES; ++i)
+    {
+        if (entities[i].GetUUID() == e->GetUUID())
+        {
+            entities[i].Reset();
+            inUse[i] = false;
+            return;
+        }
+    }
+}

@@ -29,7 +29,7 @@ int MovementCommand::Execute()
     /* Yes, attack it */
     if ((other = actorManager->At(p.first, p.second)) != nullptr)
     {
-        AttackEvent a(target, other);
+        DamageEvent a(target, other);
         return WorldFireEvent(&a);
     }
 

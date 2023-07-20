@@ -108,6 +108,9 @@
     <ClCompile Include="ActorComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="DeathListener.cpp">
+      <Filter>Source Files\Listeners</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -193,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="ActorComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DeathListener.h">
+      <Filter>Header Files\Listeners</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

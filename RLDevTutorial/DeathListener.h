@@ -1,10 +1,11 @@
 #pragma once
 #include "Listener.h"
-class CombatListener : public Listener
+class DeathListener : public Listener
 {
 	private:
 	int FireDamageEvent(DamageEvent *e);
-	
+
 	public:
-	CombatListener();
+	DeathListener();
 };
+

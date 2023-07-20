@@ -36,8 +36,8 @@ int Listener::FireEvent(Event *e)
             return FireRenderEvent((RenderEvent *)e);
         case evLog:
             return FireLogEvent((LogEvent *)e);
-        case evAttack:
-            return FireAttackEvent((AttackEvent *)e);
+        case evDamage:
+            return FireDamageEvent((DamageEvent *)e);
         default:
             return 0;
     }

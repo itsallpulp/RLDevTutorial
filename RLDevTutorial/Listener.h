@@ -14,7 +14,7 @@ class Listener
 	virtual int FireMovementEvent(MovementEvent *e);
 	virtual int FireRenderEvent(RenderEvent *e);
 	virtual int FireLogEvent(LogEvent *e) { return 0; }
-	virtual int FireAttackEvent(AttackEvent *e) { std::cout << "Combat!" << std::endl; return 0; }
+	virtual int FireDamageEvent(DamageEvent *e) { return 0; }
 
 	public:
 	Listener();
