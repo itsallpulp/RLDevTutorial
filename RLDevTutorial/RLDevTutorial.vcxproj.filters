@@ -102,8 +102,11 @@
     <ClCompile Include="LogListener.cpp">
       <Filter>Source Files\Listeners</Filter>
     </ClCompile>
-    <ClCompile Include="BumpAttackCommand.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="CombatListener.cpp">
+      <Filter>Source Files\Listeners</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorComponent.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -185,8 +188,11 @@
     <ClInclude Include="WeightedBag.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
-    <ClInclude Include="BumpAttackCommand.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CombatListener.h">
+      <Filter>Header Files\Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

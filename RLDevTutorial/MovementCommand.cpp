@@ -16,7 +16,7 @@ int MovementCommand::Execute()
     /* If waiting, just wait */
     if (dx == 0 && dy == 0)
     {
-        return FireEvent(&e);
+        return WorldFireEvent(&e);
     }
 
     /* Is there someone where Entity is trying to go? */
@@ -29,9 +29,9 @@ int MovementCommand::Execute()
     /* Yes, attack it */
     if ((other = actorManager->At(p.first, p.second)) != nullptr)
     {
-        LogEvent l(target, "You kick the " + other->GetName() + ".");
-        return FireEvent(&l);
+        AttackEvent a(target, other);
+        return WorldFireEvent(&a);
     }
 
-    return FireEvent(&e);
+    return WorldFireEvent(&e);
 }

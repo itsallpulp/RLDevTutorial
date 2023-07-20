@@ -144,7 +144,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BumpAttackCommand.cpp" />
+    <ClCompile Include="ActorComponent.cpp" />
+    <ClCompile Include="CombatListener.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -167,8 +168,9 @@
     <ClCompile Include="RenderingListener.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BumpAttackCommand.h" />
+    <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="CombatListener.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />

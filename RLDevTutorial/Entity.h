@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "Types.h"
 
+#include "ActorComponent.h"
 #include "FOVComponent.h"
 #include "LogComponent.h"
 #include "PhysicsComponent.h"
@@ -38,6 +39,13 @@ class Entity
 	std::string GetUUID();
 
 	void LoadJson(json::object data);
+
+	ActorComponent *cActor;
+	point GetHealthStats();
+	int GetHealth();
+	int GetMaxHealth();
+	bool IsAlive();
+	void TakeDamage(int damage);
 
 	FOVComponent *cFOV;
 

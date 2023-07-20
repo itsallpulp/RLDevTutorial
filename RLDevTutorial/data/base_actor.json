@@ -1,5 +1,6 @@
 {
 	"name": "actor",
+	"type": "entity",
 	"components": {
 		"render": {
 			"glyph": 65,
@@ -8,6 +9,8 @@
 		},
 		"physics": {
 			"blocksMovement": true
+		},
+		"actor": {
 		}
 	}
 }

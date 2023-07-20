@@ -5,6 +5,7 @@ Entity::Entity()
     mName = "";
     mUUID = GenerateUUID();
 
+    cActor = nullptr;
     cFOV = nullptr;
     cPhysics = nullptr;
     cRender = nullptr;
@@ -19,16 +20,12 @@ Entity::Entity(std::string fileToLoad) : Entity()
 Entity::~Entity()
 {
     Reset();
-    /*
-    delete cFOV;
-    delete cPhysics;
-    delete cRender;
-    */
 }
 
 Entity *Entity::Clone()
 {
     Entity *n = new Entity();
+    if (cActor != nullptr) { n->cActor = new ActorComponent((*cActor)); }
     if (cFOV != nullptr) { n->cFOV = new FOVComponent((*cFOV)); }
     if (cPhysics != nullptr) { n->cPhysics = new PhysicsComponent((*cPhysics)); }
     if (cRender != nullptr) { n->cRender = new RenderComponent((*cRender)); }
@@ -40,6 +37,7 @@ Entity *Entity::Clone()
 void Entity::Copy(Entity *other)
 {
     mName = other->mName;
+    if (other->cActor != nullptr) { delete cActor; cActor = new ActorComponent((*cActor)); }
     if (other->cFOV != nullptr) { delete cFOV; cFOV = new FOVComponent((*cFOV)); }
     if (other->cPhysics != nullptr) { delete cPhysics; cPhysics = new PhysicsComponent((*cPhysics)); }
     if (other->cRender != nullptr) { delete cRender; cRender = new RenderComponent((*cRender)); }
@@ -49,6 +47,8 @@ void Entity::Reset()
 {
     mName = "";
     mUUID = GenerateUUID();
+    delete cActor;
+    cActor = nullptr;
     delete cFOV;
     cFOV = nullptr;
     delete cPhysics;
@@ -92,9 +92,43 @@ void Entity::LoadJson(json::object data)
             else if (componentName == "physics") { AddComponent<PhysicsComponent>((Component **)(&(cPhysics)), data); }
             else if (componentName == "FOV") { AddComponent<FOVComponent>((Component **)(&(cFOV)), data); }
             else if (componentName == "log") { AddComponent<LogComponent>((Component **)(&(cLog)), data); }
+            else if (componentName == "actor") { AddComponent<ActorComponent>((Component **)(&(cActor)), data); }
 
         }
     }
+}
+
+point Entity::GetHealthStats()
+{
+    point p = { 0,0 };
+
+    if (cActor != nullptr)
+    {
+        p = { cActor->health, cActor->maxHealth };
+    }
+
+    return p;
+}
+
+int Entity::GetHealth()
+{
+    return cActor == nullptr ? 0 : cActor->health;
+}
+
+int Entity::GetMaxHealth()
+{
+    return cActor == nullptr ? 0 : cActor->maxHealth;
+}
+
+bool Entity::IsAlive()
+{
+    return (GetHealth() > 0);
+}
+
+void Entity::TakeDamage(int damage)
+{
+    if (cActor == nullptr) { return; }
+    cActor->health -= damage;
 }
 
 point Entity::GetXY()

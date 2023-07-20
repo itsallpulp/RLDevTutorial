@@ -23,7 +23,7 @@ class MovementCommand;
 extern boost::uuids::random_generator uuidGenerator;
 extern std::string GenerateUUID();
 extern void RenderAll();
-extern int FireEvent(Event *e);
+extern int WorldFireEvent(Event *e);
 extern json::object GetJson(std::string filename);
 extern double Distance(point start, point end);
 

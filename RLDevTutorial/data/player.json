@@ -8,6 +8,9 @@
 		"FOV": {
 			"distance": 50
 		},
-		"log": {}
+		"log": {},
+		"actor": {
+			"maxHp": 30
+		}
 	}
 }

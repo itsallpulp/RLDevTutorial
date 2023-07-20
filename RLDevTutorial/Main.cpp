@@ -17,6 +17,7 @@
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
 
+#include "CombatListener.h"
 #include "FOVListener.h"
 #include "LogListener.h"
 #include "MovementListener.h"
@@ -39,6 +40,7 @@ int seed = 0;
 
 EntityManager *actorManager;
 
+CombatListener cCombat;
 FOVListener lFOV;
 LogListener lLog;
 MovementListener lMovement;
@@ -128,7 +130,6 @@ int main(int argc, char* argv[])
 							command = new MovementCommand(player, 0, 0);
 							break;
 						case SDLK_c:
-							//level->FromLevelConfig(LGNystromRoomsAndMazes(MAP_WIDTH, MAP_HEIGHT).GenerateLevel());
 							level->RoomsAndMazes();
 							level->PlaceEntity(player);
 							lFOV.DoFOV(player);
@@ -147,7 +148,6 @@ int main(int argc, char* argv[])
 
 			if(command == nullptr && autoExploring)
 			{
-				//SDL_Delay(25);
 				autoExploring = AutoExplore();
 			}
 			else if (command != nullptr)
@@ -172,33 +172,30 @@ void RenderAll()
 	level->Render();
 	actorManager->RunFunc(&RenderEntity);
 	RenderHUD(player);
-	/*
-	for (Entity *ent : actorManager.GetEntities())
-	{
-		RenderEvent e(ent);
-		FireEvent(&e);
-	}*/
-
-//	Render::PutBorder(0, 0, MAP_WIDTH, MAP_HEIGHT, 'w', 'b', false);
-//	Render::PutTitledBorder("Rogue--------------like1", 0, 0, MAP_WIDTH, MAP_HEIGHT, 'w', 'b', false);
 	Render::Update();
 }
 
-int FireEvent(Event *e)
+int WorldFireEvent(Event *e)
 {
 	int r = 0;
 	r += lRendering.FireEvent(e);
 	r += lMovement.FireEvent(e);
 	r += lFOV.FireEvent(e);
 	r += lLog.FireEvent(e);
+	r += cCombat.FireEvent(e);
 	return r;
 }
 
 json::object GetJson(std::string filename)
 {
-	if (jsonCache.find(filename) != jsonCache.end())
+	for (auto it = jsonCacheKey.begin(); it != jsonCacheKey.end(); ++it)
 	{
-		return jsonCache[filename];
+		if ((*it) == filename)
+		{
+			jsonCacheKey.erase(it);
+			jsonCacheKey.emplace(jsonCacheKey.begin(), filename);
+			return jsonCache[filename];
+		}
 	}
 
 	json::value data;
@@ -217,6 +214,15 @@ json::object GetJson(std::string filename)
 
 	data = p.release();
 	jsonCache[filename] = data.as_object();
+	jsonCacheKey.emplace(jsonCacheKey.begin(), filename);
+
+	while (jsonCacheKey.size() > 200)
+	{
+		std::string key = (*jsonCacheKey.end());
+		jsonCache.erase(key);
+		jsonCacheKey.pop_back();
+	}
+
 	return data.as_object();	
 }
 
@@ -255,6 +261,8 @@ WeightedBag<std::string> WeightedBagFromJSON(json::object data)
 	return bag;
 }
 
+
+
 bool AutoExplore()
 {
 	for (Entity *ent : actorManager->GetEntities())
@@ -265,7 +273,7 @@ bool AutoExplore()
 		if (level->GetFOV(p.first, p.second) == fovVisible)
 		{
 			LogEvent logEvent(player, "You stop exploring because you see a " + ent->GetName() +".");
-			FireEvent(&logEvent);
+			WorldFireEvent(&logEvent);
 			return false;
 		}
 
@@ -320,7 +328,7 @@ void RenderEntity(Entity *e)
 	if (level->GetFOV(e->GetXY()) != fovVisible) { return; }
 
 	RenderEvent ev(e);
-	FireEvent(&ev);
+	WorldFireEvent(&ev);
 }
 
 void PrintRuntime(void(*func)(void))
@@ -333,16 +341,22 @@ void PrintRuntime(void(*func)(void))
 
 void RenderHUD(Entity *e)
 {
+	std::string title = "HP: " + std::to_string(e->GetHealth()) + "/" + std::to_string(e->GetMaxHealth());
+
 	Render::PutTitledBorder("Player", 0, MAP_HEIGHT, MAP_WIDTH, GUI_HEIGHT, 'w', 'x', BORDER_TITLE_LEFT | FILL_BACKGROUND);
 	/* Draw player logs */
 	if (e->cLog != nullptr)
 	{
 		int y = MAP_HEIGHT + 1,
-			x = 15;
+			x = 1;
 		for (std::string log : e->cLog->logs)
 		{
 			Render::Puts(log, x, y++, 'w');
 		}
 	}
-	Render::PutTitledBorder("Player", 0, MAP_HEIGHT, MAP_WIDTH, GUI_HEIGHT, 'w', 'x', BORDER_TITLE_LEFT);
+
+	/* Health Stats */
+	//Render::Puts("HP: " + std::to_string(e->GetHealth()) + "/" + std::to_string(e->GetMaxHealth()), 1, MAP_HEIGHT + 1, 'r');
+
+	Render::PutTitledBorder(title, 0, MAP_HEIGHT, MAP_WIDTH, GUI_HEIGHT, 'w', 'x', BORDER_TITLE_LEFT);
 }
