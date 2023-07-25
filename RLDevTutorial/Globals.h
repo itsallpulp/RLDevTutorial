@@ -34,6 +34,9 @@ extern MovementCommand *FollowPath(Entity *target, std::stack<point> *path);
 
 extern WeightedBag<std::string> WeightedBagFromJSON(json::object data);
 
+extern int Roll(int numDice, int dieSize);
+extern int RollDamage(int numDice);
+
 static const int
 MAP_WIDTH = 130,
 MAP_HEIGHT = 65,

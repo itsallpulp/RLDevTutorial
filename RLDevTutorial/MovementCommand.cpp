@@ -30,6 +30,7 @@ int MovementCommand::Execute()
     if ((other = actorManager->At(p.first, p.second)) != nullptr)
     {
         DamageEvent a(target, other);
+        target->FigureDamage(&a);
         return WorldFireEvent(&a);
     }
 

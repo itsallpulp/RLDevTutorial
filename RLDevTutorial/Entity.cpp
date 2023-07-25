@@ -170,3 +170,12 @@ void Entity::SendLog(std::string message)
         cLog->logs.pop_back();
     }
 }
+
+void Entity::FigureDamage(DamageEvent *e)
+{
+    if (cActor == nullptr)
+    {
+        return;
+    }
+    e->damage = RollDamage(cActor->baseDamage);
+}

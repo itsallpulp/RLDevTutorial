@@ -4,6 +4,7 @@ ActorComponent::ActorComponent()
 {
 	health = 5;
 	maxHealth = 5;
+	baseDamage = 1;
 }
 
 void ActorComponent::LoadJson(json::object data)
@@ -19,5 +20,12 @@ void ActorComponent::LoadJson(json::object data)
 	if (data.contains("hp"))
 	{
 		health = json::value_to<int>(data["hp"]);
+	}
+
+	if (data.contains("baseAttack"))
+	{
+		json::object baseAttack = data["baseAttack"].as_object();
+
+		baseDamage = baseAttack.contains("baseDamage") ? json::value_to<int>(baseAttack["baseDamage"]) : baseDamage;
 	}
 }

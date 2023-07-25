@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+
 class ActorComponent : public Component
 {
 	public:
@@ -7,4 +8,6 @@ class ActorComponent : public Component
 	void LoadJson(json::object data);
 
 	int health, maxHealth;
+	int baseDamage;
+	std::string attackAction, attackType;
 };

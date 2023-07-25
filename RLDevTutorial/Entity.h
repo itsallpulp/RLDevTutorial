@@ -11,6 +11,8 @@
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
 
+#include "Event.h"
+
 class Entity
 {
 	private:
@@ -59,4 +61,7 @@ class Entity
 
 	LogComponent *cLog;
 	void SendLog(std::string message);
+
+	void FigureDamage(DamageEvent *e);
+
 };

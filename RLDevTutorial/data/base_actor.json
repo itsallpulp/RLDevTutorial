@@ -11,6 +11,9 @@
 			"blocksMovement": true
 		},
 		"actor": {
+			"baseAttack": {
+				"baseDamage": 1
+			}
 		}
 	}
 }

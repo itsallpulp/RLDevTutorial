@@ -264,6 +264,31 @@ WeightedBag<std::string> WeightedBagFromJSON(json::object data)
 	return bag;
 }
 
+int Roll(int numDice, int dieSize)
+{
+	int n = 0;
+
+	for (int i = 0; i < numDice; ++i)
+	{
+		n += (rand() % dieSize) + 1;
+	}
+
+	return n;
+}
+
+int RollDamage(int numDice)
+{
+	int damages[] = { 0, 0, 1, 2, 1, 1 };
+	int n = 0;
+
+	for (int i = 0; i < numDice; ++i)
+	{
+		n += damages[rand() % 6];
+	}
+
+	return n;
+}
+
 
 
 bool AutoExplore()
