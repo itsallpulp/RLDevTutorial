@@ -60,11 +60,13 @@ std::stack<point> explorePath;
 
 void RenderEntity(Entity *e);
 void RenderHUD(Entity *e);
+void RenderFloatingText(FloatingText *text);
 
 void PrintRuntime(void (*func)(void));
 
 std::map<std::string, json::object> jsonCache;
 std::vector<std::string> jsonCacheKey;
+std::vector<FloatingText> *floatingTexts = new std::vector<FloatingText>();
 
 int main(int argc, char* argv[])
 {
@@ -91,7 +93,6 @@ int main(int argc, char* argv[])
 	{
 		int monsterIndex = actorManager->AddEntity(wb.GetRandomValue());
 		Entity *monster = actorManager->GetEntity(monsterIndex);
-		std::cout << monster->GetName() << std::endl;
 		level->PlaceEntity(monster);
 	}
 
@@ -174,6 +175,20 @@ void RenderAll()
 	level->Render();
 	actorManager->RunFunc(&RenderEntity);
 	RenderHUD(player);
+
+	for (auto it = floatingTexts->begin(); it != floatingTexts->end();)
+	{
+		if ((*it).opacity == 0)
+		{
+			it = floatingTexts->erase(it);
+		}
+		else
+		{
+			RenderFloatingText(&(*it));
+			++it;
+		}
+	}
+
 	Render::Update();
 }
 
@@ -232,6 +247,19 @@ json::object GetJson(std::string filename)
 double Distance(point start, point end)
 {
 	return std::sqrt( std::pow(end.second - start.second, 2) + std::pow(end.first - start.first, 2));
+}
+
+void AddFloatingText(std::string text, char color, int x, int y, int speed)
+{
+	FloatingText t;
+	t.msg = text;
+	t.color = color;
+	t.x = (x * SPRITE_WIDTH) - ((text.size() / 2) * SPRITE_WIDTH) + (SPRITE_WIDTH / 2);
+	t.y = ((y - 1) * SPRITE_HEIGHT);
+	t.opacity = 255;
+	t.ticks = 0;
+	t.speed = speed;
+	floatingTexts->push_back(t);
 }
 
 MovementCommand *FollowPath(Entity *target, std::stack<point> *path)
@@ -300,6 +328,8 @@ bool AutoExplore()
 
 		if (level->GetFOV(p.first, p.second) == fovVisible)
 		{
+
+			AddFloatingText("Hey what the fuck?", 'y', p.first, p.second, FT_SLOW);
 			LogEvent logEvent(player, "You stop exploring because you see a " + ent->GetName() +".");
 			WorldFireEvent(&logEvent);
 			return false;
@@ -384,4 +414,17 @@ void RenderHUD(Entity *e)
 	//Render::Puts("HP: " + std::to_string(e->GetHealth()) + "/" + std::to_string(e->GetMaxHealth()), 1, MAP_HEIGHT + 1, 'r');
 
 	Render::PutTitledBorder(title, 0, MAP_HEIGHT, MAP_WIDTH, GUI_HEIGHT, 'w', 'x', BORDER_TITLE_LEFT);
+}
+
+void RenderFloatingText(FloatingText *text)
+{
+	Render::FPuts(text->msg, text->x, text->y, text->color, text->opacity);
+
+	text->ticks++;
+
+	if (text->ticks % text->speed == 0)
+	{
+		text->y-=20;
+		text->opacity = std::max(0, text->opacity - 15);
+	}
 }

@@ -181,3 +181,26 @@ void Render::PutTitledBorder(std::string title, int x, int y, int width, int hei
 	}
 
 }
+
+void Render::FPut(int c, int x, int y, char color, int opacity)
+{
+	int cx = c % 16;
+	int cy = floor(c / 16);
+
+	SDL_Rect renderQuad = { x / SCALE, y / SCALE, SPRITE_WIDTH / SCALE, SPRITE_HEIGHT / SCALE };
+	SDL_Rect clip = { cx * SPRITE_WIDTH, cy * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
+
+	SDL_SetTextureAlphaMod(spriteSheet, opacity);
+	SDL_SetTextureColorMod(spriteSheet, colors[color].r, colors[color].g, colors[color].b);
+	SDL_RenderCopyEx(renderer, spriteSheet, &clip, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
+	SDL_SetTextureAlphaMod(spriteSheet, 255);
+}
+
+void Render::FPuts(std::string msg, int x, int y, char color, int opacity)
+{
+	for (int c : msg)
+	{
+		FPut(c, x, y, color, opacity);
+		x += SPRITE_WIDTH;
+	}
+}

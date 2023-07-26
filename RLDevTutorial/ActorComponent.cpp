@@ -9,9 +9,6 @@ ActorComponent::ActorComponent()
 
 void ActorComponent::LoadJson(json::object data)
 {
-	//health = data.contains("hp") ? json::value_to<int>(data["hp"]) : health;
-	//maxHealth = data.contains("maxHp") ? json::value_to<int>(data["maxHp"]) : maxHealth;
-
 	if (data.contains("maxHp"))
 	{
 		maxHealth = json::value_to<int>(data["maxHp"]);

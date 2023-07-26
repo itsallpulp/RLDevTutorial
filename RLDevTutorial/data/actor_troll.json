@@ -5,6 +5,9 @@
 		"render": {
 			"color": "C",
 			"glyph": 84
+		},
+		"actor": {
+			"maxHp": 20
 		}
 	}
 }

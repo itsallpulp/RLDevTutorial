@@ -178,6 +178,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="FloatingText.h" />
     <ClInclude Include="FOVComponent.h" />
     <ClInclude Include="FOVData.h" />
     <ClInclude Include="FOVListener.h" />

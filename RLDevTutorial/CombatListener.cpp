@@ -10,6 +10,10 @@ int CombatListener::FireDamageEvent(DamageEvent *e)
     WorldFireEvent(&attackerLog);
     WorldFireEvent(&defenderLog);
 
+    point p = e->defender->GetXY();
+
+    AddFloatingText(std::to_string(e->damage), 'r', p.first, p.second, FT_FAST);
+
     return 100;
 }
 

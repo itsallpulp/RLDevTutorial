@@ -12,6 +12,7 @@
 #include <boost/uuid/uuid_io.hpp>
 
 #include "WeightedBag.h"
+#include "FloatingText.h"
 
 class Entity;
 class EntityManager;
@@ -26,11 +27,13 @@ extern void RenderAll();
 extern int WorldFireEvent(Event *e);
 extern json::object GetJson(std::string filename);
 extern double Distance(point start, point end);
+extern void AddFloatingText(std::string text, char color, int x, int y, int speed = FT_REG);
 
 extern Level *level;
 extern Pathfinder *pathfinder;
 extern EntityManager *actorManager;
 extern MovementCommand *FollowPath(Entity *target, std::stack<point> *path);
+extern std::vector<FloatingText> *floatingTexts;
 
 extern WeightedBag<std::string> WeightedBagFromJSON(json::object data);
 
@@ -80,6 +83,9 @@ namespace Render {
 	void Puts(std::string text, int x, int y, char color, char bgColor = 'x'); // Draw a string to the screen
 	void PutBorder(int x, int y, int width, int height, char color, char bgColor = 'x', bool thick=false); // Display a border
 	void PutTitledBorder(std::string title, int x, int y, int width, int height, char color, char bgColor = 'x', int opts=BORDER_TITLE_CENTER); // Display a border with a centered title
+
+	void FPut(int c, int x, int y, char color = 'w', int opacity = 255);
+	void FPuts(std::string msg, int x, int y, char color = 'w', int opacity = 255);
 
 	SDL_Texture *LoadTexture(std::string filePath, int aR, int aG, int aB); // Load an SDL_Texture from a string filepath. aR,aG,aB are the alpha colors
 	void Update(); // Refresh what is on the screen
