@@ -258,6 +258,8 @@ double Distance(point start, point end)
 
 void AddFloatingText(std::string text, char color, int x, int y, int speed)
 {
+	if (level->GetFOV(x, y) != fovVisible) { return; }
+
 	FloatingText t;
 	t.msg = text;
 	t.color = color;
@@ -267,6 +269,67 @@ void AddFloatingText(std::string text, char color, int x, int y, int speed)
 	t.ticks = 0;
 	t.speed = speed;
 	floatingTexts->push_back(t);
+}
+
+bool CanSee(point start, point end)
+{
+	int deltaX = end.first - start.first;
+	signed char const ix = ((deltaX > 0) - (deltaX < 0));
+	deltaX = std::abs(deltaX) << 1;
+
+	int deltaY = end.second - start.second;
+	signed char const iy = ((deltaY > 0) - (deltaY < 0));
+	deltaY = std::abs(deltaY) << 1;
+
+	int maxMonsterSight = 15;
+
+	int X2 = end.first,
+		X1 = start.first,
+		Y2 = end.second,
+		Y1 = start.second,
+		count = 0;
+
+	if (deltaX >= deltaY)
+	{
+		int error = deltaY - (deltaX >> 1);
+
+
+		while (X1 != X2)
+		{
+			if ((error > 0) || (!error && (ix > 0)))
+			{
+				error -= deltaX;
+				Y1 += iy;
+			}
+
+			error += deltaY;
+			X1 += ix;
+			++count;
+
+			if (level->GetCell(X1, Y1)->BlocksVision() || count > 25) { return false; }
+		}
+	}
+	else
+	{
+		int error = deltaX - (deltaY >> 1);
+
+		while (Y1 != Y2)
+		{
+			if ((error > 0) || (!error && (iy > 0)))
+			{
+				error -= deltaY;
+				X1 += ix;
+			}
+
+			error += deltaX;
+			Y1 += iy;
+			++count;
+
+			if (level->GetCell(X1, Y1)->BlocksVision() || count > 25) { return false; }
+		}
+	}
+
+	return true;
 }
 
 MovementCommand *FollowPath(Entity *target, std::stack<point> *path)

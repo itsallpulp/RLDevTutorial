@@ -16,6 +16,7 @@ MovementCommand *AutoExplore()
 
 		if (level->GetFOV(p.first, p.second) == fovVisible)
 		{
+			AddFloatingText("!", 'y', p.first, p.second, FT_FAST);
 			LogEvent logEvent(player, "You stop exploring because you see a " + ent->GetName() + ".");
 			WorldFireEvent(&logEvent);
 			return new MovementCommand(player, 0, 0);

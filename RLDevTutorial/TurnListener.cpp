@@ -3,10 +3,12 @@
 #include "Command.h"
 #include "MovementCommand.h"
 #include "Autoexplore.h"
+#include "EntityManager.h"
+#include "Level.h"
+#include "Pathfinder.h"
 
 int TurnListener::FireTurnEvent(TurnEvent *e)
 {
-	std::cout << e->target->GetName() << "'s turn" << std::endl;
 	if (e->target == player)
 	{
 		return HandlePlayerTurn(e);
@@ -81,7 +83,47 @@ int TurnListener::HandlePlayerTurn(TurnEvent *e)
 
 int TurnListener::HandleAITurn(TurnEvent *e)
 {
+	
+	std::vector<Entity *> visibleActors = GetVisibleActors(e->target);
+
+	point p = e->target->GetXY();
+
+	if (std::find(visibleActors.begin(), visibleActors.end(), player) != visibleActors.end())
+	{
+		std::stack<point> path = pathfinder->GeneratePath(p, player->GetXY());
+		MovementCommand *c = FollowPath(e->target, &path);
+		int cost = c->Execute();
+		delete c;
+		return cost;
+	}
+	else
+	{
+		AddFloatingText("z", 'y', p.first, p.second);
+	}
+	
 	return 100;
+}
+
+std::vector<Entity *> TurnListener::GetVisibleActors(Entity *e)
+{
+	std::vector<Entity *> v;
+	
+	for (Entity *a : actorManager->GetEntities())
+	{
+		if (a == e) { continue; }
+
+		if (CanSee(e->GetXY(), a->GetXY()))
+		{
+			v.push_back(a);
+		}
+	}
+	
+	if (level->GetFOV(e->GetXY()) == fovVisible && std::find(v.begin(), v.end(), player) == v.end())
+	{
+		v.push_back(player);
+	}
+	
+	return v;
 }
 
 TurnListener::TurnListener()

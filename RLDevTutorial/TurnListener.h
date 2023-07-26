@@ -8,6 +8,8 @@ class TurnListener : public Listener
 	int HandlePlayerTurn(TurnEvent *e);
 	int HandleAITurn(TurnEvent *e);
 
+	std::vector<Entity *> GetVisibleActors(Entity *e);
+
 	public:
 	TurnListener();
 };
