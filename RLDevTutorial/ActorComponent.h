@@ -9,5 +9,6 @@ class ActorComponent : public Component
 
 	int health, maxHealth;
 	int baseDamage;
+	int energy;
 	std::string attackAction, attackType;
 };

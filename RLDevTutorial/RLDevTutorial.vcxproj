@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ActorComponent.cpp" />
+    <ClCompile Include="Autoexplore.cpp" />
     <ClCompile Include="CombatListener.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -167,9 +168,11 @@
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="RenderingListener.cpp" />
+    <ClCompile Include="TurnListener.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActorComponent.h" />
+    <ClInclude Include="Autoexplore.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CombatListener.h" />
     <ClInclude Include="Command.h" />
@@ -197,6 +200,7 @@
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderingListener.h" />
+    <ClInclude Include="TurnListener.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="WeightedBag.h" />
   </ItemGroup>

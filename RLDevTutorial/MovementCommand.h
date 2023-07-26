@@ -11,5 +11,6 @@ class MovementCommand : public Command
 	public:
 	MovementCommand(Entity *target, int dx, int dy);
 	int Execute();
+	point GetDelta();
 };
 

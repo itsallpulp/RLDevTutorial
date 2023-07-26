@@ -36,3 +36,8 @@ int MovementCommand::Execute()
 
     return WorldFireEvent(&e);
 }
+
+point MovementCommand::GetDelta()
+{
+    return { dx, dy };
+}

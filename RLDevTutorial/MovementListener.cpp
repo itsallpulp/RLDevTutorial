@@ -10,23 +10,9 @@ int MovementListener::FireMovementEvent(MovementEvent *e)
 
     e->target->cPhysics->x += e->dx;
     e->target->cPhysics->y += e->dy;
-    /*
-    std::string msg = "Move";
-    int x = (dst.first * SPRITE_WIDTH) - ((msg.size() / 2) * SPRITE_WIDTH) + (SPRITE_WIDTH / 2);
-    int y = dst.second * SPRITE_HEIGHT - SPRITE_HEIGHT;
 
-    FloatingText text;
-    text.color = 'y';
-    text.msg = msg;
-    text.opacity = 255;
-    text.ticks = 0;
-    text.x = x;
-    text.y = y;
 
-    floatingTexts->push_back(text);
-    */
-
-    return 0;
+    return 100;
 }
 
 MovementListener::MovementListener() : Listener()

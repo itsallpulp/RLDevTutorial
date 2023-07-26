@@ -131,6 +131,16 @@ void Entity::TakeDamage(int damage)
     cActor->health -= damage;
 }
 
+int Entity::GetEnergy()
+{
+    return cActor == nullptr ? 0 : cActor->energy;
+}
+
+int Entity::ModEnergy(int d)
+{
+    return cActor == nullptr ? 0 : (cActor->energy += d);
+}
+
 point Entity::GetXY()
 {
     point p = { -1,-1 };

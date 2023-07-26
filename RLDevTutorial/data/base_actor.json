@@ -12,7 +12,7 @@
 		},
 		"actor": {
 			"baseAttack": {
-				"baseDamage": 10
+				"baseDamage": 1
 			}
 		}
 	}

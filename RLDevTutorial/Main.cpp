@@ -23,6 +23,7 @@
 #include "LogListener.h"
 #include "MovementListener.h"
 #include "RenderingListener.h"
+#include "TurnListener.h"
 
 #include "MovementCommand.h"
 
@@ -47,20 +48,20 @@ FOVListener lFOV;
 LogListener lLog;
 MovementListener lMovement;
 RenderingListener lRendering;
+TurnListener lTurn;
 
 Entity *player;
 Level *level;
 std::map<char, Color> colors;
 
-bool autoExploring;
 Pathfinder *pathfinder = new Pathfinder();
-bool AutoExplore();
-point exploreDestination;
-std::stack<point> explorePath;
+int gameState = ON_MAP;
 
 void RenderEntity(Entity *e);
 void RenderHUD(Entity *e);
 void RenderFloatingText(FloatingText *text);
+
+void TakeTurn(Entity *actor);
 
 void PrintRuntime(void (*func)(void));
 
@@ -73,7 +74,6 @@ int main(int argc, char* argv[])
 	WeightedBag<std::string> wb = WeightedBagFromJSON(GetJson("table_monsters"));
 
 	actorManager = new EntityManager();
-	exploreDestination = { -1, -1 };
 	seed = time(NULL);
 	srand(seed);
 
@@ -106,6 +106,11 @@ int main(int argc, char* argv[])
 	Render::Init();
 	while (!quit)
 	{
+		/* Do turn loop */
+
+		actorManager->RunFunc(TakeTurn);
+
+		/*
 		SDL_Event input;
 
 		Command *command = nullptr;
@@ -161,6 +166,7 @@ int main(int argc, char* argv[])
 		
 		
 		RenderAll();
+		*/
 	}
 	return 0;
 }
@@ -200,6 +206,7 @@ int WorldFireEvent(Event *e)
 	r += lFOV.FireEvent(e);
 	r += lLog.FireEvent(e);
 	r += lCombat.FireEvent(e);
+	r += lTurn.FireEvent(e);
 	r += lDeath.FireEvent(e);
 	return r;
 }
@@ -317,67 +324,6 @@ int RollDamage(int numDice)
 	return n;
 }
 
-
-
-bool AutoExplore()
-{
-	for (Entity *ent : actorManager->GetEntities())
-	{
-		if (ent == player) { continue; }
-		point p = ent->GetXY();
-
-		if (level->GetFOV(p.first, p.second) == fovVisible)
-		{
-
-			AddFloatingText("Hey what the fuck?", 'y', p.first, p.second, FT_SLOW);
-			LogEvent logEvent(player, "You stop exploring because you see a " + ent->GetName() +".");
-			WorldFireEvent(&logEvent);
-			return false;
-		}
-
-	}
-
-	std::vector<point> unvisited;
-	for (int x = 1; x < MAP_WIDTH - 1; ++x)
-	{
-		for (int y = 1; y < MAP_HEIGHT - 1; ++y)
-		{
-			if (level->GetFOV(x, y) != fovHidden /* || level->GetCell(x, y)->BlocksMovement()*/) { continue; }
-			unvisited.push_back({ x,y });
-		}
-	}
-
-	if (unvisited.size() == 0) {
-		std::cout << "Nowhere to go!" << std::endl;
-		return true; 
-	}
-
-	int **path = pathfinder->CreateDijkstraMap(unvisited);
-
-	int dx = 0, dy = 0;
-	point p = player->GetXY();
-	int value = path[p.first][p.second];
-
-	if (path[p.first + 1][p.second] < value) { dx = 1; dy = 0; value = path[p.first + dx][p.second + dy]; }
-	if (path[p.first - 1][p.second] < value) { dx = -1; dy = 0; value = path[p.first + dx][p.second + dy]; }
-	if (path[p.first][p.second + 1] < value) { dx = 0; dy = 1;  value = path[p.first + dx][p.second + dy];}
-	if (path[p.first][p.second - 1] < value) { dx = 0; dy = -1; value = path[p.first + dx][p.second + dy];}
-	
-	if (dx == 0 && dy == 0)
-	{
-		SDL_Delay(500);
-		/*level->RoomsAndMazes(250);
-		level->PlaceEntity(player);
-		lFOV.DoFOV(player);*/
-		return false;
-	}
-
-	MovementCommand c(player, dx, dy);
-	c.Execute();
-	SDL_Delay(25);
-	return true;
-}
-
 void RenderEntity(Entity *e)
 {
 	if (level->GetFOV(e->GetXY()) != fovVisible) { return; }
@@ -426,5 +372,17 @@ void RenderFloatingText(FloatingText *text)
 	{
 		text->y-=20;
 		text->opacity = std::max(0, text->opacity - 15);
+	}
+}
+
+void TakeTurn(Entity *actor)
+{
+	if (actor->ModEnergy(100) >= 100)
+	{
+		while (actor->GetEnergy() >= 100)
+		{
+			TurnEvent e(actor);
+			actor->ModEnergy( -WorldFireEvent(&e) );
+		}
 	}
 }

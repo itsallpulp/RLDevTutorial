@@ -7,7 +7,8 @@ static enum EventID {
 	evRender = 2,
 	evLog = 4,
 	evDamage = 8,
-	evAttack = 16
+	evAttack = 16,
+	evTakeTurn = 32
 };
 
 class Event {
@@ -77,4 +78,13 @@ class DamageEvent : public Event {
 	Entity *attacker, *defender;
 	int damage;
 	std::string type;
+};
+
+class TurnEvent : public Event {
+	public:
+	TurnEvent(Entity *target) : Event(evTakeTurn)
+	{
+		this->target = target;
+	}
+	Entity *target;
 };

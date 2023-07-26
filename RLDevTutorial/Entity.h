@@ -48,6 +48,8 @@ class Entity
 	int GetMaxHealth();
 	bool IsAlive();
 	void TakeDamage(int damage);
+	int GetEnergy();
+	int ModEnergy(int d);
 
 	FOVComponent *cFOV;
 

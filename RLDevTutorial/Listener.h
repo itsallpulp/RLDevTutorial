@@ -15,6 +15,7 @@ class Listener
 	virtual int FireRenderEvent(RenderEvent *e);
 	virtual int FireLogEvent(LogEvent *e) { return 0; }
 	virtual int FireDamageEvent(DamageEvent *e) { return 0; }
+	virtual int FireTurnEvent(TurnEvent *e) { return 0; }
 
 	public:
 	Listener();

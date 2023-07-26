@@ -38,6 +38,8 @@ int Listener::FireEvent(Event *e)
             return FireLogEvent((LogEvent *)e);
         case evDamage:
             return FireDamageEvent((DamageEvent *)e);
+        case evTakeTurn:
+            return FireTurnEvent((TurnEvent *)e);
         default:
             return 0;
     }

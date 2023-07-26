@@ -34,6 +34,9 @@ extern Pathfinder *pathfinder;
 extern EntityManager *actorManager;
 extern MovementCommand *FollowPath(Entity *target, std::stack<point> *path);
 extern std::vector<FloatingText> *floatingTexts;
+extern Entity *player;
+
+extern int gameState;
 
 extern WeightedBag<std::string> WeightedBagFromJSON(json::object data);
 
@@ -89,4 +92,9 @@ namespace Render {
 
 	SDL_Texture *LoadTexture(std::string filePath, int aR, int aG, int aB); // Load an SDL_Texture from a string filepath. aR,aG,aB are the alpha colors
 	void Update(); // Refresh what is on the screen
+};
+
+static enum GameStates {
+	ON_MAP = 0,
+	AUTOEXPLORE
 };
