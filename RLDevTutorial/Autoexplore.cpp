@@ -49,6 +49,12 @@ MovementCommand *AutoExplore()
 	if (path[p.first][p.second + 1] < value) { dx = 0; dy = 1;  value = path[p.first + dx][p.second + dy]; }
 	if (path[p.first][p.second - 1] < value) { dx = 0; dy = -1; value = path[p.first + dx][p.second + dy]; }
 
+	for (int i = 0; i < MAP_WIDTH; ++i)
+	{
+		delete path[i];
+	}
+	delete path;
+
 	SDL_Delay(25);
 	return new MovementCommand(player, dx, dy);
 }

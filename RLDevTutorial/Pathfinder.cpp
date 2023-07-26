@@ -97,12 +97,10 @@ int** Pathfinder::CreateDijkstraMap(std::vector<point> goals)
 	
 	for (int x = 0; x < MAP_WIDTH; ++x)
 	{
-		//m.push_back(std::vector<int>());
 		m[x] = new int[MAP_HEIGHT];
 		for (int y = 0; y < MAP_HEIGHT; ++y)
 		{
 			m[x][y] = MAP_WIDTH * MAP_HEIGHT;
-			//m[x].push_back(MAP_WIDTH * MAP_HEIGHT);
 		}
 	}
 
@@ -121,8 +119,9 @@ int** Pathfinder::CreateDijkstraMap(std::vector<point> goals)
 		unvisited.pop();
 
 		int value = m[current.first][current.second];
+		std::vector<point> neighbors = GetNeighbors(current);
 
-		for (point n : GetNeighbors(current))
+		for (point n : neighbors)
 		{
 			if (m[n.first][n.second] > value + 1)
 			{
@@ -130,7 +129,7 @@ int** Pathfinder::CreateDijkstraMap(std::vector<point> goals)
 				unvisited.push(n);
 			}
 		}
-
+		neighbors.clear();
 	}
 
 	return m;
