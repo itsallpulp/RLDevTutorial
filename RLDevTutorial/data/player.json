@@ -10,7 +10,10 @@
 		},
 		"log": {},
 		"actor": {
-			"maxHp": 30
+			"maxHp": 30,
+			"baseAttack": {
+				"baseDamage": 4
+			}
 		}
 	}
 }

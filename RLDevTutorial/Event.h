@@ -48,10 +48,17 @@ class RenderEvent : public Event {
 		this->x = x;
 		this->y = y;
 		this->darker = darker;
+
+		owGlyph = -1;
+		owColor = '-';
+		owBg = '-';
 	}
 	Entity *target;
 	int x, y;
 	bool darker;
+
+	int owGlyph;
+	char owColor, owBg;
 
 };
 

@@ -4,6 +4,9 @@ class CombatListener : public Listener
 {
 	private:
 	int FireDamageEvent(DamageEvent *e);
+	int FireRenderEvent(RenderEvent *e);
+
+	std::map<Entity *, int> recentlyHit;
 	
 	public:
 	CombatListener();

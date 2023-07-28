@@ -201,12 +201,12 @@ void RenderAll()
 int WorldFireEvent(Event *e)
 {
 	int r = 0;
-	r += lRendering.FireEvent(e);
 	r += lMovement.FireEvent(e);
 	r += lFOV.FireEvent(e);
 	r += lLog.FireEvent(e);
 	r += lCombat.FireEvent(e);
 	r += lTurn.FireEvent(e);
+	r += lRendering.FireEvent(e);
 	r += lDeath.FireEvent(e);
 	return r;
 }
@@ -264,6 +264,28 @@ void AddFloatingText(std::string text, char color, int x, int y, int speed)
 	t.msg = text;
 	t.color = color;
 	t.x = (x * SPRITE_WIDTH) - ((text.size() / 2) * SPRITE_WIDTH) + (SPRITE_WIDTH / 2);
+	t.y = ((y - 1) * SPRITE_HEIGHT);
+	t.opacity = 255;
+	t.ticks = 0;
+	t.speed = speed;
+	floatingTexts->push_back(t);
+}
+
+void AddFloatingText(std::string text, char color, point p, int speed)
+{
+	AddFloatingText(text, color, p.first, p.second, speed);
+}
+
+void AddFloatingText(int glyph, char color, point p, int speed)
+{
+	int x = p.first, y = p.second;
+	if (level->GetFOV(p.first, p.second) != fovVisible) { return; }
+
+	FloatingText t;
+	t.msg = "";
+	t.glyph = glyph;
+	t.color = color;
+	t.x = (x * SPRITE_WIDTH) + (SPRITE_WIDTH / 2);
 	t.y = ((y - 1) * SPRITE_HEIGHT);
 	t.opacity = 255;
 	t.ticks = 0;
@@ -427,7 +449,15 @@ void RenderHUD(Entity *e)
 
 void RenderFloatingText(FloatingText *text)
 {
-	Render::FPuts(text->msg, text->x, text->y, text->color, text->opacity);
+	if (text->msg.size() > 1)
+	{
+		Render::FPuts(text->msg, text->x, text->y, text->color, text->opacity);
+	}
+	else
+	{
+		Render::FPut(text->glyph, text->x, text->y, text->color, text->opacity);
+	}
+	
 
 	text->ticks++;
 

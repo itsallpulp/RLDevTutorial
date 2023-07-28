@@ -3,9 +3,13 @@
 
 int RenderingListener::FireRenderEvent(RenderEvent *e)
 {
-	char bgColor = e->target->cRender->bgColor;
+	//char bgColor = e->target->cRender->bgColor;
 	int x = e->x == -1 ? e->target->cPhysics->x : e->x;
 	int y = e->y == -1 ? e->target->cPhysics->y : e->y;
+
+	char color = e->owColor == '-' ? e->target->cRender->color : e->owColor;
+	int glyph = e->owGlyph == -1 ? e->target->cRender->glyph : e->owGlyph;
+	char bgColor = e->owBg == '-' ? e->target->cRender->bgColor : e->owBg;
 
 	if (bgColor == '~')
 	{
@@ -15,7 +19,7 @@ int RenderingListener::FireRenderEvent(RenderEvent *e)
 	if (e->darker)
 	{
 		int d = -45;
-		Color c = colors[e->target->cRender->color];
+		Color c = colors[color];
 		Color bgc = colors[bgColor];
 		int r = std::max(c.r + d, 1);
 		int g = std::max(c.g + d, 1);
@@ -24,11 +28,11 @@ int RenderingListener::FireRenderEvent(RenderEvent *e)
 		int bg = std::max(bgc.g + d, 1);
 		int bb = std::max(bgc.b + d, 1);
 
-		Render::Put(e->target->cRender->glyph, x, y, r, g, b, br, bg, bb);
+		Render::Put(glyph, x, y, r, g, b, br, bg, bb);
 	}
 	else
 	{
-		Render::Put(e->target->cRender->glyph, x, y, e->target->cRender->color, bgColor);
+		Render::Put(glyph, x, y, color, bgColor);
 	}
 
 	return 0;

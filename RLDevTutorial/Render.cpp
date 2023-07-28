@@ -5,13 +5,13 @@ void Render::Init()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-	window = SDL_CreateWindow("RoguelikeDev Tutorial Week 3", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("RoguelikeDev Tutorial Week 5", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	SDL_RenderSetScale(renderer, 0.1, 0.1);
 	SDL_RenderSetLogicalSize(renderer, WINDOW_WIDTH, WINDOW_HEIGHT);
 	SDL_SetWindowResizable(window, SDL_TRUE);
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-	spriteSheet = LoadTexture("Markvii12x12big.png", 255, 0, 255);
+	spriteSheet = LoadTexture("Markvii12x12CC.png", 255, 0, 255);
 	Update();
 }
 
@@ -25,7 +25,8 @@ void Render::Put(int c, int x, int y, int r, int g, int b, int bgRed, int bgGree
 	int cx = c % 16;
 	int cy = floor(c / 16);
 
-	SDL_Rect renderQuad = { x * SPRITE_WIDTH / SCALE, y * SPRITE_HEIGHT / SCALE, SPRITE_WIDTH / SCALE, SPRITE_HEIGHT / SCALE };
+	//SDL_Rect renderQuad = { x * SPRITE_WIDTH / SCALE, y * SPRITE_HEIGHT / SCALE, SPRITE_WIDTH / SCALE, SPRITE_HEIGHT / SCALE };
+	SDL_Rect renderQuad = { x * SPRITE_WIDTH, y * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT};
 	SDL_Rect clip = { cx * SPRITE_WIDTH, cy * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
 	SDL_SetTextureColorMod(spriteSheet, bgRed, bgGreen, bgBlue);
 	SDL_RenderCopyEx(renderer, spriteSheet, &backgroundTile, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
@@ -39,7 +40,8 @@ void Render::Put(int c, int x, int y, char color, char bgColor)
 	int cx = c % 16;
 	int cy = floor(c / 16);
 
-	SDL_Rect renderQuad = { x * SPRITE_WIDTH / SCALE, y * SPRITE_HEIGHT / SCALE, SPRITE_WIDTH / SCALE, SPRITE_HEIGHT / SCALE};
+	//SDL_Rect renderQuad = { x * SPRITE_WIDTH / SCALE, y * SPRITE_HEIGHT / SCALE, SPRITE_WIDTH / SCALE, SPRITE_HEIGHT / SCALE};
+	SDL_Rect renderQuad = { x * SPRITE_WIDTH, y * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT};
 	SDL_Rect clip = { cx * SPRITE_WIDTH, cy * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
 
 	SDL_SetTextureColorMod(spriteSheet, colors[bgColor].r, colors[bgColor].g, colors[bgColor].b);
@@ -87,6 +89,14 @@ SDL_Texture *Render::LoadTexture(std::string filepath, int alphaRed, int alphaGr
 
 void Render::Update()
 {
+	int w = 0, h = 0;
+	SDL_GetWindowSize(window, &w, &h);
+	//SDL_RenderSetLogicalSize(renderer, w, h);
+	SDL_RenderSetScale(renderer, 0.1, 0.1);
+
+	//SDL_RenderGetLogicalSize(renderer, &w, &h);
+	//std::cout << w << "x" << h << std::endl;
+
 	uint32_t frameStart = SDL_GetTicks();
 	SDL_RenderPresent(renderer);
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
@@ -187,7 +197,10 @@ void Render::FPut(int c, int x, int y, char color, int opacity)
 	int cx = c % 16;
 	int cy = floor(c / 16);
 
-	SDL_Rect renderQuad = { x / SCALE, y / SCALE, SPRITE_WIDTH / SCALE, SPRITE_HEIGHT / SCALE };
+	std::cout << c << std::endl;
+
+	//SDL_Rect renderQuad = { x / SCALE, y / SCALE, SPRITE_WIDTH / SCALE, SPRITE_HEIGHT / SCALE };
+	SDL_Rect renderQuad = { x, y, SPRITE_WIDTH, SPRITE_HEIGHT};
 	SDL_Rect clip = { cx * SPRITE_WIDTH, cy * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
 
 	SDL_SetTextureAlphaMod(spriteSheet, opacity);

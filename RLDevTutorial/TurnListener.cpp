@@ -53,7 +53,7 @@ int TurnListener::HandlePlayerTurn(TurnEvent *e)
 						command = new MovementCommand(player, 0, 0);
 						break;
 					case SDLK_x:
-						gameState = AUTOEXPLORE;
+						if (gameState == ON_MAP) { gameState = AUTOEXPLORE; }
 						break;
 					default:
 						break;
