@@ -1,4 +1,5 @@
 #include "CombatListener.h"
+#include "FloatingText.h"
 
 int CombatListener::FireDamageEvent(DamageEvent *e)
 {
@@ -24,8 +25,8 @@ int CombatListener::FireRenderEvent(RenderEvent *e)
     if (recentlyHit.find(e->target) != recentlyHit.end())
     {
         e->owColor = 'r';
-        e->owGlyph = '*';
-        e->owBg = 'e';
+        e->owGlyph = '/';
+        //e->owBg = 'e';
         --recentlyHit[e->target];
 
         if (recentlyHit[e->target] <= 0)

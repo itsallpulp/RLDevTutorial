@@ -27,16 +27,12 @@ extern void RenderAll();
 extern int WorldFireEvent(Event *e);
 extern json::object GetJson(std::string filename);
 extern double Distance(point start, point end);
-extern void AddFloatingText(std::string text, char color, int x, int y, int speed = FT_REG);
-extern void AddFloatingText(std::string text, char color, point p, int speed = FT_REG);
-extern void AddFloatingText(int glyph, char color, point p, int speed = FT_REG);
 extern bool CanSee(point start, point end);
 
 extern Level *level;
 extern Pathfinder *pathfinder;
 extern EntityManager *actorManager;
 extern MovementCommand *FollowPath(Entity *target, std::stack<point> *path);
-extern std::vector<FloatingText> *floatingTexts;
 extern Entity *player;
 
 extern int gameState;

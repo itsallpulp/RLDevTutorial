@@ -152,6 +152,7 @@
     <ClCompile Include="DeathListener.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="FloatingText.cpp" />
     <ClCompile Include="FOVComponent.cpp" />
     <ClCompile Include="FOVListener.cpp" />
     <ClCompile Include="Level.cpp" />

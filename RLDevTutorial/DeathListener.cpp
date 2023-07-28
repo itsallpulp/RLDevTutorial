@@ -1,5 +1,6 @@
 #include "DeathListener.h"
 #include "EntityManager.h"
+#include "FloatingText.h"
 
 int DeathListener::FireDamageEvent(DamageEvent *e)
 {

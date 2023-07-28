@@ -197,7 +197,6 @@ void Render::FPut(int c, int x, int y, char color, int opacity)
 	int cx = c % 16;
 	int cy = floor(c / 16);
 
-	std::cout << c << std::endl;
 
 	//SDL_Rect renderQuad = { x / SCALE, y / SCALE, SPRITE_WIDTH / SCALE, SPRITE_HEIGHT / SCALE };
 	SDL_Rect renderQuad = { x, y, SPRITE_WIDTH, SPRITE_HEIGHT};
