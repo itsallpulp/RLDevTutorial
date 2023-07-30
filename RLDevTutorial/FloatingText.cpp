@@ -10,7 +10,7 @@ void AddFloatingText(std::string text, char color, int x, int y, int speed)
 	FloatingText t;
 	t.msg = text;
 	t.color = color;
-	t.x = (x * SPRITE_WIDTH) - ((text.size() / 2) * SPRITE_WIDTH) + (SPRITE_WIDTH / 2);
+	t.x = ((x+GUI_WIDTH) * SPRITE_WIDTH) - ((text.size() / 2) * SPRITE_WIDTH) + (SPRITE_WIDTH / 2);
 	t.y = ((y - 1) * SPRITE_HEIGHT);
 	t.opacity = 255;
 	t.ticks = 0;
@@ -32,7 +32,7 @@ void AddFloatingText(int glyph, char color, point p, int speed)
 	t.msg = "";
 	t.glyph = glyph;
 	t.color = color;
-	t.x = (x * SPRITE_WIDTH) + (SPRITE_WIDTH / 2);
+	t.x = ((x + GUI_WIDTH) * SPRITE_WIDTH) + (SPRITE_WIDTH / 2);
 	t.y = ((y - 1) * SPRITE_HEIGHT);
 	t.opacity = 255;
 	t.ticks = 0;

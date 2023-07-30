@@ -61,6 +61,7 @@ int gameState = ON_MAP;
 
 void RenderEntity(Entity *e);
 void RenderHUD(Entity *e);
+int RenderDisplay(Entity *e, int x, int y);
 void RenderFloatingText(FloatingText *text);
 
 void TakeTurn(Entity *actor);
@@ -109,66 +110,7 @@ int main(int argc, char* argv[])
 	while (!quit)
 	{
 		/* Do turn loop */
-
 		actorManager->RunFunc(TakeTurn);
-
-		/*
-		SDL_Event input;
-
-		Command *command = nullptr;
-		
-			while (SDL_PollEvent(&input))
-			{
-				if (input.type == SDL_KEYDOWN)
-				{
-					autoExploring = false;
-					switch (input.key.keysym.sym)
-					{
-						case SDLK_UP:
-							command = new MovementCommand(player, 0, -1);
-							break;
-						case SDLK_DOWN:
-							command = new MovementCommand(player, 0, 1);
-							break;
-						case SDLK_RIGHT:
-							command = new MovementCommand(player, 1, 0);
-							break;
-						case SDLK_LEFT:
-							command = new MovementCommand(player, -1, 0);
-							break;
-						case SDLK_z:
-							command = new MovementCommand(player, 0, 0);
-							break;
-						case SDLK_c:
-							level->RoomsAndMazes();
-							level->PlaceEntity(player);
-							lFOV.DoFOV(player);
-							break;
-						case SDLK_x:
-							autoExploring = true;
-							break;
-						case SDLK_r:
-							level->RevealAll();
-							break;
-						default:
-							break;
-					}
-				}
-			}
-
-			if(command == nullptr && autoExploring)
-			{
-				autoExploring = AutoExplore();
-			}
-			else if (command != nullptr)
-			{
-				command->Execute();
-				delete command;
-			}
-		
-		
-		RenderAll();
-		*/
 	}
 	return 0;
 }
@@ -331,24 +273,52 @@ void PrintRuntime(void(*func)(void))
 
 void RenderHUD(Entity *e)
 {
-	std::string title = "HP: " + std::to_string(e->GetHealth()) + "/" + std::to_string(e->GetMaxHealth());
+	//std::string title = "HP: " + std::to_string(e->GetHealth()) + "/" + std::to_string(e->GetMaxHealth());
 
-	Render::PutTitledBorder("Player", 0, MAP_HEIGHT, MAP_WIDTH, GUI_HEIGHT, 'w', 'x', BORDER_TITLE_LEFT | FILL_BACKGROUND);
+	Render::PutTitledBorder("Log", GUI_WIDTH, MAP_HEIGHT, MAP_WIDTH, GUI_HEIGHT, 'w', 'x', BORDER_TITLE_CENTER | FILL_BACKGROUND);
 	/* Draw player logs */
 	if (e->cLog != nullptr)
 	{
 		int y = MAP_HEIGHT + 1,
-			x = 1;
+			x = GUI_WIDTH + 1;
 		for (std::string log : e->cLog->logs)
 		{
 			Render::Puts(log, x, y++, 'w');
 		}
 	}
 
-	/* Health Stats */
-	//Render::Puts("HP: " + std::to_string(e->GetHealth()) + "/" + std::to_string(e->GetMaxHealth()), 1, MAP_HEIGHT + 1, 'r');
+	int y = RenderDisplay(e, 0, 0);
 
-	Render::PutTitledBorder(title, 0, MAP_HEIGHT, MAP_WIDTH, GUI_HEIGHT, 'w', 'x', BORDER_TITLE_LEFT);
+	for (Entity *a : actorManager->GetEntities())
+	{
+		if (a != e && e->CanSee(a))
+		{
+			y = RenderDisplay(a, 0, y);
+		}
+	}
+
+}
+
+int RenderDisplay(Entity *e, int x, int y)
+{
+	std::string name = e->GetName();
+	point hp = e->GetHealthStats();
+	std::string hpVals = std::to_string(hp.first) + "/" + std::to_string(hp.second);
+	int hpX = (GUI_WIDTH / 2) - (hpVals.size() / 2);
+	
+	Render::Puts(name, x, y++, 'w');
+
+	double n = ((double)hp.first / (double)hp.second) * 15;
+
+	for (int i = 0; i < GUI_WIDTH; ++i)
+	{
+		char c = 'r';
+		if (i >= n) { c = 'e'; }
+		Render::Put(219, x + i, y, c);
+	}
+	Render::Puts(hpVals, hpX, y, 'w', '~');
+
+	return ++y;
 }
 
 void RenderFloatingText(FloatingText *text)

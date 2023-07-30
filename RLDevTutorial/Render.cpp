@@ -44,8 +44,11 @@ void Render::Put(int c, int x, int y, char color, char bgColor)
 	SDL_Rect renderQuad = { x * SPRITE_WIDTH, y * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT};
 	SDL_Rect clip = { cx * SPRITE_WIDTH, cy * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT };
 
-	SDL_SetTextureColorMod(spriteSheet, colors[bgColor].r, colors[bgColor].g, colors[bgColor].b);
-	SDL_RenderCopyEx(renderer, spriteSheet, &backgroundTile, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
+	if (bgColor != '~')
+	{
+		SDL_SetTextureColorMod(spriteSheet, colors[bgColor].r, colors[bgColor].g, colors[bgColor].b);
+		SDL_RenderCopyEx(renderer, spriteSheet, &backgroundTile, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
+	}
 
 	SDL_SetTextureColorMod(spriteSheet, colors[color].r, colors[color].g, colors[color].b );
 	SDL_RenderCopyEx(renderer, spriteSheet, &clip, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
@@ -146,8 +149,8 @@ void Render::PutBorder(int x, int y, int width, int height, char color, char bgC
 
 	for (int i = 0; i < height; ++i)
 	{
-		Put(glyphs[5], 0, y + i, color, bgColor);
-		Put(glyphs[5], width-1, y + i, color, bgColor);
+		Put(glyphs[5], x, y + i, color, bgColor);
+		Put(glyphs[5], x+width-1, y + i, color, bgColor);
 	}
 
 	Put(glyphs[0], x, y, color, bgColor);

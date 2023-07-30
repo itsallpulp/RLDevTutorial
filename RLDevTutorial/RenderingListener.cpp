@@ -16,6 +16,8 @@ int RenderingListener::FireRenderEvent(RenderEvent *e)
 		bgColor = level->GetCell(x, y)->cRender->bgColor;
 	}
 
+	x += GUI_WIDTH;
+
 	if (e->darker)
 	{
 		int d = -45;

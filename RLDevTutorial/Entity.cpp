@@ -177,7 +177,7 @@ void Entity::SendLog(std::string message)
     if (cLog == nullptr) { return; }
     cLog->logs.emplace(cLog->logs.begin(), message);
 
-    while (cLog->logs.size() > GUI_HEIGHT)
+    while (cLog->logs.size() >= GUI_HEIGHT-1)
     {
         cLog->logs.pop_back();
     }
