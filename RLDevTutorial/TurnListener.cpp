@@ -112,7 +112,7 @@ std::vector<Entity *> TurnListener::GetVisibleActors(Entity *e)
 	{
 		if (a == e) { continue; }
 
-		if (CanSee(e->GetXY(), a->GetXY()))
+		if (e->CanSee(a))
 		{
 			v.push_back(a);
 		}

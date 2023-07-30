@@ -66,4 +66,6 @@ class Entity
 
 	void FigureDamage(DamageEvent *e);
 
+	bool CanSee(Entity *other);
+
 };

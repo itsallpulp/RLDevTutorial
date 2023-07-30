@@ -27,7 +27,6 @@ extern void RenderAll();
 extern int WorldFireEvent(Event *e);
 extern json::object GetJson(std::string filename);
 extern double Distance(point start, point end);
-extern bool CanSee(point start, point end);
 
 extern Level *level;
 extern Pathfinder *pathfinder;
