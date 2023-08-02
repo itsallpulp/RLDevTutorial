@@ -155,6 +155,9 @@
     <ClCompile Include="FloatingText.cpp" />
     <ClCompile Include="FOVComponent.cpp" />
     <ClCompile Include="FOVListener.cpp" />
+    <ClCompile Include="GrabItemCommand.cpp" />
+    <ClCompile Include="InventoryComponent.cpp" />
+    <ClCompile Include="ItemInteractionListener.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="LGNystromRoomsAndMazes.cpp" />
@@ -188,6 +191,9 @@
     <ClInclude Include="FOVListener.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Glyphs.h" />
+    <ClInclude Include="GrabItemCommand.h" />
+    <ClInclude Include="InventoryComponent.h" />
+    <ClInclude Include="ItemInteractionListener.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelConfig.h" />
     <ClInclude Include="LevelGenerator.h" />

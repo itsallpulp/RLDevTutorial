@@ -1,6 +1,7 @@
 #include "TurnListener.h"
 #include "Globals.h"
 #include "Command.h"
+#include "GrabItemCommand.h"
 #include "MovementCommand.h"
 #include "Autoexplore.h"
 #include "EntityManager.h"
@@ -54,6 +55,9 @@ int TurnListener::HandlePlayerTurn(TurnEvent *e)
 						break;
 					case SDLK_x:
 						if (gameState == ON_MAP) { gameState = AUTOEXPLORE; }
+						break;
+					case SDLK_g:
+						command = new GrabItemCommand(player);
 						break;
 					default:
 						break;

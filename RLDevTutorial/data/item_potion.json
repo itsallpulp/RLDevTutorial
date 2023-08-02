@@ -1,0 +1,12 @@
+{
+	"name": "potion",
+	"components": {
+		"render": {
+			"glyph": 168,
+			"color": "y",
+			"bgColor": "~"
+		},
+		"physics": {
+		}
+	}
+}

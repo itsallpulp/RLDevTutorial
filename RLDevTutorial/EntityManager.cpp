@@ -73,6 +73,25 @@ Entity *EntityManager::At(int x, int y)
     return nullptr;
 }
 
+std::vector<Entity *> EntityManager::AllAt(int x, int y)
+{
+    std::vector<Entity *> e;
+
+    for (int i = 0; i < MAX_ENTITIES; ++i)
+    {
+        if (inUse[i])
+        {
+            point p = entities[i].GetXY();
+            if (p.first == x && p.second == y)
+            {
+                e.push_back(&entities[i]);
+            }
+        }
+    }
+
+    return e;
+}
+
 void EntityManager::RemoveEntity(Entity *e)
 {
     for (int i = 0; i < MAX_ENTITIES; ++i)

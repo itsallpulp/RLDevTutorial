@@ -123,6 +123,15 @@
     <ClCompile Include="FloatingText.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="InventoryComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemInteractionListener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GrabItemCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -220,6 +229,15 @@
     </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemInteractionListener.h">
+      <Filter>Header Files\Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="GrabItemCommand.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,7 +8,8 @@ static enum EventID {
 	evLog = 4,
 	evDamage = 8,
 	evAttack = 16,
-	evTakeTurn = 32
+	evTakeTurn = 32,
+	evGrabItem = 64
 };
 
 class Event {
@@ -94,4 +95,14 @@ class TurnEvent : public Event {
 		this->target = target;
 	}
 	Entity *target;
+};
+
+class GrabItemEvent : public Event {
+	public:
+	GrabItemEvent(Entity *target, Entity *item) : Event(evGrabItem)
+	{
+		this->target = target;
+		this->item = item;
+	}
+	Entity *target, *item;
 };

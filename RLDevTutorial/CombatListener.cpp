@@ -1,10 +1,23 @@
 #include "CombatListener.h"
 #include "FloatingText.h"
+#include "Globals.h"
+#include "EntityManager.h"
 
 int CombatListener::FireDamageEvent(DamageEvent *e)
 {
     LogEvent attackerLog(e->attacker, "You hit the " + e->defender->GetName() + " for " + std::to_string(e->damage) + ".");
     LogEvent defenderLog(e->defender, "The " + e->attacker->GetName() + " hits you for " + std::to_string(e->damage) + ".");
+
+    for (Entity *a : actorManager->GetEntities())
+    {
+        if (a == e->attacker || a == e->defender) { continue; }
+
+        if (a->CanSee(e->attacker) || a->CanSee(e->defender))
+        {
+            a->SendLog("The " + e->attacker->GetName() + " attacks the " + e->defender->GetName() + ".");
+        }
+
+    }
 
     e->defender->TakeDamage(e->damage);
 

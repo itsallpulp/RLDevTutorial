@@ -20,11 +20,13 @@
 #include "CombatListener.h"
 #include "DeathListener.h"
 #include "FOVListener.h"
+#include "ItemInteractionListener.h"
 #include "LogListener.h"
 #include "MovementListener.h"
 #include "RenderingListener.h"
 #include "TurnListener.h"
 
+#include "GrabItemCommand.h"
 #include "MovementCommand.h"
 
 #include "Level.h"
@@ -42,11 +44,12 @@ bool quit = false;
 
 int seed = 0;
 
-EntityManager *actorManager;
+EntityManager *actorManager, *itemManager;
 
 CombatListener lCombat;
 DeathListener lDeath;
 FOVListener lFOV;
+ItemInteractionListener lItems;
 LogListener lLog;
 MovementListener lMovement;
 RenderingListener lRendering;
@@ -77,6 +80,7 @@ int main(int argc, char* argv[])
 	WeightedBag<std::string> wb = WeightedBagFromJSON(GetJson("table_monsters"));
 
 	actorManager = new EntityManager();
+	itemManager = new EntityManager();
 	seed = time(NULL);
 	srand(seed);
 
@@ -101,6 +105,12 @@ int main(int argc, char* argv[])
 
 	lFOV.DoFOV(player);
 
+	int potion = itemManager->AddEntity("item_potion");
+	Entity *p = itemManager->GetEntity(potion);
+	point pLoc = player->GetXY();
+	p->cPhysics->x = pLoc.first;
+	p->cPhysics->y = pLoc.second;
+
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
@@ -123,6 +133,7 @@ std::string GenerateUUID()
 void RenderAll()
 {
 	level->Render();
+	itemManager->RunFunc(&RenderEntity);
 	actorManager->RunFunc(&RenderEntity);
 	RenderHUD(player);
 
@@ -150,6 +161,7 @@ int WorldFireEvent(Event *e)
 	r += lLog.FireEvent(e);
 	r += lCombat.FireEvent(e);
 	r += lTurn.FireEvent(e);
+	r += lItems.FireEvent(e);
 	r += lRendering.FireEvent(e);
 	r += lDeath.FireEvent(e);
 	return r;
@@ -287,14 +299,25 @@ void RenderHUD(Entity *e)
 		}
 	}
 
+	/* Render Player Health */
 	int y = RenderDisplay(e, 0, 0);
 
+	/* Render Visible Enemy Health */
 	for (Entity *a : actorManager->GetEntities())
 	{
 		if (a != e && e->CanSee(a))
 		{
 			y = RenderDisplay(a, 0, y);
 		}
+	}
+
+	y += 2;
+
+	/* Render Names of Visible Items */
+	for (Entity *e : itemManager->GetEntities())
+	{
+		if (!player->CanSee(e)) { continue; }
+		Render::Puts(e->GetName(), 0, y++, 'y', 'x');
 	}
 
 }
@@ -318,7 +341,7 @@ int RenderDisplay(Entity *e, int x, int y)
 	}
 	Render::Puts(hpVals, hpX, y, 'w', '~');
 
-	return ++y;
+	return y+2;
 }
 
 void RenderFloatingText(FloatingText *text)

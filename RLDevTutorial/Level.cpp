@@ -255,6 +255,7 @@ Level::Level()
     mTiles[0] = new Entity("base_floor");
     mTiles[1] = new Entity("base_wall");
     mTiles[2] = new Entity("base_door");
+    mTiles[3] = new Entity("tile_window");
     
     for (int x = 0; x < MAP_WIDTH; ++x)
     {
@@ -422,6 +423,19 @@ void Level::RoomsAndMazes(int roomPlacementAttempts)
         }
     }
     
+    /*
+    int nWindows = rand() % 50 + 15;
+    for (int i = 0; i < nWindows; ++i)
+    {
+        int x = (rand() % MAP_WIDTH - 2) + 1;
+        int y = (rand() % MAP_HEIGHT - 2) + 1;
+
+        if (mCells[x][y]->BlocksMovement())
+        {
+            SetCell(mTiles[3], x, y);
+        }
+    }
+    */
     //ConnectPoints();
 
 }

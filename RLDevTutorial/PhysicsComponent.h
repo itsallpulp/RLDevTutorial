@@ -6,6 +6,7 @@ class PhysicsComponent : public Component
 	PhysicsComponent(int x = 0, int y = 0);
 	int x, y;
 	bool blocksMovement, blocksVision;
+	float weight;
 
 	void LoadJson(json::object data);
 };

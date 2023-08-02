@@ -1,0 +1,14 @@
+{
+	"name": "glass window",
+	"components": {
+		"render": {
+			"glyph": 233,
+			"color": "w",
+			"bgColor": "x"
+		},
+		"physics": {
+			"blocksMovement": true,
+			"blocksVision": false
+		}
+	}
+}

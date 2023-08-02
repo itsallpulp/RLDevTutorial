@@ -30,7 +30,7 @@ extern double Distance(point start, point end);
 
 extern Level *level;
 extern Pathfinder *pathfinder;
-extern EntityManager *actorManager;
+extern EntityManager *actorManager, *itemManager;
 extern MovementCommand *FollowPath(Entity *target, std::stack<point> *path);
 extern Entity *player;
 

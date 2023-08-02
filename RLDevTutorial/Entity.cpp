@@ -29,6 +29,7 @@ Entity *Entity::Clone()
     Entity *n = new Entity();
     if (cActor != nullptr) { n->cActor = new ActorComponent((*cActor)); }
     if (cFOV != nullptr) { n->cFOV = new FOVComponent((*cFOV)); }
+    if (cInventory != nullptr) { n->cInventory = new InventoryComponent((*cInventory)); }
     if (cPhysics != nullptr) { n->cPhysics = new PhysicsComponent((*cPhysics)); }
     if (cRender != nullptr) { n->cRender = new RenderComponent((*cRender)); }
 
@@ -41,6 +42,7 @@ void Entity::Copy(Entity *other)
     mName = other->mName;
     if (other->cActor != nullptr) { delete cActor; cActor = new ActorComponent((*cActor)); }
     if (other->cFOV != nullptr) { delete cFOV; cFOV = new FOVComponent((*cFOV)); }
+    if (other->cInventory != nullptr) { delete cInventory; cInventory = new InventoryComponent((*cInventory)); }
     if (other->cPhysics != nullptr) { delete cPhysics; cPhysics = new PhysicsComponent((*cPhysics)); }
     if (other->cRender != nullptr) { delete cRender; cRender = new RenderComponent((*cRender)); }
 }
@@ -53,6 +55,8 @@ void Entity::Reset()
     cActor = nullptr;
     delete cFOV;
     cFOV = nullptr;
+    delete cInventory;
+    cInventory = nullptr;
     delete cPhysics;
     cFOV = nullptr;
     delete cRender;
@@ -95,6 +99,7 @@ void Entity::LoadJson(json::object data)
             else if (componentName == "FOV") { AddComponent<FOVComponent>((Component **)(&(cFOV)), data); }
             else if (componentName == "log") { AddComponent<LogComponent>((Component **)(&(cLog)), data); }
             else if (componentName == "actor") { AddComponent<ActorComponent>((Component **)(&(cActor)), data); }
+            else if (componentName == "inventory") { AddComponent<InventoryComponent>((Component **)(&(cInventory)), data); }
 
         }
     }
@@ -141,6 +146,15 @@ int Entity::GetEnergy()
 int Entity::ModEnergy(int d)
 {
     return cActor == nullptr ? 0 : (cActor->energy += d);
+}
+
+bool Entity::AddItem(Entity *item)
+{
+    if (cInventory == nullptr) { return false; }
+    
+    cInventory->AddItem(item);
+    
+    return true;
 }
 
 point Entity::GetXY()

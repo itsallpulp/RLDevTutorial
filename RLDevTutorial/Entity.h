@@ -7,6 +7,7 @@
 
 #include "ActorComponent.h"
 #include "FOVComponent.h"
+#include "InventoryComponent.h"
 #include "LogComponent.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
@@ -52,6 +53,9 @@ class Entity
 	int ModEnergy(int d);
 
 	FOVComponent *cFOV;
+
+	InventoryComponent *cInventory;
+	bool AddItem(Entity *item);
 
 	PhysicsComponent *cPhysics;
 	point GetXY();

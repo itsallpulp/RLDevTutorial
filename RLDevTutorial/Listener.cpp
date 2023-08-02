@@ -40,6 +40,8 @@ int Listener::FireEvent(Event *e)
             return FireDamageEvent((DamageEvent *)e);
         case evTakeTurn:
             return FireTurnEvent((TurnEvent *)e);
+        case evGrabItem:
+            return FireGrabItemEvent((GrabItemEvent *)e);
         default:
             return 0;
     }
