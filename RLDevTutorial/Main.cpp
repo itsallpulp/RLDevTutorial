@@ -37,6 +37,7 @@
 
 #include "FloatingText.h"
 
+#include "Menu.h"
 
 boost::uuids::random_generator uuidGenerator;
 
@@ -74,6 +75,7 @@ void PrintRuntime(void (*func)(void));
 std::map<std::string, json::object> jsonCache;
 std::vector<std::string> jsonCacheKey;
 std::vector<FloatingText> *floatingTexts = new std::vector<FloatingText>();
+std::stack<Menu *> menus;
 
 int main(int argc, char* argv[])
 {
@@ -119,8 +121,15 @@ int main(int argc, char* argv[])
 	Render::Init();
 	while (!quit)
 	{
-		/* Do turn loop */
-		actorManager->RunFunc(TakeTurn);
+		if (menus.size() > 0)
+		{
+			menus.top()->Render();
+		}
+		else
+		{
+			/* Do turn loop */
+			actorManager->RunFunc(TakeTurn);
+		}
 	}
 	return 0;
 }
@@ -148,6 +157,11 @@ void RenderAll()
 			RenderFloatingText(&(*it));
 			++it;
 		}
+	}
+
+	if (menus.size() > 0)
+	{
+		menus.top()->Render();
 	}
 
 	Render::Update();
@@ -371,8 +385,16 @@ void TakeTurn(Entity *actor)
 	{
 		while (actor->GetEnergy() >= 100)
 		{
-			TurnEvent e(actor);
-			actor->ModEnergy( -WorldFireEvent(&e) );
+			if (gameState == IN_MENU)
+			{
+				std::cout << "In Menu!" << std::endl;
+				RenderAll();
+			}
+			else
+			{
+				TurnEvent e(actor);
+				actor->ModEnergy(-WorldFireEvent(&e));
+			}
 		}
 	}
 }

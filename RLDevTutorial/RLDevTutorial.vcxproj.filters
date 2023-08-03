@@ -43,6 +43,12 @@
     <Filter Include="Source Files\Misc">
       <UniqueIdentifier>{25b157bd-2548-4f38-a929-2245aa1144b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Menus">
+      <UniqueIdentifier>{4c3bb858-32c5-41ad-8364-af1f7ecb7dc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Menus">
+      <UniqueIdentifier>{a351bfa9-7649-4b74-88d2-820dfad8a620}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -126,10 +132,16 @@
     <ClCompile Include="InventoryComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ItemInteractionListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GrabItemCommand.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemInteractionListener.cpp">
+      <Filter>Source Files\Listeners</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenMenuCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -237,6 +249,12 @@
       <Filter>Header Files\Listeners</Filter>
     </ClInclude>
     <ClInclude Include="GrabItemCommand.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenMenuCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

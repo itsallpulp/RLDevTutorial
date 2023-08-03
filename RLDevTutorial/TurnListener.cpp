@@ -3,10 +3,13 @@
 #include "Command.h"
 #include "GrabItemCommand.h"
 #include "MovementCommand.h"
+#include "OpenMenuCommand.h"
 #include "Autoexplore.h"
 #include "EntityManager.h"
 #include "Level.h"
 #include "Pathfinder.h"
+
+#include "Menu.h"
 
 int TurnListener::FireTurnEvent(TurnEvent *e)
 {
@@ -25,7 +28,7 @@ int TurnListener::HandlePlayerTurn(TurnEvent *e)
 {
 	int cost = 0;
 
-	while (cost == 0)
+	while (cost == 0 && gameState == ON_MAP)
 	{
 		SDL_Event input;
 
@@ -58,6 +61,9 @@ int TurnListener::HandlePlayerTurn(TurnEvent *e)
 						break;
 					case SDLK_g:
 						command = new GrabItemCommand(player);
+						break;
+					case SDLK_i:
+						command = new OpenMenuCommand(new Menu("Inventory"));
 						break;
 					default:
 						break;

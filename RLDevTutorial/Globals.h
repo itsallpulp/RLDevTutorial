@@ -18,8 +18,9 @@ class Entity;
 class EntityManager;
 class Event;
 class Level;
-class Pathfinder;
+class Menu;
 class MovementCommand;
+class Pathfinder;
 
 extern boost::uuids::random_generator uuidGenerator;
 extern std::string GenerateUUID();
@@ -33,6 +34,7 @@ extern Pathfinder *pathfinder;
 extern EntityManager *actorManager, *itemManager;
 extern MovementCommand *FollowPath(Entity *target, std::stack<point> *path);
 extern Entity *player;
+extern std::stack<Menu *> menus;
 
 extern int gameState;
 
@@ -95,5 +97,6 @@ namespace Render {
 
 static enum GameStates {
 	ON_MAP = 0,
-	AUTOEXPLORE
+	AUTOEXPLORE,
+	IN_MENU
 };

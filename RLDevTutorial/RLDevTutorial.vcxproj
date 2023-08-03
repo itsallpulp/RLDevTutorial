@@ -165,8 +165,10 @@
     <ClCompile Include="LogComponent.cpp" />
     <ClCompile Include="LogListener.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MovementCommand.cpp" />
     <ClCompile Include="MovementListener.cpp" />
+    <ClCompile Include="OpenMenuCommand.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="Render.cpp" />
@@ -201,8 +203,10 @@
     <ClInclude Include="Listener.h" />
     <ClInclude Include="LogComponent.h" />
     <ClInclude Include="LogListener.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="MovementCommand.h" />
     <ClInclude Include="MovementListener.h" />
+    <ClInclude Include="OpenMenuCommand.h" />
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="RenderComponent.h" />
