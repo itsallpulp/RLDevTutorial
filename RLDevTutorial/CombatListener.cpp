@@ -47,7 +47,19 @@ int CombatListener::FireRenderEvent(RenderEvent *e)
     return 0;
 }
 
+int CombatListener::FireHealEvent(HealEvent *e)
+{
+    int healed = e->target->Heal(e->amount);
+    if (healed > 0)
+    {
+        LogEvent log(e->target, "You regain " + std::to_string(healed) + " health.");
+        WorldFireEvent(&log);
+        AddFloatingText('+', 'G', e->target->GetXY(), FT_REG);
+    }
+    return 0;
+}
+
 CombatListener::CombatListener()
 {
-    RegisterListenFor(evDamage | evRender);
+    RegisterListenFor(evDamage | evRender | evHeal);
 }

@@ -8,7 +8,6 @@ int ItemInteractionListener::FireGrabItemEvent(GrabItemEvent *e)
 
     e->target->AddItem(e->item);
     itemManager->ChangeState(e->item, EntityManager::IN_INVENTORY);
-    //itemManager->RemoveEntity(e->item);
 
     return 100;
 }
@@ -19,10 +18,8 @@ int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
     WorldFireEvent(&l1);
     if (e->consumed->HealsOnConsume())
     {
-        int healed = e->target->Heal(e->consumed->GetConsumeHealAmount());
-        LogEvent log(e->target, "You regain " + std::to_string(healed) + " health.");
-        WorldFireEvent(&log);
-        AddFloatingText('+', 'g', e->target->GetXY());
+        HealEvent h(e->target, e->consumed->GetConsumeHealAmount());
+        WorldFireEvent(&h);
     }
 
     e->target->RemoveItem(e->consumed);

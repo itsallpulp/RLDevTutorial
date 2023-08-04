@@ -11,7 +11,8 @@ static enum EventID {
 	evTakeTurn = 32,
 	evGrabItem = 64,
 	evConsumeItem = 128,
-	evDropItem = 256
+	evDropItem = 256,
+	evHeal = 512
 };
 
 class Event {
@@ -127,4 +128,15 @@ class DropItemEvent : public Event {
 		this->item = item;
 	}
 	Entity *target, *item;
+};
+
+class HealEvent : public Event {
+	public:
+	HealEvent(Entity *target, int amount) : Event(evHeal)
+	{
+		this->target = target;
+		this->amount = amount;
+	}
+	Entity *target;
+	int amount;
 };
