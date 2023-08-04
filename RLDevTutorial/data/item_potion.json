@@ -8,6 +8,9 @@
 		},
 		"physics": {
 			"weight": 0.5
+		},
+		"consumable": {
+			"verb": "drink"
 		}
 	}
 }

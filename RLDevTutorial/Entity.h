@@ -52,9 +52,10 @@ class Entity
 
 	FOVComponent *cFOV;
 
-	HealComponent *cHeal;
+	ConsumableComponent *cConsumable;
 	bool HealsOnConsume();
-	int GetHealAmount();
+	int GetConsumeHealAmount();
+	std::string GetConsumeVerb();
 
 	InventoryComponent *cInventory;
 	bool AddItem(Entity *item);

@@ -149,6 +149,7 @@
     <ClCompile Include="CombatListener.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ConsumableComponent.cpp" />
     <ClCompile Include="ConsumeCommand.cpp" />
     <ClCompile Include="DeathListener.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentsList.h" />
+    <ClInclude Include="ConsumableComponent.h" />
     <ClInclude Include="ConsumeCommand.h" />
     <ClInclude Include="DeathListener.h" />
     <ClInclude Include="Entity.h" />

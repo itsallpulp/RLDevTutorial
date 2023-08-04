@@ -2,6 +2,7 @@
 
 #include "Component.h"
 #include "ActorComponent.h"
+#include "ConsumableComponent.h"
 #include "FOVComponent.h"
 #include "HealComponent.h"
 #include "InventoryComponent.h"
