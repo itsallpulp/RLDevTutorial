@@ -31,6 +31,7 @@ Command *OptionMenu::GetCommand()
 				}
 			}
 		}
+		RenderAll();
 	}
 	return nullptr;
 }

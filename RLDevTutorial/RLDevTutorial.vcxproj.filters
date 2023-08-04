@@ -160,7 +160,7 @@
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
     <ClCompile Include="ConsumableComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

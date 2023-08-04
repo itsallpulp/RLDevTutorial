@@ -4,6 +4,7 @@
 
 #include "ConsumeCommand.h"
 #include "ExitMenuCommand.h"
+#include "OpenMenuCommand.h"
 
 Menu *NewInventoryMenu(Entity *e)
 {
@@ -16,17 +17,22 @@ Menu *NewInventoryMenu(Entity *e)
         float w = std::roundf(item->GetWeight() * 100) / 100;
         std::string weight = " (" + std::to_string(w).substr(0, 3) + " lb)";
 
-        Command *c = nullptr;
-
-        if (item->IsConsumable())
-        {
-            std::cout << "Consumable" << std::endl;
-            c = new ConsumeCommand(e, item);
-        }
-
-        m->AddOption(item->GetName() + weight, c, i++);
+        m->AddOption(item->GetName(), new OpenMenuCommand(NewItemUseMenu(item, e)), i++);
     }
 
+
+    return m;
+}
+
+Menu *NewItemUseMenu(Entity *item, Entity *user)
+{
+    std::cout << "NewItemUseMenu" << std::endl;
+    OptionMenu *m = new OptionMenu(item->GetName(), 0, 0);
+
+    if (item->IsConsumable())
+    {
+        m->AddOption(item->GetConsumeVerb(), new ConsumeCommand(user, item));
+    }
 
     return m;
 }
