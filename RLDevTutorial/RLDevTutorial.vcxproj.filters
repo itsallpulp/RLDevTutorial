@@ -142,6 +142,15 @@
       <Filter>Source Files\Menus</Filter>
     </ClCompile>
     <ClCompile Include="OpenMenuCommand.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="ExitMenuCommand.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuBuilders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -254,7 +263,16 @@
     <ClInclude Include="Menu.h">
       <Filter>Header Files\Menus</Filter>
     </ClInclude>
+    <ClInclude Include="ExitMenuCommand.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
     <ClInclude Include="OpenMenuCommand.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuBuilders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

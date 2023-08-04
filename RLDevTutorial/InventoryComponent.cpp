@@ -11,7 +11,8 @@ float InventoryComponent::GetTotalWeight()
 
 float InventoryComponent::AddItem(Entity *item)
 {
-    return 0.0f;
+    contents.push_back(item);
+    return GetTotalWeight();
 }
 
 float InventoryComponent::RemoveItem(Entity *item)

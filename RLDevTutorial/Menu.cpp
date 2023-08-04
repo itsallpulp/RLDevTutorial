@@ -12,7 +12,7 @@ Menu::Menu(std::string title)
 	background = 'x';
 }
 
-void Menu::Render()
+void Menu::RenderBackground()
 {
-	Render::PutTitledBorder(title, x, y, width, height, foreground, background);
+	Render::PutTitledBorder(title, x, y, width, height, foreground, background, FILL_BACKGROUND | BORDER_TITLE_CENTER);
 }

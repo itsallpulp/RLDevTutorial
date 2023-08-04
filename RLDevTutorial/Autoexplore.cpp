@@ -24,6 +24,7 @@ MovementCommand *AutoExplore()
 
 	}
 
+
 	std::vector<point> unvisited;
 	for (int x = 1; x < MAP_WIDTH - 1; ++x)
 	{
@@ -39,7 +40,9 @@ MovementCommand *AutoExplore()
 		return new MovementCommand(player, 0, 0);
 	}
 
+
 	int **path = pathfinder->CreateDijkstraMap(unvisited);
+
 
 	int dx = 0, dy = 0;
 	point p = player->GetXY();
@@ -55,6 +58,7 @@ MovementCommand *AutoExplore()
 		delete path[i];
 	}
 	delete path;
+
 
 	SDL_Delay(25);
 	return new MovementCommand(player, dx, dy);

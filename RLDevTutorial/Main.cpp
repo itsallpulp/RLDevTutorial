@@ -81,6 +81,7 @@ int main(int argc, char* argv[])
 {
 	WeightedBag<std::string> wb = WeightedBagFromJSON(GetJson("table_monsters"));
 
+
 	actorManager = new EntityManager();
 	itemManager = new EntityManager();
 	seed = time(NULL);
@@ -121,15 +122,8 @@ int main(int argc, char* argv[])
 	Render::Init();
 	while (!quit)
 	{
-		if (menus.size() > 0)
-		{
-			menus.top()->Render();
-		}
-		else
-		{
-			/* Do turn loop */
-			actorManager->RunFunc(TakeTurn);
-		}
+		/* Do turn loop */
+		actorManager->RunFunc(TakeTurn);
 	}
 	return 0;
 }
@@ -387,8 +381,15 @@ void TakeTurn(Entity *actor)
 		{
 			if (gameState == IN_MENU)
 			{
-				std::cout << "In Menu!" << std::endl;
-				RenderAll();
+				Command *c = nullptr;
+
+				while (c == nullptr)
+				{
+					c = menus.top()->GetCommand();
+				}
+
+				actor->ModEnergy(-c->Execute());
+				delete c;
 			}
 			else
 			{

@@ -33,6 +33,7 @@ Entity *Entity::Clone()
     if (cPhysics != nullptr) { n->cPhysics = new PhysicsComponent((*cPhysics)); }
     if (cRender != nullptr) { n->cRender = new RenderComponent((*cRender)); }
 
+    n->mName = mName;
     
     return n;
 }
@@ -152,9 +153,20 @@ bool Entity::AddItem(Entity *item)
 {
     if (cInventory == nullptr) { return false; }
     
+
     cInventory->AddItem(item);
     
     return true;
+}
+
+std::vector<Entity *> Entity::GetInventory()
+{
+    if (cInventory != nullptr)
+    {
+        return cInventory->contents;
+    }
+
+    return std::vector<Entity *>();
 }
 
 point Entity::GetXY()
@@ -184,6 +196,11 @@ bool Entity::BlocksMovement()
 bool Entity::BlocksVision()
 {
     return cPhysics == nullptr ? false : cPhysics->blocksVision;
+}
+
+float Entity::GetWeight()
+{
+    return cPhysics == nullptr ? 0.0 : cPhysics->weight;
 }
 
 void Entity::SendLog(std::string message)

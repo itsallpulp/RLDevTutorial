@@ -10,6 +10,9 @@
 #include "Pathfinder.h"
 
 #include "Menu.h"
+#include "OptionMenu.h"
+
+#include "MenuBuilders.h"
 
 int TurnListener::FireTurnEvent(TurnEvent *e)
 {
@@ -28,7 +31,7 @@ int TurnListener::HandlePlayerTurn(TurnEvent *e)
 {
 	int cost = 0;
 
-	while (cost == 0 && gameState == ON_MAP)
+	while (cost == 0 && gameState != IN_MENU)
 	{
 		SDL_Event input;
 
@@ -63,7 +66,7 @@ int TurnListener::HandlePlayerTurn(TurnEvent *e)
 						command = new GrabItemCommand(player);
 						break;
 					case SDLK_i:
-						command = new OpenMenuCommand(new Menu("Inventory"));
+						command = new OpenMenuCommand(NewInventoryMenu(player));
 						break;
 					default:
 						break;
@@ -88,6 +91,8 @@ int TurnListener::HandlePlayerTurn(TurnEvent *e)
 
 		RenderAll();
 	}
+
+
 	return cost;
 }
 

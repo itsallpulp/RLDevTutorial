@@ -152,6 +152,7 @@
     <ClCompile Include="DeathListener.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="ExitMenuCommand.cpp" />
     <ClCompile Include="FloatingText.cpp" />
     <ClCompile Include="FOVComponent.cpp" />
     <ClCompile Include="FOVListener.cpp" />
@@ -166,9 +167,11 @@
     <ClCompile Include="LogListener.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MenuBuilders.cpp" />
     <ClCompile Include="MovementCommand.cpp" />
     <ClCompile Include="MovementListener.cpp" />
     <ClCompile Include="OpenMenuCommand.cpp" />
+    <ClCompile Include="OptionMenu.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="Render.cpp" />
@@ -187,6 +190,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="ExitMenuCommand.h" />
     <ClInclude Include="FloatingText.h" />
     <ClInclude Include="FOVComponent.h" />
     <ClInclude Include="FOVData.h" />
@@ -204,9 +208,11 @@
     <ClInclude Include="LogComponent.h" />
     <ClInclude Include="LogListener.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuBuilders.h" />
     <ClInclude Include="MovementCommand.h" />
     <ClInclude Include="MovementListener.h" />
     <ClInclude Include="OpenMenuCommand.h" />
+    <ClInclude Include="OptionMenu.h" />
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="RenderComponent.h" />

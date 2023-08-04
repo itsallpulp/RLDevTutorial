@@ -56,12 +56,14 @@ class Entity
 
 	InventoryComponent *cInventory;
 	bool AddItem(Entity *item);
+	std::vector<Entity *> GetInventory();
 
 	PhysicsComponent *cPhysics;
 	point GetXY();
 	void SetXY(int x, int y);
 	bool BlocksMovement();
 	bool BlocksVision();
+	float GetWeight();
 
 	RenderComponent *cRender;
 
