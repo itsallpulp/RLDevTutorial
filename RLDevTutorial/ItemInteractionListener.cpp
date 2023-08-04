@@ -6,11 +6,9 @@ int ItemInteractionListener::FireGrabItemEvent(GrabItemEvent *e)
     LogEvent l(e->target, "You pick up the " + e->item->GetName() + ".");
     WorldFireEvent(&l);
 
-
-    /* Need to make a clone of the item because it is a regular object in the entitymanager */
-    Entity *item = e->item->Clone();
-    e->target->AddItem(item);
-    itemManager->RemoveEntity(e->item);
+    e->target->AddItem(e->item);
+    itemManager->ChangeState(e->item, EntityManager::IN_INVENTORY);
+    //itemManager->RemoveEntity(e->item);
 
     return 100;
 }
@@ -28,12 +26,28 @@ int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
     }
 
     e->target->RemoveItem(e->consumed);
-    delete e->consumed;
+    itemManager->RemoveEntity(e->consumed);
     
+    return 100;
+}
+
+int ItemInteractionListener::FireDropItemEvent(DropItemEvent *e)
+{
+    LogEvent l(e->target, "You drop the " + e->item->GetName() + ".");
+    WorldFireEvent(&l);
+    
+    e->target->RemoveItem(e->item);
+    point p = e->target->GetXY();
+    e->item->SetXY(p.first, p.second);
+    itemManager->ChangeState(e->item, EntityManager::ON_MAP);
+
+    std::cout << p.first << ", " << p.second;
+    p = e->item->GetXY();
+
     return 100;
 }
 
 ItemInteractionListener::ItemInteractionListener()
 {
-    RegisterListenFor(evGrabItem | evConsumeItem | 0);
+    RegisterListenFor(evGrabItem | evConsumeItem | evDropItem);
 }

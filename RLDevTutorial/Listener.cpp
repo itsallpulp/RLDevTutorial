@@ -42,8 +42,9 @@ int Listener::FireEvent(Event *e)
             return FireTurnEvent((TurnEvent *)e);
         case evGrabItem:
             return FireGrabItemEvent((GrabItemEvent *)e);
+        case evDropItem:
+            return FireDropItemEvent((DropItemEvent *)e);
         case evConsumeItem:
-            std::cout << "ConsumeItemEvent" << std::endl;
             return FireConsumeItemEvent((ConsumeItemEvent *)e);
         default:
             return 0;

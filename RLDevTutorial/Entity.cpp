@@ -44,12 +44,12 @@ Entity *Entity::Clone()
 void Entity::Copy(Entity *other)
 {
     mName = other->mName;
-    if (other->cActor != nullptr) { delete cActor; cActor = new ActorComponent((*cActor)); }
-    if (other->cFOV != nullptr) { delete cFOV; cFOV = new FOVComponent((*cFOV)); }
-    if (other->cConsumable != nullptr) { delete cConsumable; cConsumable = new ConsumableComponent((*cConsumable)); }
-    if (other->cInventory != nullptr) { delete cInventory; cInventory = new InventoryComponent((*cInventory)); }
-    if (other->cPhysics != nullptr) { delete cPhysics; cPhysics = new PhysicsComponent((*cPhysics)); }
-    if (other->cRender != nullptr) { delete cRender; cRender = new RenderComponent((*cRender)); }
+    if (other->cActor != nullptr) { delete cActor; cActor = new ActorComponent(*(other->cActor)); }
+    if (other->cFOV != nullptr) { delete cFOV; cFOV = new FOVComponent(*(other->cFOV)); }
+    if (other->cConsumable != nullptr) { delete cConsumable; cConsumable = new ConsumableComponent(*(other->cConsumable)); }
+    if (other->cInventory != nullptr) { delete cInventory; cInventory = new InventoryComponent(*(other->cInventory)); }
+    if (other->cPhysics != nullptr) { delete cPhysics; cPhysics = new PhysicsComponent(*(other->cPhysics)); }
+    if (other->cRender != nullptr) { delete cRender; cRender = new RenderComponent(*(other->cRender)); }
 }
 
 void Entity::Reset()

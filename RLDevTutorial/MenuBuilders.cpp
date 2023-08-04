@@ -5,6 +5,7 @@
 #include "ConsumeCommand.h"
 #include "ExitMenuCommand.h"
 #include "OpenMenuCommand.h"
+#include "DropItemCommand.h"
 
 Menu *NewInventoryMenu(Entity *e)
 {
@@ -26,8 +27,9 @@ Menu *NewInventoryMenu(Entity *e)
 
 Menu *NewItemUseMenu(Entity *item, Entity *user)
 {
-    std::cout << "NewItemUseMenu" << std::endl;
     OptionMenu *m = new OptionMenu(item->GetName(), 0, 0);
+
+    m->AddOption("drop", new DropItemCommand(user, item));
 
     if (item->IsConsumable())
     {

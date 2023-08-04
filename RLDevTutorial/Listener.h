@@ -17,7 +17,8 @@ class Listener
 	virtual int FireDamageEvent(DamageEvent *e) { return 0; }
 	virtual int FireTurnEvent(TurnEvent *e) { return 0; }
 	virtual int FireGrabItemEvent(GrabItemEvent *e) { return 0; }
-	virtual int FireConsumeItemEvent(ConsumeItemEvent *e) { std::cout << "????" << std::endl; return 0; }
+	virtual int FireDropItemEvent(DropItemEvent *e) { return 0; }
+	virtual int FireConsumeItemEvent(ConsumeItemEvent *e) { return 0; }
 
 	public:
 	Listener();

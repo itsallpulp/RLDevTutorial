@@ -4,7 +4,7 @@ EntityManager::EntityManager()
 {
     for (int i = 0; i < MAX_ENTITIES; ++i)
     {
-        inUse[i] = false;
+        inUse[i] = FREE;
     }
 }
 
@@ -12,12 +12,12 @@ int EntityManager::AddEntity(std::string filename)
 {
     for (int i = 0; i < MAX_ENTITIES; ++i)
     {
-        if (!inUse[i]) // Nothing really there
+        if (inUse[i] == FREE) // Nothing really there
         {
             entities[i].Reset(); // Should be unnecessary
             entities[i].LoadJson(GetJson(filename));
             idMap[entities[i].GetUUID()] = i;
-            inUse[i] = true;
+            inUse[i] = ON_MAP;
             return i;
         }
     }
@@ -30,7 +30,7 @@ std::set<Entity *> EntityManager::GetEntities()
 
     for (int i = 0; i < MAX_ENTITIES; ++i)
     {
-        if (inUse[i])
+        if (inUse[i] == ON_MAP)
         {
             e.insert(&(entities[i]));
         }
@@ -49,11 +49,11 @@ Entity *EntityManager::GetEntity(std::string uuid)
     return GetEntity(idMap[uuid]);
 }
 
-void EntityManager::RunFunc(void(*func)(Entity *))
+void EntityManager::RunFunc(void(*func)(Entity *), int filter)
 {
     for (int i = 0; i < MAX_ENTITIES; ++i)
     {
-        if (inUse[i])
+        if (inUse[i] == filter)
         {
             func(&(entities[i]));
         }
@@ -79,7 +79,7 @@ std::vector<Entity *> EntityManager::AllAt(int x, int y)
 
     for (int i = 0; i < MAX_ENTITIES; ++i)
     {
-        if (inUse[i])
+        if (inUse[i] == ON_MAP)
         {
             point p = entities[i].GetXY();
             if (p.first == x && p.second == y)
@@ -99,7 +99,24 @@ void EntityManager::RemoveEntity(Entity *e)
         if (entities[i].GetUUID() == e->GetUUID())
         {
             entities[i].Reset();
-            inUse[i] = false;
+            inUse[i] = FREE;
+            return;
+        }
+    }
+}
+
+void EntityManager::ChangeState(int index, int newState)
+{
+    inUse[index] = newState;
+}
+
+void EntityManager::ChangeState(Entity *e, int newState)
+{
+    for (int i = 0; i < MAX_ENTITIES; ++i)
+    {
+        if (entities[i].GetUUID() == e->GetUUID())
+        {
+            inUse[i] = newState;
             return;
         }
     }

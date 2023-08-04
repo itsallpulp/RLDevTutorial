@@ -10,7 +10,8 @@ static enum EventID {
 	evAttack = 16,
 	evTakeTurn = 32,
 	evGrabItem = 64,
-	evConsumeItem = 128
+	evConsumeItem = 128,
+	evDropItem = 256
 };
 
 class Event {
@@ -116,4 +117,14 @@ class ConsumeItemEvent : public Event {
 		this->consumed = consumed;
 	}
 	Entity *target, *consumed;
+};
+
+class DropItemEvent : public Event {
+	public:
+	DropItemEvent(Entity *target, Entity *item) : Event(evDropItem)
+	{
+		this->target = target;
+		this->item = item;
+	}
+	Entity *target, *item;
 };

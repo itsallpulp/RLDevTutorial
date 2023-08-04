@@ -11,6 +11,7 @@ int ConsumeCommand::Execute()
     ConsumeItemEvent e(consumer, consumed);
     int cost = WorldFireEvent(&e);
 
+    std::cout << cost << std::endl;
     
     if (consumer == player)
     {
