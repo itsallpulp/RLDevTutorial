@@ -7,6 +7,7 @@ class OptionMenu : public Menu
 
 	public:
 	OptionMenu(std::string title, int x, int y);
+	~OptionMenu();
 	Command *GetCommand();
 	void AddOption(std::string name, Command *command, int key=-1);
 	void Render();

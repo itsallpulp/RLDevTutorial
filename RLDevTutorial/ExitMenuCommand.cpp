@@ -8,12 +8,8 @@ ExitMenuCommand::ExitMenuCommand()
 
 int ExitMenuCommand::Execute()
 {
-    Menu *m = menus.top();
-    menus.pop();
-
-    delete m;
-
-    if (menus.size() == 0) { gameState = ON_MAP; }
+    
+    if (PopMenu()) { gameState = ON_MAP; }
 
     return 0;
 }

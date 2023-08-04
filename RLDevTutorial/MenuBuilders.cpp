@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include "ConsumeCommand.h"
+#include "ExitMenuCommand.h"
+
 Menu *NewInventoryMenu(Entity *e)
 {
     OptionMenu *m = new OptionMenu("Inventory", 0, 0);
@@ -12,8 +15,18 @@ Menu *NewInventoryMenu(Entity *e)
     {
         float w = std::roundf(item->GetWeight() * 100) / 100;
         std::string weight = " (" + std::to_string(w).substr(0, 3) + " lb)";
-        m->AddOption(item->GetName() + weight, nullptr, i++);
+
+        Command *c = nullptr;
+
+        if (item->IsConsumable())
+        {
+            std::cout << "Consumable" << std::endl;
+            c = new ConsumeCommand(e, item);
+        }
+
+        m->AddOption(item->GetName() + weight, c, i++);
     }
+
 
     return m;
 }

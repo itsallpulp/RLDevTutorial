@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
 
 	lFOV.DoFOV(player);
 
-	int potion = itemManager->AddEntity("item_potion");
+	int potion = itemManager->AddEntity("item_potion_of_healing");
 	Entity *p = itemManager->GetEntity(potion);
 	point pLoc = player->GetXY();
 	p->cPhysics->x = pLoc.first;
@@ -388,7 +388,7 @@ void TakeTurn(Entity *actor)
 					c = menus.top()->GetCommand();
 				}
 
-				actor->ModEnergy(-c->Execute());
+				actor->ModEnergy(-(c->Execute()));
 				delete c;
 			}
 			else
@@ -398,4 +398,17 @@ void TakeTurn(Entity *actor)
 			}
 		}
 	}
+}
+
+bool PopMenu()
+{
+	if (menus.size() == 0)
+	{
+		return true;
+	}
+
+	Menu *m = menus.top();
+	menus.pop();
+	delete m;
+	return (menus.size() == 0);
 }

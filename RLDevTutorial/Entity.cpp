@@ -9,6 +9,8 @@ Entity::Entity()
 
     cActor = nullptr;
     cFOV = nullptr;
+    cHeal = nullptr;
+    cInventory = nullptr;
     cPhysics = nullptr;
     cRender = nullptr;
     cLog = nullptr;
@@ -29,6 +31,7 @@ Entity *Entity::Clone()
     Entity *n = new Entity();
     if (cActor != nullptr) { n->cActor = new ActorComponent((*cActor)); }
     if (cFOV != nullptr) { n->cFOV = new FOVComponent((*cFOV)); }
+    if (cHeal != nullptr) { n->cHeal = new HealComponent((*cHeal)); }
     if (cInventory != nullptr) { n->cInventory = new InventoryComponent((*cInventory)); }
     if (cPhysics != nullptr) { n->cPhysics = new PhysicsComponent((*cPhysics)); }
     if (cRender != nullptr) { n->cRender = new RenderComponent((*cRender)); }
@@ -43,6 +46,7 @@ void Entity::Copy(Entity *other)
     mName = other->mName;
     if (other->cActor != nullptr) { delete cActor; cActor = new ActorComponent((*cActor)); }
     if (other->cFOV != nullptr) { delete cFOV; cFOV = new FOVComponent((*cFOV)); }
+    if (other->cHeal != nullptr) { delete cHeal; cHeal = new HealComponent((*cHeal)); }
     if (other->cInventory != nullptr) { delete cInventory; cInventory = new InventoryComponent((*cInventory)); }
     if (other->cPhysics != nullptr) { delete cPhysics; cPhysics = new PhysicsComponent((*cPhysics)); }
     if (other->cRender != nullptr) { delete cRender; cRender = new RenderComponent((*cRender)); }
@@ -56,6 +60,8 @@ void Entity::Reset()
     cActor = nullptr;
     delete cFOV;
     cFOV = nullptr;
+    delete cHeal;
+    cHeal = nullptr;
     delete cInventory;
     cInventory = nullptr;
     delete cPhysics;
@@ -101,9 +107,17 @@ void Entity::LoadJson(json::object data)
             else if (componentName == "log") { AddComponent<LogComponent>((Component **)(&(cLog)), data); }
             else if (componentName == "actor") { AddComponent<ActorComponent>((Component **)(&(cActor)), data); }
             else if (componentName == "inventory") { AddComponent<InventoryComponent>((Component **)(&(cInventory)), data); }
+            else if (componentName == "heal") { AddComponent<HealComponent>((Component **)(&(cHeal)), data); }
 
         }
     }
+}
+
+bool Entity::IsConsumable()
+{
+    if (cHeal != nullptr && cHeal->activateOnConsume) { return true; }
+
+    return false;
 }
 
 point Entity::GetHealthStats()
@@ -128,6 +142,18 @@ int Entity::GetMaxHealth()
     return cActor == nullptr ? 0 : cActor->maxHealth;
 }
 
+int Entity::Heal(int amount)
+{
+    if (cActor == nullptr) { return 0; }
+
+    int healed = cActor->health;
+    cActor->health = std::min(cActor->health + amount, cActor->maxHealth);
+
+    healed = cActor->health - healed;
+
+    return healed;
+}
+
 bool Entity::IsAlive()
 {
     return (GetHealth() > 0);
@@ -149,6 +175,16 @@ int Entity::ModEnergy(int d)
     return cActor == nullptr ? 0 : (cActor->energy += d);
 }
 
+bool Entity::HealsOnConsume()
+{
+    return cHeal == nullptr ? false : cHeal->activateOnConsume;
+}
+
+int Entity::GetHealAmount()
+{
+    return cHeal == nullptr ? 0 : cHeal->amount;
+}
+
 bool Entity::AddItem(Entity *item)
 {
     if (cInventory == nullptr) { return false; }
@@ -157,6 +193,12 @@ bool Entity::AddItem(Entity *item)
     cInventory->AddItem(item);
     
     return true;
+}
+
+void Entity::RemoveItem(Entity *item)
+{
+    if (cInventory == nullptr) { return; }
+    cInventory->RemoveItem(item);
 }
 
 std::vector<Entity *> Entity::GetInventory()

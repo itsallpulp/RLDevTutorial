@@ -5,12 +5,7 @@
 #include "Globals.h"
 #include "Types.h"
 
-#include "ActorComponent.h"
-#include "FOVComponent.h"
-#include "InventoryComponent.h"
-#include "LogComponent.h"
-#include "PhysicsComponent.h"
-#include "RenderComponent.h"
+#include "ComponentsList.h"
 
 #include "Event.h"
 
@@ -43,10 +38,13 @@ class Entity
 
 	void LoadJson(json::object data);
 
+	bool IsConsumable();
+
 	ActorComponent *cActor;
 	point GetHealthStats();
 	int GetHealth();
 	int GetMaxHealth();
+	int Heal(int amount);
 	bool IsAlive();
 	void TakeDamage(int damage);
 	int GetEnergy();
@@ -54,8 +52,13 @@ class Entity
 
 	FOVComponent *cFOV;
 
+	HealComponent *cHeal;
+	bool HealsOnConsume();
+	int GetHealAmount();
+
 	InventoryComponent *cInventory;
 	bool AddItem(Entity *item);
+	void RemoveItem(Entity *item);
 	std::vector<Entity *> GetInventory();
 
 	PhysicsComponent *cPhysics;

@@ -17,7 +17,17 @@ float InventoryComponent::AddItem(Entity *item)
 
 float InventoryComponent::RemoveItem(Entity *item)
 {
-    return 0.0f;
+
+    for (auto it = contents.begin(); it != contents.end(); ++it)
+    {
+        if ((*it) == item)
+        {
+            contents.erase(it);
+            return GetTotalWeight();
+        }
+    }
+
+    return GetTotalWeight();
 }
 
 void InventoryComponent::LoadJson(json::object data)

@@ -15,7 +15,25 @@ int ItemInteractionListener::FireGrabItemEvent(GrabItemEvent *e)
     return 100;
 }
 
+int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
+{
+    LogEvent l1(e->target, "You consume the " + e->consumed->GetName());
+    WorldFireEvent(&l1);
+    if (e->consumed->HealsOnConsume())
+    {
+        int healed = e->target->Heal(e->consumed->GetHealAmount());
+        LogEvent log(e->target, "You regain " + std::to_string(healed) + " health.");
+        WorldFireEvent(&log);
+        AddFloatingText('+', 'g', e->target->GetXY());
+    }
+
+    e->target->RemoveItem(e->consumed);
+    delete e->consumed;
+
+    return 100;
+}
+
 ItemInteractionListener::ItemInteractionListener()
 {
-    RegisterListenFor(evGrabItem);
+    RegisterListenFor(evGrabItem | evConsumeItem | 0);
 }

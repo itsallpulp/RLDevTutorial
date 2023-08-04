@@ -1,0 +1,10 @@
+{
+	"name": "health potion",
+	"inherits" : "item_potion",
+	"components": {
+		"heal": {
+			"amount": 30,
+			"activateOnConsume": true
+		}
+	}
+}

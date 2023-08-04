@@ -149,6 +149,7 @@
     <ClCompile Include="CombatListener.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ConsumeCommand.cpp" />
     <ClCompile Include="DeathListener.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="FOVComponent.cpp" />
     <ClCompile Include="FOVListener.cpp" />
     <ClCompile Include="GrabItemCommand.cpp" />
+    <ClCompile Include="HealComponent.cpp" />
     <ClCompile Include="InventoryComponent.cpp" />
     <ClCompile Include="ItemInteractionListener.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -186,6 +188,8 @@
     <ClInclude Include="CombatListener.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentsList.h" />
+    <ClInclude Include="ConsumeCommand.h" />
     <ClInclude Include="DeathListener.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
@@ -198,6 +202,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Glyphs.h" />
     <ClInclude Include="GrabItemCommand.h" />
+    <ClInclude Include="HealComponent.h" />
     <ClInclude Include="InventoryComponent.h" />
     <ClInclude Include="ItemInteractionListener.h" />
     <ClInclude Include="Level.h" />

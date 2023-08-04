@@ -1,57 +1,70 @@
 #include "OptionMenu.h"
 #include "ExitMenuCommand.h"
-#include <iomanip>
 
 OptionMenu::OptionMenu(std::string title, int x, int y) : Menu(title)
 {
 	this->x = x;
 	this->y = y;
+	AddOption("Exit", new ExitMenuCommand(), SDLK_ESCAPE);
+}
+
+OptionMenu::~OptionMenu()
+{
+	for (auto it : options)
+	{
+		delete it.second.command;
+	}
 }
 
 Command *OptionMenu::GetCommand()
 {
-	Command *c = nullptr;
-
-	while (c == nullptr)
+	while (true)
 	{
 		SDL_Event input;
 		while (SDL_PollEvent(&input))
 		{
 			if (input.type == SDL_KEYDOWN)
 			{
-				switch (input.key.keysym.sym)
+				if (options.find(input.key.keysym.sym) != options.end())
 				{
-					case SDLK_ESCAPE:
-						c = new ExitMenuCommand();
-						break;
-					default:
-						break;
+					return options[input.key.keysym.sym].command;
 				}
 			}
 		}
 	}
-	return c;
-
-	
+	return nullptr;
 }
 
 void OptionMenu::AddOption(std::string name, Command *command, int key)
 {
 	MenuOption o = { name, command };
 
-	if (key != -1)
+	if (key != -1 && options.count(key) == 0)
 	{
 		options[key] = o;
 	}
 	else
 	{
+		bool placed = false;
 		for (char c : name)
 		{
 			if (options.find(((int)c)) == options.end())
 			{
-				std::cout << c << std::endl;
 				options[(int)c] = o;
+				placed = true;
 				break;
+			}
+		}
+
+		if (!placed)
+		{
+			for (int i = 65; i < 123; ++i)
+			{
+				if (options.find(i) == options.end())
+				{
+					options[i] = o;
+					break;
+				}
 			}
 		}
 	}
@@ -67,6 +80,8 @@ void OptionMenu::Render()
 	
 	for (auto it : options)
 	{
+		if (it.first == SDLK_ESCAPE) { continue; }
+
 		char c = (char)(it.first);
 
 		std::string cmd = "[";
