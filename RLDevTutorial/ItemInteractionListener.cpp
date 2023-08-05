@@ -53,22 +53,21 @@ int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
 
             if (target == nullptr)
             {
+                LogEvent l2(e->target, "Unable to find a target.");
+                WorldFireEvent(&l2);
                 return 0;
             }
 
             int amount = RollDamage(z.amount);
 
-            if (z.type != "heal")
+            if (z.type == "heal")
+            {
+            }
+            else
             {
                 DamageEvent d(e->target, target);
                 d.damage = amount;
                 d.type = z.type;
-
-                LogEvent la(e->target, "You hit the " + target->GetName() + " with " + z.type + " for " + std::to_string(amount) + ".");
-                WorldFireEvent(&la);
-                LogEvent ld(target, "The " + target->GetName() + " hits you with " + z.type + " for " + std::to_string(amount) + ".");
-                WorldFireEvent(&ld);
-
                 WorldFireEvent(&d);
             }
         }

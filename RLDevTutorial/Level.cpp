@@ -1,5 +1,6 @@
 #include "Level.h"
 #include "Pathfinder.h"
+#include "EntityManager.h"
 
 std::vector<point> Level::GetPossibleDoors(int regionNumber)
 {
@@ -440,13 +441,17 @@ void Level::RoomsAndMazes(int roomPlacementAttempts)
 
 }
 
-void Level::PlaceEntity(Entity *e)
+void Level::PlaceEntity(Entity *e, EntityManager *manager)
 {
-    while (mCells[e->cPhysics->x][e->cPhysics->y] == nullptr || mCells[e->cPhysics->x][e->cPhysics->y]->BlocksMovement())
+    int x = 0, y = 0;
+
+
+    while (manager->At(x, y) != nullptr || mCells[x][y]->BlocksMovement())
     {
-        e->cPhysics->x = rand() % MAP_WIDTH;
-        e->cPhysics->y = rand() % MAP_HEIGHT;
+        x = rand() % MAP_WIDTH;
+        y = rand() % MAP_HEIGHT;
     }
+    e->SetXY(x, y);
 }
 
 void Level::FromLevelConfig(LevelConfig config)

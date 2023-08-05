@@ -6,8 +6,9 @@
 #include "EntityManager.h"
 #include "Pathfinder.h"
 #include "MovementCommand.h"
+#include "GrabItemCommand.h"
 
-MovementCommand *AutoExplore()
+Command *AutoExplore()
 {
 	for (Entity *ent : actorManager->GetEntities())
 	{
@@ -22,6 +23,23 @@ MovementCommand *AutoExplore()
 			return new MovementCommand(player, 0, 0);
 		}
 
+	}
+
+	for (Entity *e : itemManager->GetEntities())
+	{
+		point p = player->GetXY();
+		if (e->GetXY() == p)
+		{
+			return new GrabItemCommand(player);
+		}
+
+		if (player->CanSee(e))
+		{
+			std::stack<point> path = pathfinder->GeneratePath(player->GetXY(), e->GetXY());
+			point nextStep = path.top();
+			SDL_Delay(25);
+			return new MovementCommand(player, nextStep.first - p.first, nextStep.second - p.second);
+		}
 	}
 
 

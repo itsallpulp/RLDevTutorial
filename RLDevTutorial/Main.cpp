@@ -80,6 +80,7 @@ std::stack<Menu *> menus;
 int main(int argc, char* argv[])
 {
 	WeightedBag<std::string> wb = WeightedBagFromJSON(GetJson("table_monsters"));
+	WeightedBag<std::string> wbItems = WeightedBagFromJSON(GetJson("table_items"));
 
 
 	actorManager = new EntityManager();
@@ -97,22 +98,21 @@ int main(int argc, char* argv[])
 	player->cPhysics->x = 1;
 	player->cPhysics->y = 1;
 
-	level->PlaceEntity(player);
+	level->PlaceEntity(player, actorManager);
 
 	for (int i = 0; i < 20; ++i)
 	{
+		std::cout << i << std::endl;
 		int monsterIndex = actorManager->AddEntity(wb.GetRandomValue());
 		Entity *monster = actorManager->GetEntity(monsterIndex);
-		level->PlaceEntity(monster);
+		level->PlaceEntity(monster, actorManager);
+
+		int itemIndex = itemManager->AddEntity(wbItems.GetRandomValue());
+		Entity *item = itemManager->GetEntity(itemIndex);
+		level->PlaceEntity(item, itemManager);
 	}
 
 	lFOV.DoFOV(player);
-
-	int potion = itemManager->AddEntity("item_scroll_lightning");
-	Entity *p = itemManager->GetEntity(potion);
-	point pLoc = player->GetXY();
-	p->cPhysics->x = pLoc.first;
-	p->cPhysics->y = pLoc.second;
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{

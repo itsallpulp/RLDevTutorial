@@ -52,7 +52,7 @@ class Level
 	void ConnectRegion();
 
 	void RoomsAndMazes(int roomPlacementAttempts = 1000);
-	void PlaceEntity(Entity *e);
+	void PlaceEntity(Entity *e, EntityManager *manager);
 
 	void FromLevelConfig(LevelConfig config);
 

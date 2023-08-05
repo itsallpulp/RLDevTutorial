@@ -71,6 +71,7 @@ void OptionMenu::AddOption(std::string name, Command *command, int key)
 	}
 
 	width = std::max(width, (int)(name.size() + 7));
+	height = std::max(height, (int)options.size() + 2);
 }
 
 void OptionMenu::Render()
