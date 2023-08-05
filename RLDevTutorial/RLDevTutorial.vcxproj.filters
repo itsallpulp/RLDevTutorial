@@ -165,6 +165,9 @@
     <ClCompile Include="DropItemCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
+    <ClCompile Include="LookCommand.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -300,6 +303,9 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="DropItemCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LookCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

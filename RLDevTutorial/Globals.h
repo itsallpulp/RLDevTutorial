@@ -35,6 +35,7 @@ extern EntityManager *actorManager, *itemManager;
 extern MovementCommand *FollowPath(Entity *target, std::stack<point> *path);
 extern Entity *player;
 extern std::stack<Menu *> menus;
+extern point lookTarget;
 
 extern int gameState;
 
@@ -100,5 +101,7 @@ namespace Render {
 static enum GameStates {
 	ON_MAP = 0,
 	AUTOEXPLORE,
-	IN_MENU
+	IN_MENU,
+	LOOKING,
+	TARGETING
 };

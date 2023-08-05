@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "Command.h"
 #include "GrabItemCommand.h"
+#include "LookCommand.h"
 #include "MovementCommand.h"
 #include "OpenMenuCommand.h"
 #include "Autoexplore.h"
@@ -31,7 +32,7 @@ int TurnListener::HandlePlayerTurn(TurnEvent *e)
 {
 	int cost = 0;
 
-	while (cost == 0 && gameState != IN_MENU)
+	while (cost == 0 && ( gameState == ON_MAP || gameState == AUTOEXPLORE))
 	{
 		SDL_Event input;
 
@@ -67,6 +68,9 @@ int TurnListener::HandlePlayerTurn(TurnEvent *e)
 						break;
 					case SDLK_i:
 						command = new OpenMenuCommand(NewInventoryMenu(player));
+						break;
+					case SDLK_l:
+						command = new LookCommand();
 						break;
 					default:
 						break;

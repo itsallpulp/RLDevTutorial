@@ -68,6 +68,8 @@ void RenderHUD(Entity *e);
 int RenderDisplay(Entity *e, int x, int y);
 void RenderFloatingText(FloatingText *text);
 
+void HandleLooking();
+
 void TakeTurn(Entity *actor);
 
 void PrintRuntime(void (*func)(void));
@@ -77,11 +79,14 @@ std::vector<std::string> jsonCacheKey;
 std::vector<FloatingText> *floatingTexts = new std::vector<FloatingText>();
 std::stack<Menu *> menus;
 
+point lookTarget;
+
 int main(int argc, char* argv[])
 {
 	WeightedBag<std::string> wb = WeightedBagFromJSON(GetJson("table_monsters"));
 	WeightedBag<std::string> wbItems = WeightedBagFromJSON(GetJson("table_items"));
 
+	lookTarget = { 0,0 };
 
 	actorManager = new EntityManager();
 	itemManager = new EntityManager();
@@ -102,7 +107,6 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < 20; ++i)
 	{
-		std::cout << i << std::endl;
 		int monsterIndex = actorManager->AddEntity(wb.GetRandomValue());
 		Entity *monster = actorManager->GetEntity(monsterIndex);
 		level->PlaceEntity(monster, actorManager);
@@ -156,6 +160,11 @@ void RenderAll()
 	if (menus.size() > 0)
 	{
 		menus.top()->Render();
+	}
+
+	if (gameState == LOOKING)
+	{
+		Render::Put('_', lookTarget.first + GUI_WIDTH, lookTarget.second, 'w', '~');
 	}
 
 	Render::Update();
@@ -391,6 +400,10 @@ void TakeTurn(Entity *actor)
 				actor->ModEnergy(-(c->Execute()));
 				delete c;
 			}
+			else if (gameState == LOOKING)
+			{
+				HandleLooking();
+			}
 			else
 			{
 				TurnEvent e(actor);
@@ -411,4 +424,68 @@ bool PopMenu()
 	menus.pop();
 	delete m;
 	return (menus.size() == 0);
+}
+
+void HandleLooking()
+{
+	while (true)
+	{
+		SDL_Event input;
+		bool moved = false;
+		while (SDL_PollEvent(&input))
+		{
+			if (input.type == SDL_KEYDOWN)
+			{
+				switch (input.key.keysym.sym)
+				{
+					case SDLK_LEFT:
+						lookTarget.first = std::max(0, lookTarget.first - 1);
+						moved = true;
+						break;
+					case SDLK_RIGHT:
+						lookTarget.first = std::min(MAP_WIDTH - 1, lookTarget.first + 1);
+						moved = true;
+						break;
+					case SDLK_UP:
+						lookTarget.second = std::max(0, lookTarget.second - 1);
+						moved = true;
+						break;
+					case SDLK_DOWN:
+						lookTarget.second = std::min(lookTarget.second + 1, MAP_HEIGHT - 1);
+						moved = true;
+						break;
+					case SDLK_ESCAPE:
+						gameState = ON_MAP;
+						return;
+						break;
+				}
+			}
+			
+		}
+
+		if (moved)
+		{
+			std::vector<Entity *> actors = actorManager->AllAt(lookTarget.first, lookTarget.second);
+			std::vector<Entity *> items = itemManager->AllAt(lookTarget.first, lookTarget.second);
+			if (actors.size() != 0 || items.size() != 0)
+			{
+				std::string here = "Here: ";
+				for (Entity *e : actors)
+				{
+					here += e->GetName() + ", ";
+				}
+				for (Entity *e : items)
+				{
+					here += e->GetName() + ", ";
+				}
+
+				here = here.substr(0, here.size() - 2);
+
+				LogEvent l(player, here);
+				WorldFireEvent(&l);
+			}
+		}
+
+		RenderAll();
+	}
 }

@@ -169,6 +169,7 @@
     <ClCompile Include="Listener.cpp" />
     <ClCompile Include="LogComponent.cpp" />
     <ClCompile Include="LogListener.cpp" />
+    <ClCompile Include="LookCommand.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuBuilders.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="Listener.h" />
     <ClInclude Include="LogComponent.h" />
     <ClInclude Include="LogListener.h" />
+    <ClInclude Include="LookCommand.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuBuilders.h" />
     <ClInclude Include="MovementCommand.h" />
