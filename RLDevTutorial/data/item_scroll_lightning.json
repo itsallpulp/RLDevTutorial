@@ -1,0 +1,15 @@
+{
+	"name": "lightning scroll",
+	"inherits" : "item_scroll",
+	"components": {
+		"consumable": {
+			"zaps": [
+				{
+					"type": "lightning",
+					"amount": 10,
+					"targetType": "nearestEnemy"
+				}
+			]
+		}
+	}
+}

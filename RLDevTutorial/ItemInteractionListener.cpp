@@ -18,8 +18,60 @@ int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
     WorldFireEvent(&l1);
     if (e->consumed->HealsOnConsume())
     {
-        HealEvent h(e->target, e->consumed->GetConsumeHealAmount());
+        HealEvent h(e->target, RollDamage(e->consumed->GetConsumeHealAmount()));
         WorldFireEvent(&h);
+    }
+
+    if (e->consumed->ZapsOnConsume())
+    {
+        std::vector<Zap> zaps = e->consumed->GetZaps();
+
+        for (Zap z : zaps)
+        {
+            Entity *target = nullptr;
+            if (z.targetType == "nearestEnemy")
+            {
+                std::set<Entity *> entities = actorManager->GetEntities();
+
+                double distance = 999999;
+
+                for (Entity *entity : entities)
+                {
+                    if (e->target != entity && e->target->CanSee(entity))
+                    {
+                        double d = Distance(e->target->GetXY(), entity->GetXY());
+
+                        if (d < distance)
+                        {
+                            distance = d;
+                            target = entity;
+                        }
+                    }
+                }
+
+            }
+
+            if (target == nullptr)
+            {
+                return 0;
+            }
+
+            int amount = RollDamage(z.amount);
+
+            if (z.type != "heal")
+            {
+                DamageEvent d(e->target, target);
+                d.damage = amount;
+                d.type = z.type;
+
+                LogEvent la(e->target, "You hit the " + target->GetName() + " with " + z.type + " for " + std::to_string(amount) + ".");
+                WorldFireEvent(&la);
+                LogEvent ld(target, "The " + target->GetName() + " hits you with " + z.type + " for " + std::to_string(amount) + ".");
+                WorldFireEvent(&ld);
+
+                WorldFireEvent(&d);
+            }
+        }
     }
 
     e->target->RemoveItem(e->consumed);

@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
 
 	lFOV.DoFOV(player);
 
-	int potion = itemManager->AddEntity("item_potion_of_healing");
+	int potion = itemManager->AddEntity("item_scroll_lightning");
 	Entity *p = itemManager->GetEntity(potion);
 	point pLoc = player->GetXY();
 	p->cPhysics->x = pLoc.first;
@@ -339,7 +339,7 @@ int RenderDisplay(Entity *e, int x, int y)
 	
 	Render::Puts(name, x, y++, 'w');
 
-	double n = ((double)hp.first / (double)hp.second) * 15;
+	double n = ((double)hp.first / (double)hp.second) * GUI_WIDTH;
 
 	for (int i = 0; i < GUI_WIDTH; ++i)
 	{

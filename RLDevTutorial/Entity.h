@@ -56,6 +56,8 @@ class Entity
 	bool HealsOnConsume();
 	int GetConsumeHealAmount();
 	std::string GetConsumeVerb();
+	bool ZapsOnConsume();
+	std::vector<Zap> GetZaps();
 
 	InventoryComponent *cInventory;
 	bool AddItem(Entity *item);

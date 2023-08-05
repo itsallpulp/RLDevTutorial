@@ -1,0 +1,16 @@
+{
+	"name": "scroll",
+	"components": {
+		"render": {
+			"glyph": 246,
+			"color": "y",
+			"bgColor": "~"
+		},
+		"physics": {
+			"weight": 0.5
+		},
+		"consumable": {
+			"verb": "read"
+		}
+	}
+}

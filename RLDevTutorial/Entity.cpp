@@ -188,6 +188,17 @@ std::string Entity::GetConsumeVerb()
     return cConsumable == nullptr ? " " : cConsumable->verb;
 }
 
+bool Entity::ZapsOnConsume()
+{
+    return cConsumable == nullptr ? false : (cConsumable->zaps.size() > 0);
+}
+
+std::vector<Zap> Entity::GetZaps()
+{
+    if (cConsumable != nullptr) { return cConsumable->zaps; }
+    return std::vector<Zap>();
+}
+
 bool Entity::AddItem(Entity *item)
 {
     if (cInventory == nullptr) { return false; }
