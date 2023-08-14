@@ -1,11 +1,11 @@
 {
-	"name": "lightning scroll",
+	"name": "confusion scroll",
 	"inherits" : "item_scroll",
 	"components": {
 		"consumable": {
 			"zaps": {
-				"targetType": "nearestEnemy",
-				"effects": [
+				"targetType": "selectedTarget",
+					"effects": [
 					{
 						"type": "lightning",
 						"amount": 10

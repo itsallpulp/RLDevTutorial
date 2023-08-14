@@ -4,6 +4,7 @@ ConsumableComponent::ConsumableComponent()
 {
 	healAmount = 0;
 	verb = "eat";
+	targetType = "NA";
 }
 
 void ConsumableComponent::LoadJson(json::object data)
@@ -13,7 +14,9 @@ void ConsumableComponent::LoadJson(json::object data)
 
 	if (data.contains("zaps"))
 	{
-		for (json::value v : data["zaps"].as_array())
+		targetType = json::value_to<std::string>(data["zaps"].as_object()["targetType"]);
+
+		for (json::value v : data["zaps"].as_object()["effects"].as_array())
 		{
 			LoadZap(v.as_object());
 		}
@@ -25,7 +28,6 @@ void ConsumableComponent::LoadZap(json::object data)
 	Zap z;
 	z.amount = data.contains("amount") ? json::value_to<int>(data["amount"]) : 0;
 	z.type = data.contains("type") ? json::value_to<std::string>(data["type"]) : "None";
-	z.targetType = data.contains("targetType") ? json::value_to<std::string>(data["targetType"]) : "None";
 
 	zaps.push_back(z);
 }

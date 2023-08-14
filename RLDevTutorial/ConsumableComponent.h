@@ -3,7 +3,7 @@
 
 typedef struct Zap {
 	int amount;
-	std::string type, targetType;
+	std::string type;
 };
 
 class ConsumableComponent : public Component
@@ -18,6 +18,6 @@ class ConsumableComponent : public Component
 	void LoadZap(json::object data);
 	int healAmount;
 	std::vector<Zap> zaps;
-	std::string verb;
+	std::string verb, targetType;
 };
 

@@ -58,6 +58,7 @@ class Entity
 	std::string GetConsumeVerb();
 	bool ZapsOnConsume();
 	std::vector<Zap> GetZaps();
+	std::string GetTargetType();
 
 	InventoryComponent *cInventory;
 	bool AddItem(Entity *item);

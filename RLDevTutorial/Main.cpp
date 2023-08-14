@@ -166,6 +166,10 @@ void RenderAll()
 	{
 		Render::Put('_', lookTarget.first + GUI_WIDTH, lookTarget.second, 'w', '~');
 	}
+	else if (gameState == TARGETING)
+	{
+		Render::Put('X', lookTarget.first + GUI_WIDTH, lookTarget.second, 'r', '~');
+	}
 
 	Render::Update();
 }

@@ -199,6 +199,16 @@ std::vector<Zap> Entity::GetZaps()
     return std::vector<Zap>();
 }
 
+std::string Entity::GetTargetType()
+{
+    if (cConsumable != nullptr)
+    {
+        return cConsumable->targetType;
+    }
+
+    return "NA";
+}
+
 bool Entity::AddItem(Entity *item)
 {
     if (cInventory == nullptr) { return false; }

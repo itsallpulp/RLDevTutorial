@@ -303,10 +303,10 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="DropItemCommand.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="LookCommand.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

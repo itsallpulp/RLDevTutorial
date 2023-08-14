@@ -25,11 +25,13 @@ int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
     if (e->consumed->ZapsOnConsume())
     {
         std::vector<Zap> zaps = e->consumed->GetZaps();
+        std::string targetType = e->consumed->GetTargetType();
+
 
         for (Zap z : zaps)
         {
             Entity *target = nullptr;
-            if (z.targetType == "nearestEnemy")
+            if (targetType == "nearestEnemy")
             {
                 std::set<Entity *> entities = actorManager->GetEntities();
 
