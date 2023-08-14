@@ -38,7 +38,7 @@ extern std::stack<Menu *> menus;
 extern point lookTarget;
 extern std::queue<Event*> *queuedEvents;
 
-extern void UnloadQueuedEvents(int x, int y);
+extern bool UnloadQueuedEvents(int x, int y);
 
 extern int gameState;
 

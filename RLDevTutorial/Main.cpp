@@ -534,9 +534,11 @@ void HandleTargeting()
 						moved = true;
 						break;
 					case 13: // Enter
-						player->ModEnergy(-100);
-						UnloadQueuedEvents(lookTarget.first, lookTarget.second);
-						gameState = ON_MAP;
+						if (UnloadQueuedEvents(lookTarget.first, lookTarget.second))
+						{
+							player->ModEnergy(-100);
+							gameState = ON_MAP;
+						}
 						return;
 					case SDLK_ESCAPE:
 						gameState = ON_MAP;
@@ -580,9 +582,17 @@ void HandleTargeting()
 	}
 }
 
-void UnloadQueuedEvents(int x, int y)
+bool UnloadQueuedEvents(int x, int y)
 {
 	Entity *e = actorManager->At(x, y);
+
+	if (e == nullptr)
+	{
+		LogEvent ev(player, "There is nothing there.");
+		WorldFireEvent(&ev);
+		return false;
+	}
+
 
 	while (!queuedEvents->empty())
 	{
@@ -592,5 +602,5 @@ void UnloadQueuedEvents(int x, int y)
 		WorldFireEvent(ev);
 		delete ev;
 	}
-
+	return true;
 }
