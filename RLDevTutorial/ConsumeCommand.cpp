@@ -19,7 +19,10 @@ int ConsumeCommand::Execute()
         {
             PopMenu();
         }
-        gameState = ON_MAP;
+        if (gameState == IN_MENU)
+        {
+            gameState = ON_MAP;
+        }
     }
 
     return cost;

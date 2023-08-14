@@ -14,6 +14,8 @@ int ItemInteractionListener::FireGrabItemEvent(GrabItemEvent *e)
 
 int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
 {
+    bool targeted = false;
+
     LogEvent l1(e->target, "You " + e->consumed->GetConsumeVerb() + " the " + e->consumed->GetName());
     WorldFireEvent(&l1);
     if (e->consumed->HealsOnConsume())
@@ -63,6 +65,14 @@ int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
                 point p = target->GetXY();
                 UnloadQueuedEvents(p.first, p.second);
             }
+        }
+        else if (targetType == "coordinate")
+        {
+            targeted = true;
+            gameState = TARGETING;
+            lookTarget = player->GetXY();
+            std::cout << "gamestate switched to Targeting" << std::endl;
+            return 0;
         }
 
     }

@@ -4,10 +4,10 @@
 	"components": {
 		"consumable": {
 			"zaps": {
-				"targetType": "selectedTarget",
+				"targetType": "coordinate",
 					"effects": [
 					{
-						"type": "lightning",
+						"type": "confuse",
 						"amount": 10
 					}
 				]

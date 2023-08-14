@@ -69,6 +69,7 @@ int RenderDisplay(Entity *e, int x, int y);
 void RenderFloatingText(FloatingText *text);
 
 void HandleLooking();
+void HandleTargeting();
 
 void TakeTurn(Entity *actor);
 
@@ -395,6 +396,8 @@ void TakeTurn(Entity *actor)
 	{
 		while (actor->GetEnergy() >= 100)
 		{
+			std::cout << gameState << std::endl;
+
 			if (gameState == IN_MENU)
 			{
 				Command *c = nullptr;
@@ -410,6 +413,10 @@ void TakeTurn(Entity *actor)
 			else if (gameState == LOOKING)
 			{
 				HandleLooking();
+			}
+			else if (gameState == TARGETING)
+			{
+				HandleTargeting();
 			}
 			else
 			{
@@ -468,6 +475,78 @@ void HandleLooking()
 				}
 			}
 			
+		}
+
+		if (moved)
+		{
+			std::vector<Entity *> actors = actorManager->AllAt(lookTarget.first, lookTarget.second);
+			std::vector<Entity *> items = itemManager->AllAt(lookTarget.first, lookTarget.second);
+			if (actors.size() != 0 || items.size() != 0)
+			{
+				std::string here = "Here: ";
+				for (Entity *e : actors)
+				{
+					here += e->GetName() + ", ";
+				}
+				for (Entity *e : items)
+				{
+					here += e->GetName() + ", ";
+				}
+
+				here = here.substr(0, here.size() - 2);
+
+				LogEvent l(player, here);
+				WorldFireEvent(&l);
+			}
+		}
+
+		RenderAll();
+	}
+}
+
+void HandleTargeting()
+{
+	while (true)
+	{
+		SDL_Event input;
+		bool moved = false;
+		while (SDL_PollEvent(&input))
+		{
+			if (input.type == SDL_KEYDOWN)
+			{
+				std::cout << input.key.keysym.sym << std::endl;
+				std::cout << "KP_ENTER " << SDLK_KP_ENTER << std::endl;
+
+				switch (input.key.keysym.sym)
+				{
+					case SDLK_LEFT:
+						lookTarget.first = std::max(0, lookTarget.first - 1);
+						moved = true;
+						break;
+					case SDLK_RIGHT:
+						lookTarget.first = std::min(MAP_WIDTH - 1, lookTarget.first + 1);
+						moved = true;
+						break;
+					case SDLK_UP:
+						lookTarget.second = std::max(0, lookTarget.second - 1);
+						moved = true;
+						break;
+					case SDLK_DOWN:
+						lookTarget.second = std::min(lookTarget.second + 1, MAP_HEIGHT - 1);
+						moved = true;
+						break;
+					case 13:
+						player->ModEnergy(-100);
+						UnloadQueuedEvents(lookTarget.first, lookTarget.second);
+						gameState = ON_MAP;
+						return;
+					case SDLK_ESCAPE:
+						gameState = ON_MAP;
+						return;
+						break;
+				}
+			}
+
 		}
 
 		if (moved)
