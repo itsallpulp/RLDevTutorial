@@ -27,52 +27,44 @@ int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
         std::vector<Zap> zaps = e->consumed->GetZaps();
         std::string targetType = e->consumed->GetTargetType();
 
-
         for (Zap z : zaps)
         {
+            DamageEvent *d = new DamageEvent(e->target, nullptr);
+            d->damage = RollDamage(z.amount);
+            d->type = z.type;
+            queuedEvents->push(d);
+        }
+
+        queuedEvents->push(new RemoveItemEvent(e->target, e->consumed));
+    
+        if (targetType == "nearestEnemy")
+        {
+            std::set<Entity *> entities = actorManager->GetEntities();
+
+            double distance = 999999;
             Entity *target = nullptr;
-            if (targetType == "nearestEnemy")
+
+            for (Entity *entity : entities)
             {
-                std::set<Entity *> entities = actorManager->GetEntities();
-
-                double distance = 999999;
-
-                for (Entity *entity : entities)
+                if (e->target != entity && e->target->CanSee(entity))
                 {
-                    if (e->target != entity && e->target->CanSee(entity))
-                    {
-                        double d = Distance(e->target->GetXY(), entity->GetXY());
+                    double d = Distance(e->target->GetXY(), entity->GetXY());
 
-                        if (d < distance)
-                        {
-                            distance = d;
-                            target = entity;
-                        }
+                    if (d < distance)
+                    {
+                        distance = d;
+                        target = entity;
                     }
                 }
-
             }
 
-            if (target == nullptr)
+            if (target != nullptr)
             {
-                LogEvent l2(e->target, "Unable to find a target.");
-                WorldFireEvent(&l2);
-                return 0;
-            }
-
-            int amount = RollDamage(z.amount);
-
-            if (z.type == "heal")
-            {
-            }
-            else
-            {
-                DamageEvent d(e->target, target);
-                d.damage = amount;
-                d.type = z.type;
-                WorldFireEvent(&d);
+                point p = target->GetXY();
+                UnloadQueuedEvents(p.first, p.second);
             }
         }
+
     }
 
     e->target->RemoveItem(e->consumed);

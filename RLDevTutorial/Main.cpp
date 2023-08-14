@@ -78,11 +78,14 @@ std::map<std::string, json::object> jsonCache;
 std::vector<std::string> jsonCacheKey;
 std::vector<FloatingText> *floatingTexts = new std::vector<FloatingText>();
 std::stack<Menu *> menus;
+std::queue<Event*> *queuedEvents = new std::queue<Event *>();
 
 point lookTarget;
 
 int main(int argc, char* argv[])
 {
+	
+
 	WeightedBag<std::string> wb = WeightedBagFromJSON(GetJson("table_monsters"));
 	WeightedBag<std::string> wbItems = WeightedBagFromJSON(GetJson("table_items"));
 
@@ -492,4 +495,19 @@ void HandleLooking()
 
 		RenderAll();
 	}
+}
+
+void UnloadQueuedEvents(int x, int y)
+{
+	Entity *e = actorManager->At(x, y);
+
+	while (!queuedEvents->empty())
+	{
+		Event *ev = queuedEvents->front();
+		queuedEvents->pop();
+		ev->SetTarget(e);
+		WorldFireEvent(ev);
+		delete ev;
+	}
+
 }

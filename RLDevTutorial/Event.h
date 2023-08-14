@@ -12,7 +12,8 @@ static enum EventID {
 	evGrabItem = 64,
 	evConsumeItem = 128,
 	evDropItem = 256,
-	evHeal = 512
+	evHeal = 512,
+	evRemoveItem = 1024
 };
 
 class Event {
@@ -26,6 +27,8 @@ class Event {
 	{
 		return type;
 	}
+
+	virtual void SetTarget(Entity *e) {};
 
 	protected:
 	int type;
@@ -86,6 +89,9 @@ class DamageEvent : public Event {
 		type = "blunt";
 		damage = 0;
 	}
+
+	void SetTarget(Entity *e) { defender = e; }
+
 	Entity *attacker, *defender;
 	int damage;
 	std::string type;
@@ -139,4 +145,14 @@ class HealEvent : public Event {
 	}
 	Entity *target;
 	int amount;
+};
+
+class RemoveItemEvent : public Event {
+	public:
+	RemoveItemEvent(Entity *holder, Entity *item) : Event(evRemoveItem)
+	{
+		this->holder = holder;
+		this->item = item;
+	}
+	Entity *holder, *item;
 };
