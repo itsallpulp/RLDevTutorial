@@ -28,6 +28,7 @@ void ConsumableComponent::LoadZap(json::object data)
 	Zap z;
 	z.amount = data.contains("amount") ? json::value_to<int>(data["amount"]) : 0;
 	z.type = data.contains("type") ? json::value_to<std::string>(data["type"]) : "None";
+	z.subtype = data.contains("subtype") ? json::value_to<std::string>(data["subtype"]) : "None";
 
 	zaps.push_back(z);
 }

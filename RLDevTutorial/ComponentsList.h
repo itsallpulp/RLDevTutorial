@@ -9,3 +9,4 @@
 #include "LogComponent.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
+#include "StatusEffectsComponent.h"

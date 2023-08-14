@@ -14,6 +14,7 @@ Entity::Entity()
     cPhysics = nullptr;
     cRender = nullptr;
     cLog = nullptr;
+    cStatusEffects = nullptr;
 }
 
 Entity::Entity(std::string fileToLoad) : Entity()
@@ -35,6 +36,7 @@ Entity *Entity::Clone()
     if (cInventory != nullptr) { n->cInventory = new InventoryComponent((*cInventory)); }
     if (cPhysics != nullptr) { n->cPhysics = new PhysicsComponent((*cPhysics)); }
     if (cRender != nullptr) { n->cRender = new RenderComponent((*cRender)); }
+    if (cStatusEffects != nullptr) { n->cStatusEffects = new StatusEffectsComponent((*cStatusEffects)); }
 
     n->mName = mName;
     
@@ -50,6 +52,7 @@ void Entity::Copy(Entity *other)
     if (other->cInventory != nullptr) { delete cInventory; cInventory = new InventoryComponent(*(other->cInventory)); }
     if (other->cPhysics != nullptr) { delete cPhysics; cPhysics = new PhysicsComponent(*(other->cPhysics)); }
     if (other->cRender != nullptr) { delete cRender; cRender = new RenderComponent(*(other->cRender)); }
+    if (other->cStatusEffects != nullptr) { delete cStatusEffects; cStatusEffects = new StatusEffectsComponent(*(other->cStatusEffects)); }
 }
 
 void Entity::Reset()
@@ -65,11 +68,14 @@ void Entity::Reset()
     delete cInventory;
     cInventory = nullptr;
     delete cPhysics;
+    cPhysics = nullptr;
     cFOV = nullptr;
     delete cRender;
     cRender = nullptr;
     delete cLog;
     cLog = nullptr;
+    delete cStatusEffects;
+    cStatusEffects = nullptr;
 }
 
 std::string Entity::GetName()
@@ -350,4 +356,36 @@ bool Entity::CanSee(Entity *other)
     }
 
     return true;
+}
+
+int Entity::GetStatusEffect(std::string effect)
+{
+    if (cStatusEffects == nullptr) { return 0; }
+
+    if (cStatusEffects->effects.find(effect) == cStatusEffects->effects.end()) { return 0; }
+
+    return cStatusEffects->effects[effect];
+}
+
+void Entity::AddStatusEffect(std::string effect, int rounds)
+{
+    if (cStatusEffects == nullptr)
+    {
+        cStatusEffects = new StatusEffectsComponent();
+    }
+
+    cStatusEffects->effects[effect] = rounds;
+}
+
+void Entity::ReduceEffects()
+{
+    if (cStatusEffects != nullptr)
+    {
+        std::cout << "Reducing status effects for " << mName << std::endl;
+        for (auto it : cStatusEffects->effects)
+        {
+            std::cout << it.first << std::endl;
+            cStatusEffects->effects[it.first] = (it.second - 1);
+        }
+    }
 }

@@ -21,6 +21,7 @@ class Listener
 	virtual int FireDropItemEvent(DropItemEvent *e) { return 0; }
 	virtual int FireConsumeItemEvent(ConsumeItemEvent *e) { return 0; }
 	virtual int FireRemoveItemEvent(RemoveItemEvent *e) { return 0; }
+	virtual int FireAddStatusEffectEvent(AddStatusEffectEvent *e) { return 0; }
 
 	public:
 	Listener();

@@ -81,4 +81,8 @@ class Entity
 
 	bool CanSee(Entity *other);
 
+	StatusEffectsComponent *cStatusEffects;
+	int GetStatusEffect(std::string effect);
+	void AddStatusEffect(std::string effect, int rounds);
+	void ReduceEffects();
 };

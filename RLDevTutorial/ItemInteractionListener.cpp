@@ -31,10 +31,22 @@ int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
 
         for (Zap z : zaps)
         {
-            DamageEvent *d = new DamageEvent(e->target, nullptr);
-            d->damage = RollDamage(z.amount);
-            d->type = z.type;
-            queuedEvents->push(d);
+            std::string type = z.type;
+
+            if (z.type == "damage")
+            {
+                DamageEvent *d = new DamageEvent(e->target, nullptr);
+                d->damage = RollDamage(z.amount);
+                d->type = z.subtype;
+                queuedEvents->push(d);
+            }
+            else if (z.type == "addStatusEffect")
+            {
+                AddStatusEffectEvent *s = new AddStatusEffectEvent(nullptr, z.subtype, RollDamage(z.amount));
+                queuedEvents->push(s);
+            }
+
+            
         }
 
         queuedEvents->push(new RemoveItemEvent(e->target, e->consumed));
@@ -64,6 +76,21 @@ int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
             {
                 point p = target->GetXY();
                 UnloadQueuedEvents(p.first, p.second);
+                e->target->RemoveItem(e->consumed);
+                itemManager->RemoveEntity(e->consumed);
+                return 100;
+            }
+            else
+            {
+                LogEvent l(player, "There is no available target.");
+                WorldFireEvent(&l);
+                while (!queuedEvents->empty())
+                {
+                    Event *n = queuedEvents->front();
+                    queuedEvents->pop();
+                    delete n;
+                }
+                return 0;
             }
         }
         else if (targetType == "coordinate")
@@ -71,15 +98,9 @@ int ItemInteractionListener::FireConsumeItemEvent(ConsumeItemEvent *e)
             targeted = true;
             gameState = TARGETING;
             lookTarget = player->GetXY();
-            std::cout << "gamestate switched to Targeting" << std::endl;
             return 0;
         }
-
     }
-
-    e->target->RemoveItem(e->consumed);
-    itemManager->RemoveEntity(e->consumed);
-    
     return 100;
 }
 

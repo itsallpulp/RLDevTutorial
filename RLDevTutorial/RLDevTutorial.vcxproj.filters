@@ -168,6 +168,12 @@
     <ClCompile Include="LookCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
+    <ClCompile Include="StatusEffectsComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusEffectsListener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -307,6 +313,12 @@
     </ClInclude>
     <ClInclude Include="LookCommand.h">
       <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusEffectsComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusEffectsListener.h">
+      <Filter>Header Files\Listeners</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

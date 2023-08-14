@@ -7,7 +7,8 @@
 				"targetType": "coordinate",
 					"effects": [
 					{
-						"type": "confuse",
+						"type": "addStatusEffect",
+						"subtype": "confused",
 						"amount": 10
 					}
 				]

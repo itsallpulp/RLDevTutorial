@@ -5,9 +5,10 @@
 		"consumable": {
 			"zaps": {
 				"targetType": "nearestEnemy",
-				"effects": [
+					"effects": [
 					{
-						"type": "lightning",
+						"type": "damage",
+						"subtype": "lightning",
 						"amount": 10
 					}
 				]

@@ -3,7 +3,7 @@
 
 typedef struct Zap {
 	int amount;
-	std::string type;
+	std::string type, subtype;
 };
 
 class ConsumableComponent : public Component

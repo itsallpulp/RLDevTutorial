@@ -13,7 +13,8 @@ static enum EventID {
 	evConsumeItem = 128,
 	evDropItem = 256,
 	evHeal = 512,
-	evRemoveItem = 1024
+	evRemoveItem = 1024,
+	evAddStatusEffect = 2048
 };
 
 class Event {
@@ -155,4 +156,23 @@ class RemoveItemEvent : public Event {
 		this->item = item;
 	}
 	Entity *holder, *item;
+};
+
+class AddStatusEffectEvent : public Event {
+	public:
+	AddStatusEffectEvent(Entity *target, std::string effect, int rounds) : Event(evAddStatusEffect)
+	{
+		this->target = target;
+		this->effect = effect;
+		this->rounds = rounds;
+	}
+
+	void SetTarget(Entity *e)
+	{
+		this->target = e;
+	}
+
+	Entity *target;
+	std::string effect;
+	int rounds;
 };

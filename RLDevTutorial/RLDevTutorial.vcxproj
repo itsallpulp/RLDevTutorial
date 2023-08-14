@@ -182,6 +182,8 @@
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="RenderingListener.cpp" />
+    <ClCompile Include="StatusEffectsComponent.cpp" />
+    <ClCompile Include="StatusEffectsListener.cpp" />
     <ClCompile Include="TurnListener.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -228,6 +230,8 @@
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderingListener.h" />
+    <ClInclude Include="StatusEffectsComponent.h" />
+    <ClInclude Include="StatusEffectsListener.h" />
     <ClInclude Include="TurnListener.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="WeightedBag.h" />

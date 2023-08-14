@@ -24,6 +24,7 @@
 #include "LogListener.h"
 #include "MovementListener.h"
 #include "RenderingListener.h"
+#include "StatusEffectsListener.h"
 #include "TurnListener.h"
 
 #include "GrabItemCommand.h"
@@ -54,6 +55,7 @@ ItemInteractionListener lItems;
 LogListener lLog;
 MovementListener lMovement;
 RenderingListener lRendering;
+StatusEffectsListener lStatusEffects;
 TurnListener lTurn;
 
 Entity *player;
@@ -181,6 +183,7 @@ void RenderAll()
 int WorldFireEvent(Event *e)
 {
 	int r = 0;
+	r += lStatusEffects.FireEvent(e);
 	r += lMovement.FireEvent(e);
 	r += lFOV.FireEvent(e);
 	r += lLog.FireEvent(e);
@@ -396,7 +399,6 @@ void TakeTurn(Entity *actor)
 	{
 		while (actor->GetEnergy() >= 100)
 		{
-			std::cout << gameState << std::endl;
 
 			if (gameState == IN_MENU)
 			{
@@ -552,7 +554,6 @@ void HandleTargeting()
 						break;
 				}
 			}
-
 		}
 
 		if (moved)
@@ -592,7 +593,6 @@ bool UnloadQueuedEvents(int x, int y)
 		WorldFireEvent(&ev);
 		return false;
 	}
-
 
 	while (!queuedEvents->empty())
 	{
