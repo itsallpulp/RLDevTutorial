@@ -48,6 +48,8 @@ int Listener::FireEvent(Event *e)
             return FireConsumeItemEvent((ConsumeItemEvent *)e);
         case evHeal:
             return FireHealEvent((HealEvent *) e);
+        case evRemoveItem:
+            return FireRemoveItemEvent((RemoveItemEvent *)e);
         default:
             return 0;
     }

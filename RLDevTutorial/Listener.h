@@ -20,6 +20,7 @@ class Listener
 	virtual int FireGrabItemEvent(GrabItemEvent *e) { return 0; }
 	virtual int FireDropItemEvent(DropItemEvent *e) { return 0; }
 	virtual int FireConsumeItemEvent(ConsumeItemEvent *e) { return 0; }
+	virtual int FireRemoveItemEvent(RemoveItemEvent *e) { return 0; }
 
 	public:
 	Listener();

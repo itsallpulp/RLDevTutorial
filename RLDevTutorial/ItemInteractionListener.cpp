@@ -99,7 +99,14 @@ int ItemInteractionListener::FireDropItemEvent(DropItemEvent *e)
     return 100;
 }
 
+int ItemInteractionListener::FireRemoveItemEvent(RemoveItemEvent *e)
+{
+    e->holder->RemoveItem(e->item);
+    itemManager->RemoveEntity(e->item);
+    return 0;
+}
+
 ItemInteractionListener::ItemInteractionListener()
 {
-    RegisterListenFor(evGrabItem | evConsumeItem | evDropItem);
+    RegisterListenFor(evGrabItem | evConsumeItem | evDropItem | evRemoveItem );
 }

@@ -514,8 +514,6 @@ void HandleTargeting()
 		{
 			if (input.type == SDL_KEYDOWN)
 			{
-				std::cout << input.key.keysym.sym << std::endl;
-				std::cout << "KP_ENTER " << SDLK_KP_ENTER << std::endl;
 
 				switch (input.key.keysym.sym)
 				{
@@ -535,13 +533,19 @@ void HandleTargeting()
 						lookTarget.second = std::min(lookTarget.second + 1, MAP_HEIGHT - 1);
 						moved = true;
 						break;
-					case 13:
+					case 13: // Enter
 						player->ModEnergy(-100);
 						UnloadQueuedEvents(lookTarget.first, lookTarget.second);
 						gameState = ON_MAP;
 						return;
 					case SDLK_ESCAPE:
 						gameState = ON_MAP;
+						while (!queuedEvents->empty())
+						{
+							Event *e = queuedEvents->front();
+							queuedEvents->pop();
+							delete e;
+						}
 						return;
 						break;
 				}

@@ -6,6 +6,7 @@ class ItemInteractionListener : public Listener
 	int FireGrabItemEvent(GrabItemEvent *e);
 	int FireConsumeItemEvent(ConsumeItemEvent *e);
 	int FireDropItemEvent(DropItemEvent *e);
+	int FireRemoveItemEvent(RemoveItemEvent *e);
 
 
 	public:
