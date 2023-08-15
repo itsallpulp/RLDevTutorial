@@ -172,7 +172,7 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="StatusEffectsListener.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Listeners</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

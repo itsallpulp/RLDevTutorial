@@ -10,6 +10,7 @@ class EntityManager
 	std::map<std::string, int> idMap;
 	Entity entities[MAX_ENTITIES];
 	byte inUse[MAX_ENTITIES];
+	byte flags[MAX_ENTITIES];
 
 	public:
 	EntityManager();
@@ -23,10 +24,16 @@ class EntityManager
 	void RemoveEntity(Entity *e);
 	void ChangeState(int index, int newState);
 	void ChangeState(Entity *e, int newState);
+	void Clear();
+	void ToggleFlag(Entity *e, int flag);
 
 	static enum EntityState {
 		FREE = 0,
 		ON_MAP,
 		IN_INVENTORY
+	};
+
+	static enum EntityFlags {
+		PERMANENT = 1
 	};
 };

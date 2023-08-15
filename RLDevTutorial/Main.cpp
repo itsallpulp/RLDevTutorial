@@ -63,7 +63,8 @@ Level *level;
 std::map<char, Color> colors;
 
 Pathfinder *pathfinder = new Pathfinder();
-int gameState = ON_MAP;
+int gameState = ON_MAP,
+	depth = 0;
 
 void RenderEntity(Entity *e);
 void RenderHUD(Entity *e);
@@ -77,6 +78,9 @@ void TakeTurn(Entity *actor);
 
 void PrintRuntime(void (*func)(void));
 
+void PlaceItems(std::string itemTable);
+void PlaceEnemies(std::string enemyTable);
+
 std::map<std::string, json::object> jsonCache;
 std::vector<std::string> jsonCacheKey;
 std::vector<FloatingText> *floatingTexts = new std::vector<FloatingText>();
@@ -87,11 +91,6 @@ point lookTarget;
 
 int main(int argc, char* argv[])
 {
-	
-
-	WeightedBag<std::string> wb = WeightedBagFromJSON(GetJson("table_monsters"));
-	WeightedBag<std::string> wbItems = WeightedBagFromJSON(GetJson("table_items"));
-
 	lookTarget = { 0,0 };
 
 	actorManager = new EntityManager();
@@ -100,29 +99,22 @@ int main(int argc, char* argv[])
 	srand(seed);
 
 	LoadColors("data/color_default.json");
-	level = new Level();
+	
+	/*level = new Level();
 	level->RoomsAndMazes();
-
+	*/
 	int playerIndex = actorManager->AddEntity("player");
 	player = actorManager->GetEntity(playerIndex);
+	actorManager->ToggleFlag(player, EntityManager::PERMANENT);
+
 
 	player->cPhysics->x = 1;
 	player->cPhysics->y = 1;
 
-	level->PlaceEntity(player, actorManager);
+	//level->PlaceEntity(player, actorManager);
 
-	for (int i = 0; i < 20; ++i)
-	{
-		int monsterIndex = actorManager->AddEntity(wb.GetRandomValue());
-		Entity *monster = actorManager->GetEntity(monsterIndex);
-		level->PlaceEntity(monster, actorManager);
+	Descend();
 
-		int itemIndex = itemManager->AddEntity(wbItems.GetRandomValue());
-		Entity *item = itemManager->GetEntity(itemIndex);
-		level->PlaceEntity(item, itemManager);
-	}
-
-	lFOV.DoFOV(player);
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -311,6 +303,35 @@ void PrintRuntime(void(*func)(void))
 	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count() << " ms" << std::endl;
 }
 
+void PlaceItems(std::string itemTable)
+{
+	WeightedBag<std::string> wbItems = WeightedBagFromJSON(GetJson(itemTable));
+
+	int nItems = (depth * 4) + rand() % depth;
+
+	for (int i = 0; i < nItems; ++i)
+	{
+		int itemIndex = itemManager->AddEntity(wbItems.GetRandomValue());
+		Entity *item = itemManager->GetEntity(itemIndex);
+		level->PlaceEntity(item, itemManager);
+	}
+
+}
+
+void PlaceEnemies(std::string enemyTable)
+{
+	WeightedBag<std::string> wb = WeightedBagFromJSON(GetJson(enemyTable));
+
+	int nMonsters = (depth * 4) + rand() % depth;
+
+	for (int i = 0; i < nMonsters; ++i)
+	{
+		int monsterIndex = actorManager->AddEntity(wb.GetRandomValue());
+		Entity *monster = actorManager->GetEntity(monsterIndex);
+		level->PlaceEntity(monster, actorManager);
+	}
+}
+
 void RenderHUD(Entity *e)
 {
 	//std::string title = "HP: " + std::to_string(e->GetHealth()) + "/" + std::to_string(e->GetMaxHealth());
@@ -444,7 +465,21 @@ bool PopMenu()
 
 int Descend()
 {
+	++depth;
 	std::cout << "Descend!" << std::endl;
+	actorManager->Clear();
+	itemManager->Clear();
+	delete level;
+	level = new Level();
+	level->RoomsAndMazes();
+	level->PlaceEntity(player, actorManager);
+
+	PlaceEnemies("table_monsters");
+	PlaceItems("table_items");
+
+	LogEvent l(player, "You descend to floor " + std::to_string(depth));
+	lFOV.DoFOV(player);
+
 	return 0;
 }
 

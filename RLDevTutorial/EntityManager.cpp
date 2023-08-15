@@ -100,6 +100,7 @@ void EntityManager::RemoveEntity(Entity *e)
         {
             entities[i].Reset();
             inUse[i] = FREE;
+            flags[i] = 0;
             return;
         }
     }
@@ -118,6 +119,31 @@ void EntityManager::ChangeState(Entity *e, int newState)
         {
             inUse[i] = newState;
             return;
+        }
+    }
+}
+
+void EntityManager::Clear()
+{
+    for (int i = 0; i < MAX_ENTITIES; ++i)
+    {
+        if (!(flags[i] & PERMANENT))
+        {
+            flags[i] = 0;
+            entities[i].Reset();
+            inUse[i] = FREE;
+        }
+    }
+}
+
+void EntityManager::ToggleFlag(Entity *e, int flag)
+{
+    for (int i = 0; i < MAX_ENTITIES; ++i)
+    {
+        if (e->GetUUID() == entities[i].GetUUID())
+        {
+            if (flags[i] & flag) { flags[i] &= ~(flag); }
+            else { flags[i] |= flag; }
         }
     }
 }

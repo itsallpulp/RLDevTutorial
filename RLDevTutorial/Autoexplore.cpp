@@ -48,14 +48,18 @@ Command *AutoExplore()
 	{
 		for (int y = 1; y < MAP_HEIGHT - 1; ++y)
 		{
-			if (level->GetFOV(x, y) != fovHidden /* || level->GetCell(x, y)->BlocksMovement()*/) { continue; }
+			if (level->GetFOV(x, y) != fovHidden || level->GetCell(x, y)->BlocksMovement()) { continue; }
 			unvisited.push_back({ x,y });
 		}
 	}
 
+
 	if (unvisited.size() == 0) {
-		std::cout << "Nowhere to go!" << std::endl;
-		return new MovementCommand(player, 0, 0);
+		std::stack<point> path = pathfinder->GeneratePath(player->GetXY(), level->GetStairs());
+		point nextStep = path.top();
+		SDL_Delay(25);
+		point p = player->GetXY();
+		return new MovementCommand(player, nextStep.first - p.first, nextStep.second - p.second);
 	}
 
 

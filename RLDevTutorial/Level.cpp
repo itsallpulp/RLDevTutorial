@@ -255,21 +255,28 @@ void Level::PlaceStairs()
         {
             if (!mCells[x][y]->BlocksMovement()) { continue; }
 
-            if (
-                mCells[x + 1][y]->BlocksMovement() ||
-                mCells[x - 1][y]->BlocksMovement() ||
-                mCells[x][y + 1]->BlocksMovement() ||
-                mCells[x][y - 1]->BlocksMovement()
-                )
-            {
-                possibleStairs.push_back({ x,y });
-            }
+            int count = 0;
+
+            if (mCells[x-1][y]->BlocksMovement()) { ++count; }
+            if (mCells[x+1][y]->BlocksMovement()) { ++count; }
+            if (mCells[x][y-1]->BlocksMovement()) { ++count; }
+            if (mCells[x][y+1]->BlocksMovement()) { ++count; }
+
+            if (count == 3) { possibleStairs.push_back({ x,y }); }
         }
     }
 
     auto it = possibleStairs.begin();
     std::advance(it, rand() % possibleStairs.size());
     SetCell(mTiles[4], (*it).first, (*it).second);
+    stairs = (*it);
+    //std::cout << "Stairs @ " << (*it).first << ", " << (*it).second << std::endl;
+    SetFOV(fovVisible, (*it).first, (*it).second);
+}
+
+point Level::GetStairs()
+{
+    return stairs;
 }
 
 Level::Level()
@@ -310,7 +317,11 @@ Level::Level(json::object toLoad)
 
 Level::~Level()
 {
-    ClearCells();
+    //ClearCells();
+    for (int i = 0; i < 255; ++i)
+    {
+        delete mTiles[i];
+    }
 }
 
 void Level::ClearCells()

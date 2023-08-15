@@ -40,6 +40,7 @@ class Level
 	void ConnectPoints();
 
 	void PlaceStairs();
+	point stairs;
 
 	public:
 	Level();
@@ -57,6 +58,7 @@ class Level
 	void PlaceEntity(Entity *e, EntityManager *manager);
 
 	void FromLevelConfig(LevelConfig config);
+	point GetStairs();
 
 	byte GetFOV(int x, int y);
 	byte GetFOV(point p);

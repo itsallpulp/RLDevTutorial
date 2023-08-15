@@ -9,6 +9,11 @@ int ItemInteractionListener::FireGrabItemEvent(GrabItemEvent *e)
     e->target->AddItem(e->item);
     itemManager->ChangeState(e->item, EntityManager::IN_INVENTORY);
 
+    if (e->target == player)
+    {
+        itemManager->ToggleFlag(e->item, EntityManager::PERMANENT);
+    }
+
     return 100;
 }
 
