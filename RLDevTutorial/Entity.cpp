@@ -275,6 +275,11 @@ float Entity::GetWeight()
     return cPhysics == nullptr ? 0.0 : cPhysics->weight;
 }
 
+bool Entity::AllowDescend()
+{
+    return cPhysics == nullptr ? false : cPhysics->allowDescend;
+}
+
 void Entity::SendLog(std::string message)
 {
     if (cLog == nullptr) { return; }

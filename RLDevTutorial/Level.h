@@ -39,6 +39,8 @@ class Level
 
 	void ConnectPoints();
 
+	void PlaceStairs();
+
 	public:
 	Level();
 	Level(json::object toLoad);

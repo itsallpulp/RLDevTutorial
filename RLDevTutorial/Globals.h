@@ -46,6 +46,8 @@ extern WeightedBag<std::string> WeightedBagFromJSON(json::object data);
 
 extern bool PopMenu();
 
+extern int Descend();
+
 extern int Roll(int numDice, int dieSize);
 extern int RollDamage(int numDice);
 

@@ -245,6 +245,33 @@ void Level::ConnectPoints()
     }
 }
 
+void Level::PlaceStairs()
+{
+    std::vector<point> possibleStairs;
+
+    for (int x = 1; x < MAP_WIDTH - 1; ++x)
+    {
+        for (int y = 1; y < MAP_HEIGHT - 1; ++y)
+        {
+            if (!mCells[x][y]->BlocksMovement()) { continue; }
+
+            if (
+                mCells[x + 1][y]->BlocksMovement() ||
+                mCells[x - 1][y]->BlocksMovement() ||
+                mCells[x][y + 1]->BlocksMovement() ||
+                mCells[x][y - 1]->BlocksMovement()
+                )
+            {
+                possibleStairs.push_back({ x,y });
+            }
+        }
+    }
+
+    auto it = possibleStairs.begin();
+    std::advance(it, rand() % possibleStairs.size());
+    SetCell(mTiles[4], (*it).first, (*it).second);
+}
+
 Level::Level()
 {
     
@@ -257,6 +284,7 @@ Level::Level()
     mTiles[1] = new Entity("base_wall");
     mTiles[2] = new Entity("base_door");
     mTiles[3] = new Entity("tile_window");
+    mTiles[4] = new Entity("base_stairs");
     
     for (int x = 0; x < MAP_WIDTH; ++x)
     {
@@ -424,6 +452,8 @@ void Level::RoomsAndMazes(int roomPlacementAttempts)
         }
     }
     
+    PlaceStairs();
+
     /*
     int nWindows = rand() % 50 + 15;
     for (int i = 0; i < nWindows; ++i)

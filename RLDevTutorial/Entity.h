@@ -71,6 +71,7 @@ class Entity
 	bool BlocksMovement();
 	bool BlocksVision();
 	float GetWeight();
+	bool AllowDescend();
 
 	RenderComponent *cRender;
 

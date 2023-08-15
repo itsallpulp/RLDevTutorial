@@ -11,6 +11,10 @@ int MovementListener::FireMovementEvent(MovementEvent *e)
     e->target->cPhysics->x += e->dx;
     e->target->cPhysics->y += e->dy;
 
+    if (e->target == player && level->GetCell(player->cPhysics->x, player->cPhysics->y)->AllowDescend())
+    {
+        Descend();
+    }
 
     return 100;
 }

@@ -1,0 +1,13 @@
+{
+	"name": "stairs",
+	"components": {
+		"render": {
+			"glyph": 62,
+			"color": "y",
+			"bgColor": "e"
+		},
+		"physics": {
+			"allowDescend": true
+		}
+	}
+}

@@ -442,6 +442,12 @@ bool PopMenu()
 	return (menus.size() == 0);
 }
 
+int Descend()
+{
+	std::cout << "Descend!" << std::endl;
+	return 0;
+}
+
 void HandleLooking()
 {
 	while (true)
