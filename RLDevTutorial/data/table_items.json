@@ -1,5 +1,6 @@
 {
 	"item_potion_healing": 1,
 	"item_scroll_lightning": 1,
-	"item_scroll_confuse": 1
+	"item_scroll_confuse": 1,
+	"base_armor": 10
 }

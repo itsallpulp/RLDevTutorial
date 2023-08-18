@@ -86,4 +86,9 @@ class Entity
 	int GetStatusEffect(std::string effect);
 	void AddStatusEffect(std::string effect, int rounds);
 	void ReduceEffects();
+
+	EquippableComponent *cEquippable;
+	bool IsEquippable();
+	int GetEquippableSlot();
+	std::string GetEquippableSlotStr();
 };

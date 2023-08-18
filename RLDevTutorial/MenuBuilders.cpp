@@ -18,7 +18,7 @@ Menu *NewInventoryMenu(Entity *e)
         float w = std::roundf(item->GetWeight() * 100) / 100;
         std::string weight = " (" + std::to_string(w).substr(0, 3) + " lb)";
 
-        m->AddOption(item->GetName(), new OpenMenuCommand(NewItemUseMenu(item, e)), i++);
+        m->AddOption(item->GetName() + " " + weight, new OpenMenuCommand(NewItemUseMenu(item, e)), i++);
     }
 
 
@@ -34,6 +34,11 @@ Menu *NewItemUseMenu(Entity *item, Entity *user)
     if (item->IsConsumable())
     {
         m->AddOption(item->GetConsumeVerb(), new ConsumeCommand(user, item));
+    }
+    if (item->IsEquippable())
+    {
+        std::cout << item->GetName() << " is equippable" << std::endl;
+        m->AddOption("equip (" + item->GetEquippableSlotStr() + ")", nullptr);
     }
 
     return m;

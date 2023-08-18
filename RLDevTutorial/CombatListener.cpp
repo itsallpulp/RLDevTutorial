@@ -36,7 +36,7 @@ int CombatListener::FireRenderEvent(RenderEvent *e)
     if (recentlyHit.find(e->target) != recentlyHit.end())
     {
         e->owColor = 'r';
-        e->owGlyph = '*';
+        e->owGlyph = '/';
         --recentlyHit[e->target];
 
         if (recentlyHit[e->target] <= 0)

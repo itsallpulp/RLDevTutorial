@@ -1,0 +1,18 @@
+{
+	"name": "base armor",
+	"components": {
+		"equippable": {
+			"slot": "armor",
+			"armor": 1,
+			"damage": 0
+		},
+		"physics": {
+			"weight": 1
+		},
+		"render": {
+			"glyph": 93,
+			"color": "y",
+			"bgColor": "~"
+		}
+	}
+}

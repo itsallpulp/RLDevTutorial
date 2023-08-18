@@ -8,8 +8,9 @@ Entity::Entity()
     mUUID = GenerateUUID();
 
     cActor = nullptr;
-    cFOV = nullptr;
     cConsumable = nullptr;
+    cEquippable = nullptr;
+    cFOV = nullptr;
     cInventory = nullptr;
     cPhysics = nullptr;
     cRender = nullptr;
@@ -31,8 +32,9 @@ Entity *Entity::Clone()
 {
     Entity *n = new Entity();
     if (cActor != nullptr) { n->cActor = new ActorComponent((*cActor)); }
-    if (cFOV != nullptr) { n->cFOV = new FOVComponent((*cFOV)); }
     if (cConsumable != nullptr) { n->cConsumable = new ConsumableComponent((*cConsumable)); }
+    if (cEquippable != nullptr) { n->cEquippable = new EquippableComponent((*cEquippable)); }
+    if (cFOV != nullptr) { n->cFOV = new FOVComponent((*cFOV)); }
     if (cInventory != nullptr) { n->cInventory = new InventoryComponent((*cInventory)); }
     if (cPhysics != nullptr) { n->cPhysics = new PhysicsComponent((*cPhysics)); }
     if (cRender != nullptr) { n->cRender = new RenderComponent((*cRender)); }
@@ -47,8 +49,9 @@ void Entity::Copy(Entity *other)
 {
     mName = other->mName;
     if (other->cActor != nullptr) { delete cActor; cActor = new ActorComponent(*(other->cActor)); }
-    if (other->cFOV != nullptr) { delete cFOV; cFOV = new FOVComponent(*(other->cFOV)); }
     if (other->cConsumable != nullptr) { delete cConsumable; cConsumable = new ConsumableComponent(*(other->cConsumable)); }
+    if (other->cEquippable != nullptr) { delete cEquippable; cEquippable = new EquippableComponent(*(other->cEquippable)); }
+    if (other->cFOV != nullptr) { delete cFOV; cFOV = new FOVComponent(*(other->cFOV)); }
     if (other->cInventory != nullptr) { delete cInventory; cInventory = new InventoryComponent(*(other->cInventory)); }
     if (other->cPhysics != nullptr) { delete cPhysics; cPhysics = new PhysicsComponent(*(other->cPhysics)); }
     if (other->cRender != nullptr) { delete cRender; cRender = new RenderComponent(*(other->cRender)); }
@@ -61,6 +64,8 @@ void Entity::Reset()
     mUUID = GenerateUUID();
     delete cActor;
     cActor = nullptr;
+    delete cEquippable;
+    cEquippable = nullptr;
     delete cFOV;
     cFOV = nullptr;
     delete cConsumable;
@@ -109,6 +114,7 @@ void Entity::LoadJson(json::object data)
 
             if (componentName == "render") { AddComponent<RenderComponent>((Component **)(&(cRender)), data); }
             else if (componentName == "physics") { AddComponent<PhysicsComponent>((Component **)(&(cPhysics)), data); }
+            else if (componentName == "equippable") { AddComponent<EquippableComponent>((Component **)(&(cEquippable)), data); }
             else if (componentName == "FOV") { AddComponent<FOVComponent>((Component **)(&(cFOV)), data); }
             else if (componentName == "log") { AddComponent<LogComponent>((Component **)(&(cLog)), data); }
             else if (componentName == "actor") { AddComponent<ActorComponent>((Component **)(&(cActor)), data); }
@@ -393,4 +399,39 @@ void Entity::ReduceEffects()
             cStatusEffects->effects[it.first] = (it.second - 1);
         }
     }
+}
+
+bool Entity::IsEquippable()
+{
+    return (cEquippable != nullptr);
+}
+
+int Entity::GetEquippableSlot()
+{
+    return cEquippable == nullptr ? -1 : cEquippable->slot;
+}
+
+std::string Entity::GetEquippableSlotStr()
+{
+    if (cEquippable == nullptr) { return "NA"; }
+    switch (cEquippable->slot)
+    {
+        case ARMOR:
+            return "body";
+        case HEAD:
+            return "head";
+        case OFF_HAND:
+            return "off-hand";
+        case MAIN_HAND:
+            return "main hand";
+        case BOOTS:
+            return "feet";
+        case GLOVES:
+            return "hands";
+        case RING:
+            return "ring";
+        case TWO_HAND:
+            return "two-handed";
+    }
+    return "NA";
 }
