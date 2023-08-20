@@ -132,7 +132,20 @@ int ItemInteractionListener::FireRemoveItemEvent(RemoveItemEvent *e)
     return 0;
 }
 
+int ItemInteractionListener::FireEquipItemEvent(EquipItemEvent *e)
+{
+    if (e->equipper->Equip(e->item)) 
+    {
+        LogEvent l(e->equipper, "You equip the " + e->item->GetName());
+        WorldFireEvent(&l);
+        return 100; 
+    }
+    LogEvent l(e->equipper, "You are unable to equip the " + e->item->GetName());
+    WorldFireEvent(&l);
+    return 0;
+}
+
 ItemInteractionListener::ItemInteractionListener()
 {
-    RegisterListenFor(evGrabItem | evConsumeItem | evDropItem | evRemoveItem );
+    RegisterListenFor(evGrabItem | evConsumeItem | evDropItem | evRemoveItem | evEquipItem );
 }

@@ -14,7 +14,8 @@ static enum EventID {
 	evDropItem = 256,
 	evHeal = 512,
 	evRemoveItem = 1024,
-	evAddStatusEffect = 2048
+	evAddStatusEffect = 2048,
+	evEquipItem = 4096
 };
 
 class Event {
@@ -175,4 +176,14 @@ class AddStatusEffectEvent : public Event {
 	Entity *target;
 	std::string effect;
 	int rounds;
+};
+
+class EquipItemEvent : public Event {
+	public:
+	EquipItemEvent(Entity *e, Entity *i) : Event(evEquipItem)
+	{
+		equipper = e;
+		item = i;
+	}
+	Entity *equipper, *item;
 };

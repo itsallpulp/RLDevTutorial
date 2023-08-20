@@ -6,6 +6,7 @@
 #include "ExitMenuCommand.h"
 #include "OpenMenuCommand.h"
 #include "DropItemCommand.h"
+#include "EquipItemCommand.h"
 
 Menu *NewInventoryMenu(Entity *e)
 {
@@ -37,7 +38,7 @@ Menu *NewItemUseMenu(Entity *item, Entity *user)
     }
     if (item->IsEquippable())
     {
-        m->AddOption("equip (" + item->GetEquippableSlotStr() + ")", nullptr);
+        m->AddOption("equip (" + item->GetEquippableSlotStr() + ")", new EquipItemCommand(user, item));
     }
 
     return m;

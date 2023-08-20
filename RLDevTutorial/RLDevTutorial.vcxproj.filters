@@ -180,6 +180,9 @@
     <ClCompile Include="EquipmentComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="EquipItemCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -330,6 +333,9 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="EquipmentComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EquipItemCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -50,6 +50,8 @@ int Listener::FireEvent(Event *e)
             return FireHealEvent((HealEvent *) e);
         case evRemoveItem:
             return FireRemoveItemEvent((RemoveItemEvent *)e);
+        case evEquipItem:
+            return FireEquipItemEvent((EquipItemEvent *)e);
         case evAddStatusEffect:
             return FireAddStatusEffectEvent((AddStatusEffectEvent *)e);
         default:

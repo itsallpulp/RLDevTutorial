@@ -14,6 +14,7 @@ class Listener
 	virtual int FireMovementEvent(MovementEvent *e);
 	virtual int FireRenderEvent(RenderEvent *e);
 	virtual int FireLogEvent(LogEvent *e) { return 0; }
+	virtual int FireEquipItemEvent(EquipItemEvent *e) { return 0; }
 	virtual int FireDamageEvent(DamageEvent *e) { return 0; }
 	virtual int FireHealEvent(HealEvent *e) { return 0; }
 	virtual int FireTurnEvent(TurnEvent *e) { return 0; }

@@ -98,5 +98,4 @@ class Entity
 	bool Equip(Entity *e);
 	bool Unequip(Entity *e);
 	Entity *GetEquippedItem(int slot);
-
 };

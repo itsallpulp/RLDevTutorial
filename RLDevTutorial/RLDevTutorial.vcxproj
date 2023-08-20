@@ -155,6 +155,7 @@
     <ClCompile Include="DropItemCommand.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="EquipItemCommand.cpp" />
     <ClCompile Include="EquipmentComponent.cpp" />
     <ClCompile Include="EquippableComponent.cpp" />
     <ClCompile Include="ExitMenuCommand.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="DropItemCommand.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="EquipItemCommand.h" />
     <ClInclude Include="EquipmentComponent.h" />
     <ClInclude Include="EquippableComponent.h" />
     <ClInclude Include="Event.h" />

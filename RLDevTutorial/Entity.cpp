@@ -454,7 +454,33 @@ int Entity::GetArmor()
 
 bool Entity::Equip(Entity *e)
 {
-    return false;
+    if (cEquipment == nullptr || cInventory == nullptr) { return false; }
+    int slot = e->GetEquippableSlot();
+
+    if (slot == TWO_HAND)
+    {
+        if (cEquipment->equippedItems[MAIN_HAND] != nullptr)
+        {
+            cInventory->AddItem(cEquipment->equippedItems[MAIN_HAND]);
+        }
+        if (cEquipment->equippedItems[OFF_HAND] != nullptr && cEquipment->equippedItems[OFF_HAND] != cEquipment->equippedItems[MAIN_HAND])
+        {
+            cInventory->AddItem(cEquipment->equippedItems[OFF_HAND]);
+        }
+        cEquipment->equippedItems[MAIN_HAND] = e;
+        cEquipment->equippedItems[OFF_HAND] = e;
+        cInventory->RemoveItem(e);
+        return true;
+    }
+
+    if (cEquipment->equippedItems[slot] != nullptr)
+    {
+        cInventory->AddItem(cEquipment->equippedItems[slot]);
+        cEquipment->equippedItems[slot] = e;
+        cInventory->RemoveItem(e);
+    }
+
+    return true;
 }
 
 bool Entity::Unequip(Entity *e)
