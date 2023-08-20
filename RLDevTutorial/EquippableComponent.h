@@ -9,7 +9,8 @@ static enum EquipmentSlot {
 	BOOTS,
 	GLOVES,
 	RING,
-	TWO_HAND
+	NUM_SLOTS,
+	TWO_HAND // This isnt a slot, just used for items
 };
 
 class EquippableComponent : public Component

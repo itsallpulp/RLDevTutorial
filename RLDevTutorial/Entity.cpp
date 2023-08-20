@@ -10,6 +10,7 @@ Entity::Entity()
     cActor = nullptr;
     cConsumable = nullptr;
     cEquippable = nullptr;
+    cEquipment = nullptr;
     cFOV = nullptr;
     cInventory = nullptr;
     cPhysics = nullptr;
@@ -34,6 +35,7 @@ Entity *Entity::Clone()
     if (cActor != nullptr) { n->cActor = new ActorComponent((*cActor)); }
     if (cConsumable != nullptr) { n->cConsumable = new ConsumableComponent((*cConsumable)); }
     if (cEquippable != nullptr) { n->cEquippable = new EquippableComponent((*cEquippable)); }
+    if (cEquipment != nullptr) { n->cEquipment = new EquipmentComponent((*cEquipment)); }
     if (cFOV != nullptr) { n->cFOV = new FOVComponent((*cFOV)); }
     if (cInventory != nullptr) { n->cInventory = new InventoryComponent((*cInventory)); }
     if (cPhysics != nullptr) { n->cPhysics = new PhysicsComponent((*cPhysics)); }
@@ -51,6 +53,7 @@ void Entity::Copy(Entity *other)
     if (other->cActor != nullptr) { delete cActor; cActor = new ActorComponent(*(other->cActor)); }
     if (other->cConsumable != nullptr) { delete cConsumable; cConsumable = new ConsumableComponent(*(other->cConsumable)); }
     if (other->cEquippable != nullptr) { delete cEquippable; cEquippable = new EquippableComponent(*(other->cEquippable)); }
+    if (other->cEquipment != nullptr) { delete cEquipment; cEquipment = new EquipmentComponent(*(other->cEquipment)); }
     if (other->cFOV != nullptr) { delete cFOV; cFOV = new FOVComponent(*(other->cFOV)); }
     if (other->cInventory != nullptr) { delete cInventory; cInventory = new InventoryComponent(*(other->cInventory)); }
     if (other->cPhysics != nullptr) { delete cPhysics; cPhysics = new PhysicsComponent(*(other->cPhysics)); }
@@ -66,6 +69,8 @@ void Entity::Reset()
     cActor = nullptr;
     delete cEquippable;
     cEquippable = nullptr;
+    delete cEquipment;
+    cEquipment = nullptr;
     delete cFOV;
     cFOV = nullptr;
     delete cConsumable;
@@ -434,4 +439,22 @@ std::string Entity::GetEquippableSlotStr()
             return "two-handed";
     }
     return "NA";
+}
+
+bool Entity::Equip(Entity *e)
+{
+    return false;
+}
+
+bool Entity::Unequip(Entity *e)
+{
+    return false;
+}
+
+Entity *Entity::GetEquippedItem(int slot)
+{
+    if (cEquipment == nullptr) { return nullptr; }
+
+    if (slot == TWO_HAND) { return cEquipment->equippedItems[MAIN_HAND]; }
+    return cEquipment->equippedItems[slot];
 }

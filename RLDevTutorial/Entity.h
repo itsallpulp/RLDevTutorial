@@ -91,4 +91,10 @@ class Entity
 	bool IsEquippable();
 	int GetEquippableSlot();
 	std::string GetEquippableSlotStr();
+
+	EquipmentComponent *cEquipment;
+	bool Equip(Entity *e);
+	bool Unequip(Entity *e);
+	Entity *GetEquippedItem(int slot);
+
 };

@@ -43,3 +43,17 @@ Menu *NewItemUseMenu(Entity *item, Entity *user)
 
     return m;
 }
+
+Menu *NewEquipmentMenu(Entity *user)
+{
+    OptionMenu *m = new OptionMenu("Equipment", 0, 0);
+    for (int i = 0; i < NUM_SLOTS; ++i)
+    {
+        Entity *item = user->GetEquippedItem(i);
+
+        if (item == nullptr) { continue; }
+
+        m->AddOption(item->GetName() + "\t(" + item->GetEquippableSlotStr() + ") ", nullptr);
+    }
+    return m;
+}

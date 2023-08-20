@@ -162,7 +162,8 @@ void RenderAll()
 
 	if (gameState == LOOKING)
 	{
-		Render::Put('_', lookTarget.first + GUI_WIDTH, lookTarget.second, 'w', '~');
+		//Render::Put('_', lookTarget.first + GUI_WIDTH, lookTarget.second, 'w', '~');
+		Render::FPut(219, (lookTarget.first + GUI_WIDTH) * SPRITE_WIDTH, (lookTarget.second) * SPRITE_HEIGHT, 'y', 122);
 	}
 	else if (gameState == TARGETING)
 	{
@@ -520,7 +521,7 @@ void HandleLooking()
 			
 		}
 
-		if (moved)
+		if (moved && level->GetFOV(lookTarget.first, lookTarget.second) == fovVisible)
 		{
 			std::vector<Entity *> actors = actorManager->AllAt(lookTarget.first, lookTarget.second);
 			std::vector<Entity *> items = itemManager->AllAt(lookTarget.first, lookTarget.second);
