@@ -3,7 +3,7 @@
 	"components": {
 		"equippable": {
 			"slot": "armor",
-			"armor": 1,
+			"armor": 0,
 			"damage": 0
 		},
 		"physics": {

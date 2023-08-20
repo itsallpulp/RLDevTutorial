@@ -120,6 +120,7 @@ void Entity::LoadJson(json::object data)
             if (componentName == "render") { AddComponent<RenderComponent>((Component **)(&(cRender)), data); }
             else if (componentName == "physics") { AddComponent<PhysicsComponent>((Component **)(&(cPhysics)), data); }
             else if (componentName == "equippable") { AddComponent<EquippableComponent>((Component **)(&(cEquippable)), data); }
+            else if (componentName == "equipment") { AddComponent<EquipmentComponent>((Component **)(&(cEquipment)), data); }
             else if (componentName == "FOV") { AddComponent<FOVComponent>((Component **)(&(cFOV)), data); }
             else if (componentName == "log") { AddComponent<LogComponent>((Component **)(&(cLog)), data); }
             else if (componentName == "actor") { AddComponent<ActorComponent>((Component **)(&(cActor)), data); }

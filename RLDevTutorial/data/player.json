@@ -15,6 +15,10 @@
 				"baseDamage": 4
 			}
 		},
-		"inventory": {}
+		"inventory": {},
+		"equipment": {
+			"makePermanent": true,
+			"equipment": ["item_dagger", "armor_loincloth"]
+		}
 	}
 }

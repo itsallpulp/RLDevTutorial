@@ -23,7 +23,6 @@ EquippableComponent::EquippableComponent()
 
 void EquippableComponent::LoadJson(json::object data)
 {
-	std::cout << "Loading equippable " << std::endl;
 	armor = data.contains("armor") ? json::value_to<int>(data["armor"]) : armor;
 	damage = data.contains("damage") ? json::value_to<int>(data["damage"]) : damage;
 	try {

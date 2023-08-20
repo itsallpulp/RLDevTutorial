@@ -37,7 +37,6 @@ Menu *NewItemUseMenu(Entity *item, Entity *user)
     }
     if (item->IsEquippable())
     {
-        std::cout << item->GetName() << " is equippable" << std::endl;
         m->AddOption("equip (" + item->GetEquippableSlotStr() + ")", nullptr);
     }
 
@@ -53,7 +52,9 @@ Menu *NewEquipmentMenu(Entity *user)
 
         if (item == nullptr) { continue; }
 
-        m->AddOption(item->GetName() + "\t(" + item->GetEquippableSlotStr() + ") ", nullptr);
+        std::cout << i << "\t" << item->GetName() << std::endl;
+
+        m->AddOption(item->GetName() + " (" + item->GetEquippableSlotStr() + ") ", nullptr);
     }
     return m;
 }

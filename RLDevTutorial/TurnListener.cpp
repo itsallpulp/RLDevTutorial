@@ -72,6 +72,9 @@ int TurnListener::HandlePlayerTurn(TurnEvent *e)
 					case SDLK_l:
 						command = new LookCommand();
 						break;
+					case SDLK_e:
+						command = new OpenMenuCommand(NewEquipmentMenu(player));
+						break;
 					default:
 						break;
 				}

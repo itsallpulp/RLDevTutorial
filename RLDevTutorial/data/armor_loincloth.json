@@ -1,0 +1,12 @@
+{
+	"name": "loincloth",
+	"inherits": "base_armor",
+	"components": {
+		"equippable": {
+			"armor": 0
+		},
+		"physics": {
+			"weight": 0.5
+		}
+	}
+}
