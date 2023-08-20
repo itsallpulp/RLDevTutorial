@@ -52,9 +52,9 @@ Menu *NewEquipmentMenu(Entity *user)
 
         if (item == nullptr) { continue; }
 
-        std::cout << i << "\t" << item->GetName() << std::endl;
+        std::string armorDamage = " (" + std::to_string(item->GetArmor()) + (char)31 + " " + std::to_string(item->GetDamage()) + "/)";
 
-        m->AddOption(item->GetName() + " (" + item->GetEquippableSlotStr() + ") ", nullptr);
+        m->AddOption(item->GetEquippableSlotStr() + ": " + item->GetName() + armorDamage, nullptr);
     }
     return m;
 }

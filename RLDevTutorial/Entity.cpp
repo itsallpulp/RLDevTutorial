@@ -442,6 +442,16 @@ std::string Entity::GetEquippableSlotStr()
     return "NA";
 }
 
+int Entity::GetDamage()
+{
+    return cEquippable == nullptr ? 0 : cEquippable->damage;
+}
+
+int Entity::GetArmor()
+{
+    return cEquippable == nullptr ? 0 : cEquippable->armor;
+}
+
 bool Entity::Equip(Entity *e)
 {
     return false;
